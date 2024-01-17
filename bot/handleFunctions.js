@@ -3,19 +3,6 @@ const Donor =  require("./Models/Donor");
 
 const bot = require("./index.js")
 
-const sendNotificationToUsers = async (bloodGroup, message) => {
-  try {
-    const users = await Donor.find({ bloodGroup });
-    await users.forEach((user) => {
-      const { userId } = user;
-      bot.sendMessage(userId, message);
-    });
-  } catch (error) {
-    console.error("Error sending notifications:", error);
-    throw error;
-  }
-};
-
 const handleStartCommand = (chatId) => {
   bot.sendMessage(
     chatId,
@@ -42,29 +29,26 @@ const handleSendMessage = async (selectedUserIds) => {
   try {
     console.log("Selected User IDs:", selectedUserIds);
 
-    const message = "Your message goes here."; // Customize your message
+    const message = "'Вінницький обласний центр служби крові' потребує донора крові А+. Очікуємо Вас!"; 
 
-    // Retrieve the users from the database based on selectedUserIds
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
     console.log("Users retrieved:", users);
 
-    // Iterate through users and send messages
     for (const user of users) {
       const { userId } = user;
       console.log("Sending message to:", userId);
       await bot.sendMessage(userId, message);
       console.log("Message sent to:", userId);
     }
-
+    //await handleInfoCommand(userId)
+    //await handleContactsCommand(userId)
     console.log("Messages sent successfully!");
   } catch (error) {
     console.error("Error sending messages:", error);
     throw error;
   }
 };
-
-
 
 const handleRegisterCommand = async (msg, chatId) => {
 
