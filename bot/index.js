@@ -46,7 +46,6 @@ app.post("/api/sendMessages", async (req, res) => {
   try {
     const { selectedUserIds } = req.body;
 
-    // Use your existing logic to send messages to the selected user IDs
     await handleSendMessage(selectedUserIds);
 
     res.status(200).send("Messages sent successfully!");

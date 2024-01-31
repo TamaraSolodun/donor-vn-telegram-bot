@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import {
   List,
   Datagrid,
@@ -8,33 +7,26 @@ import {
   Button,
   useListController,
 } from "react-admin";
+import { sendMessage } from "../services/donorsService";
 
-const userFilters = [<TextInput source="q" label="Search" alwaysOn />];
+const userFilters = [
+  <TextInput source="q" label="Search" alwaysOn key="search" />,
+];
 
-export const UserList = (props) => {
-  const { selectedIds, data, ...listControllerProps } = useListController(props);
+export const DonorsBoard = (props: object) => {
+  const { selectedIds, data, ...listControllerProps } =
+    useListController(props);
 
   const handleSendMessage = async () => {
     try {
-      const selectedUserIds = selectedIds.map((id) => data[id - 1]?.userId).filter(Boolean);
-  
-      const response = await fetch("http://localhost:5000/api/sendMessages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ selectedUserIds }),
-      });
-      if (response.ok) {
-        console.log("Messages sent successfully!");
-      } else {
-        console.error("Failed to send messages:", await response.text());
-      }
+      const selectedUserIds = selectedIds
+        .map((id) => data[id - 1]?.userId)
+        .filter(Boolean);
+      await sendMessage(selectedUserIds);
     } catch (error) {
-      console.error("Error sending messages:", error);
+      console.error("Error handling send messages:", error);
     }
   };
-  
 
   return (
     <>
@@ -54,7 +46,9 @@ export const UserList = (props) => {
       </List>
       <div>
         <Button onClick={handleSendMessage}>
-          <span><h3>Send message</h3></span>
+          <span>
+            <h3>Send message</h3>
+          </span>
         </Button>
       </div>
     </>
