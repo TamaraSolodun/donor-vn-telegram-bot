@@ -3,5 +3,5 @@ export interface ListParams {
     page: number;
     perPage: number;
   };
-  filter?: object;
+  filter: { [key: string]: any };
 }

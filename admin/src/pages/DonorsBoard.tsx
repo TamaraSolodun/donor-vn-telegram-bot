@@ -6,6 +6,7 @@ import {
   DateField,
   Button,
   useListController,
+  ListControllerProps,
 } from "react-admin";
 import { sendMessage } from "../services/donorsService";
 
@@ -13,7 +14,7 @@ const userFilters = [
   <TextInput source="q" label="Search" alwaysOn key="search" />,
 ];
 
-export const DonorsBoard = (props: object) => {
+export const DonorsBoard = (props: ListControllerProps) => {
   const { selectedIds, data, ...listControllerProps } =
     useListController(props);
 

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { stringify } from "query-string";
 import { ListParams } from "../../interfaces/ListParams";
+import { DataProvider } from "react-admin";
 
 const apiUrl = "http://localhost:5000/api";
 
-export const customDataProvider = {
+export const customDataProvider: Partial<DataProvider> = {
   getList: async (resource: string, params: ListParams) => {
     const { page, perPage } = params.pagination;
     const query = {
@@ -18,8 +19,8 @@ export const customDataProvider = {
     try {
       const response = await axios.get(url);
       const totalCount = parseInt(response.headers["x-total-count"], 10);
-
-      const dataWithIds = response.data.map((item: object, index: number) => ({
+      console.log(response.data)
+      const dataWithIds = response.data.map((item: unknown, index: number) => ({
         ...item,
         id: `${index + 1}`,
       }));

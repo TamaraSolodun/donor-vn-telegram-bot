@@ -8,7 +8,7 @@ const Donor = require("./Models/Donor.js");
 
 const token = "6923650844:AAER4Eb1Qm7H5iXMPe7BtkAk6HbLwOKdwOE";
 const mongoURI =
-  "mongodb+srv://donation:qwer1234@cluster0.drv9hc8.mongodb.net/DonorsVN";
+  "mongodb+srv://donation:1234@cluster0.drv9hc8.mongodb.net/DonorsVN";
 const webAppUrl = "https://www.google.com.ua/?hl=uk";
 const bot = new TelegramApi(token, { polling: true });
 module.exports = bot ;
