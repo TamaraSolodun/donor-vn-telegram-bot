@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const donorSchema = z.object({
+export const donorSchema = z.object({
   userId: z.number().int().positive(), 
   username: z.string(),
   phoneNumber: z.string(),
@@ -15,6 +15,8 @@ const donorSchema = z.object({
   city: z.string().nullable(), 
 });
 
+export const donorListSchema = z.array(donorSchema);
+
 export type Donor = z.infer<typeof donorSchema>;
 
-export { donorSchema };
+export type DonorList = z.infer<typeof donorListSchema>;

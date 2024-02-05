@@ -1,16 +1,17 @@
-import { Donor } from "../interfaces/Donor";
+import { DonorList, donorListSchema } from "../interfaces/Donor";
 
 const apiUrl = "http://localhost:5000/api";
 
-export const getDonors = async (): Promise<Donor[]> => {
+export const getDonors = async (): Promise<DonorList> => {
   try {
     const response = await fetch(`${apiUrl}/donors`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data: Donor[] = await response.json();
-    return data;
+    const data = await response.json();
+    return donorListSchema.parse(data);
+
   } catch (error) {
     console.error(error);
     throw error;

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getDonors } from "../services/donorsService";
-import { Donor } from "../interfaces/Donor";
+import { DonorList } from "../interfaces/Donor";
 
 const useDashboard = () => {
-  const [donors, setDonors] = useState<Donor[]>([]);
+  const [donors, setDonors] = useState<DonorList>([]);
+  //Toasts for errors? 
 
   useEffect(() => {
     const fetchData = async () => {
