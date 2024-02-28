@@ -6,7 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 
 import { Provider } from 'react-redux'
 import {store} from './store/store'
-
+//add testing unit (check all tests docs)
 export const App = () => (
   <Provider store={store}>
     <Admin
