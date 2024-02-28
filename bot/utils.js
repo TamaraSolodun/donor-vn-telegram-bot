@@ -1,4 +1,10 @@
-const commands = [
+const bot = require("./bot");
+
+const receiveTextFromBot = new Promise((resolve) => {
+  bot.once("text", (text) => resolve(text));
+});
+
+const donorCommands = [
   { command: "/start", description: "Початкове привітання" },
   { command: "/info", description: "Інформація про Вінницький центр крові" },
   {
@@ -7,4 +13,4 @@ const commands = [
   },
   { command: "/registration", description: "Зареєструватись" },
 ];
-module.exports = { commands };
+module.exports = { donorCommands, receiveTextFromBot };

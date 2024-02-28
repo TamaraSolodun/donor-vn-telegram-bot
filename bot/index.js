@@ -6,13 +6,13 @@ const {
   handleStartCommand,
 } = require("./handleFunctions.js");
 
-const { commands } = require("./utils/consts.js");
+const { donorCommands } = require("./utils.js");
 const server = require("./server.js")
 
 const start = async () => {
   server.listen(5000, () => console.log(`Server running on port 5000`));
 
-  bot.setMyCommands(commands);
+  bot.setMyCommands(donorCommands);
   bot.on("message", async (msg) => {
 
     const text = msg.text;

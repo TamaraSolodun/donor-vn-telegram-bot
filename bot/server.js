@@ -3,7 +3,7 @@ const cors = require("cors");
 
 const { getDonors } = require("./api/getDonors.js");
 const { sendMessages } = require("./api/sendMessages.js");
-const token = require("./utils/config.js");
+const token = require("./config.js");
 
 const mongoose = require("mongoose");
 mongoose.connect(token.mongoURI, {

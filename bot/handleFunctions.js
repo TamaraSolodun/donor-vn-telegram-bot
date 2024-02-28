@@ -1,6 +1,6 @@
 const Donor = require("./Models/Donor");
 const bot = require("./bot");
-const { receiveTextFromBot } = require("./utils/functions");
+const { receiveTextFromBot } = require("./utils");
 
 const handleStartCommand = (chatId) => {
   bot.sendMessage(
