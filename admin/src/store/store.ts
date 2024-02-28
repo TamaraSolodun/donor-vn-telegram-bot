@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import donorsReducer from "./donor/DonorSlice";
-import messagesReducer from "./donor/MessagesSlice";
+import logger from 'redux-logger'
 
 export const store = configureStore({
   reducer: {
     donors: donorsReducer,
-    messages: messagesReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

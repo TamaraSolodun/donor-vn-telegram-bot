@@ -18,28 +18,26 @@ export const getDonors = createAsyncThunk<DonorList>(
   }
 );
 
-export const sendMessages = createAsyncThunk(
-  "donors/sendMessages",
-  async (selectedUserIds: number[]): Promise<void> => {
-    try {
-      const response = await fetch(`${apiUrl}/sendMessages`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ selectedUserIds }),
-      });
-  
-      if (response.ok) {
-        console.log("Messages sent successfully!");
-      } else {
-        console.error("Failed to send messages:", await response.text());
-        throw new Error(await response.text());
-      }
-    } catch (error) {
-      console.error("Error sending messages:", error);
-      throw error;
-    }
-  }
-);
+export const sendMessages = async (
+  selectedUserIds: number[]
+): Promise<void> => {
+  try {
+    const response = await fetch(`${apiUrl}/sendMessages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ selectedUserIds }),
+    });
 
+    if (response.ok) {
+      console.log("Messages sent successfully!");
+    } else {
+      console.error("Failed to send messages:", await response.text());
+      throw new Error(await response.text());
+    }
+  } catch (error) {
+    console.error("Error sending messages:", error);
+    throw error;
+  }
+};
