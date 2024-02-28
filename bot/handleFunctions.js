@@ -1,7 +1,6 @@
-const Donor =  require("./Models/Donor");
-
-
-const bot = require("./index.js")
+const Donor = require("./Models/Donor");
+const bot = require("./bot");
+const { receiveTextFromBot } = require("./utils/functions");
 
 const handleStartCommand = (chatId) => {
   bot.sendMessage(
@@ -29,7 +28,8 @@ const handleSendMessage = async (selectedUserIds) => {
   try {
     console.log("Selected User IDs:", selectedUserIds);
 
-    const message = "'Вінницький обласний центр служби крові' потребує донора крові А+. Очікуємо Вас!"; 
+    const message =
+      "'Вінницький обласний центр служби крові' потребує донора крові А+. Очікуємо Вас!";
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
@@ -51,32 +51,27 @@ const handleSendMessage = async (selectedUserIds) => {
 };
 
 const handleRegisterCommand = async (msg, chatId) => {
-
   const existingDonor = await Donor.findOne({ userId: chatId });
   if (existingDonor) {
-    console.log(existingDonor)
+    console.log(existingDonor);
     await bot.sendMessage(chatId, "Ваc уже зареєстровано!");
     return;
   }
 
   await bot.sendMessage(chatId, "Вкажіть Ваш номер телефону:");
-  const phoneNumberResponse = await new Promise((resolve) => {
-    bot.once("text", (text) => resolve(text));
-  });
+  const phoneNumberResponse = await receiveTextFromBot();
   const phoneNumber = phoneNumberResponse.text;
 
   await bot.sendMessage(chatId, "Вкажіть Ваше ім'я:");
-  const firstNameResponse = await new Promise((resolve) => {
-    bot.once("text", (text) => resolve(text));
-  });
+  const firstNameResponse = await receiveTextFromBot();
   const firstName = firstNameResponse.text;
 
   await bot.sendMessage(chatId, "Вкажіть Ваше прізвище:");
-  const surnameResponse = await new Promise((resolve) => {
-    bot.once("text", (text) => resolve(text));
-  });
+  const surnameResponse = await receiveTextFromBot();
+   //mock for bot
   const surname = surnameResponse.text;
-  console.log(msg.from)
+  console.log(msg.from);
+
   const donor = {
     userId: chatId,
     username: msg.from.username || firstName,
@@ -90,7 +85,10 @@ const handleRegisterCommand = async (msg, chatId) => {
   await bot.sendMessage(chatId, "Вас успішно зареєстровано!");
 };
 
-
 module.exports = {
-  handleContactsCommand, handleInfoCommand, handleRegisterCommand, handleStartCommand, handleSendMessage
-}
+  handleContactsCommand,
+  handleInfoCommand,
+  handleRegisterCommand,
+  handleStartCommand,
+  handleSendMessage,
+};
