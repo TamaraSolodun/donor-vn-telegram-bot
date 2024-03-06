@@ -1,15 +1,18 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import useDashboard from "../src/hooks/useDashboard";
+import useDonorsBoard from "../src/hooks/useDonorsBoard";
 import { renderHook } from "@testing-library/react-hooks";
 import TestWrapper from "./TestWrapper";
-import { getDonors } from "../src/services/donorsService";
+
+import { getDonors, sendMessages } from "../src/services/donorsService";
 jest.mock("../src/services/donorsService");
 const getDonorsMock = getDonors as jest.Mock<typeof getDonors>;
+const sendMessagesMock = sendMessages as jest.Mock<typeof sendMessages>;
 
 describe("useDashboard hook", () => {
-  afterEach(()=> {
+  afterEach(() => {
     getDonorsMock.mockReset();
-  })
+  });
   it("fetches donors on mount and updates state", async () => {
     const mockDonors = [
       {
@@ -26,12 +29,28 @@ describe("useDashboard hook", () => {
         rhesusFactor: null,
         city: null,
       },
+      {
+        userId: 2,
+        username: "Nata",
+        phoneNumber: "+380963991209",
+        firstName: "Nata",
+        surname: "Solodun",
+        dateOfBirth: null,
+        sex: null,
+        height: null,
+        weight: null,
+        bloodType: null,
+        rhesusFactor: null,
+        city: null,
+      },
     ];
     getDonorsMock.mockResolvedValue(mockDonors);
     //1 - mock react-redux (jest.mock('react-redux', () => ({useDispatch: () => {}})))
-    //2 - render-helper 
+    //2 - render-helper
     // render with redux/login -> wrapper.ts
-    const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {wrapper: TestWrapper});
+    const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {
+      wrapper: TestWrapper,
+    });
 
     expect(result.current.donors).toEqual([]);
     expect(result.current.loading).toBeTruthy();
@@ -48,7 +67,9 @@ describe("useDashboard hook", () => {
   it("handles API errors", async () => {
     const mockError = new Error("API request failed");
     getDonorsMock.mockRejectedValue(mockError);
-    const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {wrapper: TestWrapper});
+    const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {
+      wrapper: TestWrapper,
+    });
 
     expect(result.current.donors).toEqual([]);
     expect(result.current.loading).toBeTruthy();
@@ -60,36 +81,71 @@ describe("useDashboard hook", () => {
     expect(result.current.error).toEqual(mockError.message);
   });
 
-  // it("updates state based on selectedDonors from store", () => {
-  //   const mockStoreState = {
-  //     donors: {
-  //       donors: [
-  //         {
-  //           userId: 1,
-  //           username: "Toma",
-  //           phoneNumber: "+380963991209",
-  //           firstName: "Toma",
-  //           surname: "Solodun",
-  //           dateOfBirth: null,
-  //           sex: null,
-  //           height: null,
-  //           weight: null,
-  //           bloodType: null,
-  //           rhesusFactor: null,
-  //           city: null,
-  //         },
-  //       ],
-  //       loading: false,
-  //       error: "Mock error from store",
-  //     },
-  //   };
+  it("fetches donors, finds donor, click checkbox, click send button", async () => {
+    const mockDonors = [
+      {
+        userId: 1,
+        username: "Toma",
+        phoneNumber: "+380963991209",
+        firstName: "Toma",
+        surname: "Solodun",
+        dateOfBirth: null,
+        isSelected: false,
+        sex: null,
+        height: null,
+        weight: null,
+        bloodType: null,
+        rhesusFactor: null,
+        city: null,
+      },
+      {
+        userId: 2,
+        username: "Nata",
+        phoneNumber: "+380963991209",
+        firstName: "Nata",
+        surname: "Solodun",
+        dateOfBirth: null,
+        isSelected: false,
+        sex: null,
+        height: null,
+        weight: null,
+        bloodType: null,
+        rhesusFactor: null,
+        city: null,
+      },
+    ];
+    getDonorsMock.mockResolvedValue(mockDonors);
 
-  //   const { result } = renderHook(() => useDashboard(), {
-  //     initialProps: { selectedDonors: mockStoreState.donors },
-  //   });
+    const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {
+      wrapper: TestWrapper,
+    });
 
-  //   expect(result.current.donors).toEqual(mockStoreState.donors.donors);
-  //   expect(result.current.loading).toEqual(mockStoreState.donors.loading);
-  //   expect(result.current.error).toEqual(mockStoreState.donors.error);
-  // });
+    expect(result.current.donors).toEqual([]);
+    expect(result.current.loading).toBeTruthy();
+
+    await waitForNextUpdate();
+
+    expect(getDonorsMock).toHaveBeenCalled();
+
+    expect(result.current.donors).toEqual(mockDonors);
+    expect(result.current.loading).toBeFalsy();
+    expect(result.current.error).toBeUndefined();
+
+    const tamaraDonor = result.current.donors.find(
+      (donor) => donor.username === "Toma"
+    );
+    console.log(tamaraDonor);
+    expect(tamaraDonor).toBeDefined();
+
+    const { handleSendMessage } = useDonorsBoard({
+      data: mockDonors,
+      selectedIds: [], 
+    });
+
+    await handleSendMessage();
+
+    expect(sendMessagesMock).toHaveBeenCalledWith([tamaraDonor?.userId]);
+
+  });
+
 });

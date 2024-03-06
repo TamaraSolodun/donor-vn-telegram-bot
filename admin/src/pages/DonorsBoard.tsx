@@ -5,15 +5,15 @@ import {
   TextInput,
   DateField,
   Button,
-  ListControllerProps,
 } from "react-admin";
 import useDonorsBoard from "../hooks/useDonorsBoard";
+import { DonorsBoardProps } from "../interfaces/DonorsBoardProps";
 
 const userFilters = [
   <TextInput source="q" label="Search" alwaysOn key="search" />,
 ];
 
-export const DonorsBoard = (props: ListControllerProps) => {
+export const DonorsBoard = (props: DonorsBoardProps) => {
   const {listControllerProps, handleSendMessage} = useDonorsBoard(props);
 
   return (

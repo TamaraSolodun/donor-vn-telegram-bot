@@ -1,7 +1,12 @@
 import { ListControllerProps, useListController } from "react-admin";
 import { sendMessages } from "../services/donorsService";
+import { Donor } from "../interfaces/Donor";
 
-const useDonorsBoard = (props: ListControllerProps) => {
+interface DonorsBoardProps extends ListControllerProps {
+  data: Donor[]; 
+  selectedIds: number[];
+}
+const useDonorsBoard = (props: DonorsBoardProps) => {
 
     const { selectedIds, data, ...listControllerProps } =
       useListController(props);
