@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { getDonors } from "../services/donorsService";
 import { DonorList } from "../interfaces/Donor";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { donorsSelector } from "../store/donor/DonorSlice";
+import { getDonorsThunk } from "../store/thunk/donors";
 
 const useDashboard = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +14,7 @@ const useDashboard = () => {
   const selectedDonors = useAppSelector(donorsSelector);
 
   useEffect(() => {
-    dispatch(getDonors());
+    dispatch(getDonorsThunk());
   }, [dispatch]);
 
   useEffect(() => {

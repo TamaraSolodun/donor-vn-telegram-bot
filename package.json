@@ -14,6 +14,7 @@
     "@material-ui/core": "^4.12.4",
     "@ngneat/falso": "^7.1.1",
     "@reduxjs/toolkit": "^2.1.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "axios": "^1.6.4",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
@@ -28,6 +29,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12"
+    "@types/jest": "^29.5.12",
+    "react-dom": "^18.2.0"
   }
 }

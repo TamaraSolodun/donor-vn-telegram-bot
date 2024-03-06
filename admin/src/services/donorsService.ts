@@ -1,22 +1,18 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { DonorList, donorListSchema } from "../interfaces/Donor";
 
 const apiUrl = "http://localhost:5000/api";
 
-export const getDonors = createAsyncThunk<DonorList>(
-  "users/addUser",
-  async (): Promise<DonorList> => {
-    const response = await fetch(`${apiUrl}/donors`);
+export const getDonors = async (): Promise<DonorList> => {
+  const response = await fetch(`${apiUrl}/donors`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
-    const parsedData = donorListSchema.parse(data);
-
-    return parsedData;
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
   }
-);
+  const data = await response.json();
+  const parsedData = donorListSchema.parse(data);
+
+  return parsedData;
+}
 
 export const sendMessages = async (
   selectedUserIds: number[]

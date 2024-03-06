@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 import { DonorList } from "../../interfaces/Donor";
-import { getDonors } from "../../services/donorsService";
+import { getDonorsThunk } from "../thunk/donors";
 
 export interface DonorsState {
   loading: boolean;
@@ -21,14 +21,14 @@ export const DonorsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getDonors.pending, (state) => {
+    builder.addCase(getDonorsThunk.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getDonors.fulfilled, (state, action) => {
+    builder.addCase(getDonorsThunk.fulfilled, (state, action) => {
       state.loading = false;
       state.donors = action.payload;
     });
-    builder.addCase(getDonors.rejected, (state, action) => {
+    builder.addCase(getDonorsThunk.rejected, (state, action) => {
       state.loading = false;
       state.donors = [];
       state.error = action.error.message;
