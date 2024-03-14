@@ -14,15 +14,15 @@ const userFilters = [
 ];
 
 export const DonorsBoard = (props: DonorsBoardProps) => {
-  const {listControllerProps, handleSendMessage} = useDonorsBoard(props);
+  const { handleSendMessage } = useDonorsBoard(props);
 
   return (
     <>
       {/* {loading && <h2>Loading...</h2>}
       {error && <ErrorAlert error={error} />} */}
-      <List filters={userFilters} {...listControllerProps}>
-        <Datagrid rowClick="edit">
-          <TextField source="username" />
+      <List filters={userFilters} resource="donors">
+        <Datagrid rowClick="edit" >
+          <TextField source="username" data-testid="username"/>
           <TextField source="firstName" />
           <TextField source="surname" />
           <TextField source="bloodType" />
@@ -35,9 +35,9 @@ export const DonorsBoard = (props: DonorsBoardProps) => {
         </Datagrid>
       </List>
       <div>
-        <Button onClick={handleSendMessage}>
+        <Button onClick={handleSendMessage} data-testid="sendButton" disabled>
           <span>
-            <h3>Send message</h3>
+            Send message
           </span>
         </Button>
       </div>

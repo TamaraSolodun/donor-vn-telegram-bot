@@ -8,7 +8,7 @@ interface DonorsBoardProps extends ListControllerProps {
 }
 const useDonorsBoard = (props: DonorsBoardProps) => {
 
-    const { selectedIds, data, ...listControllerProps } =
+    const { selectedIds, data } =
       useListController(props);
   
     const handleSendMessage = async () => {
@@ -20,7 +20,7 @@ const useDonorsBoard = (props: DonorsBoardProps) => {
         console.error("Error handling send messages:", error);
       }
     };
-    return {listControllerProps, handleSendMessage}
+    return {handleSendMessage}
 };
 
 export default useDonorsBoard;

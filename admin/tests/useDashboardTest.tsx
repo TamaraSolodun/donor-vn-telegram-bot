@@ -3,6 +3,8 @@ import useDashboard from "../src/hooks/useDashboard";
 import useDonorsBoard from "../src/hooks/useDonorsBoard";
 import { renderHook } from "@testing-library/react-hooks";
 import TestWrapper from "./TestWrapper";
+import ButtonWrapperTest from "./ButtonWrapperTest";
+import { render } from "@testing-library/react";
 
 import { getDonors, sendMessages } from "../src/services/donorsService";
 jest.mock("../src/services/donorsService");
@@ -81,7 +83,7 @@ describe("useDashboard hook", () => {
     expect(result.current.error).toEqual(mockError.message);
   });
 
-  it("fetches donors, finds donor, click checkbox, click send button", async () => {
+  it("fetches donors, click send button", async () => {
     const mockDonors = [
       {
         userId: 1,
@@ -137,15 +139,20 @@ describe("useDashboard hook", () => {
     console.log(tamaraDonor);
     expect(tamaraDonor).toBeDefined();
 
-    const { handleSendMessage } = useDonorsBoard({
-      data: mockDonors,
-      selectedIds: [], 
-    });
 
+    const { getByText } = render(<ButtonWrapperTest label="Send message" />);
+    const buttonElement = getByText("Send message");
+    expect(buttonElement).toBeDefined();
+
+    const { result: donorsBoardResult } = renderHook(() =>
+      useDonorsBoard({
+        data: mockDonors,
+        selectedIds: [],
+      })
+    );
+
+    const { handleSendMessage } = donorsBoardResult.current;
     await handleSendMessage();
-
     expect(sendMessagesMock).toHaveBeenCalledWith([tamaraDonor?.userId]);
-
   });
-
 });
