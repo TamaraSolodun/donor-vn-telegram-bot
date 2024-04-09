@@ -5,6 +5,7 @@ import {
   TextInput,
   DateField,
   Button,
+  useGetList,
 } from "react-admin";
 import useDonorsBoard from "../hooks/useDonorsBoard";
 import { DonorsBoardProps } from "../interfaces/DonorsBoardProps";
@@ -15,14 +16,17 @@ const userFilters = [
 
 export const DonorsBoard = (props: DonorsBoardProps) => {
   const { handleSendMessage } = useDonorsBoard(props);
+  const { data } = useGetList("donors");
+
 
   return (
     <>
       {/* {loading && <h2>Loading...</h2>}
       {error && <ErrorAlert error={error} />} */}
       <List filters={userFilters} resource="donors">
-        <Datagrid rowClick="edit" >
-          <TextField source="username" data-testid="username"/>
+        <Datagrid data={data} rowClick="edit">
+          <TextField source="userId" />
+          <TextField source="username" data-testid="username" />
           <TextField source="firstName" />
           <TextField source="surname" />
           <TextField source="bloodType" />
@@ -35,10 +39,8 @@ export const DonorsBoard = (props: DonorsBoardProps) => {
         </Datagrid>
       </List>
       <div>
-        <Button onClick={handleSendMessage} data-testid="sendButton" disabled>
-          <span>
-            Send message
-          </span>
+        <Button onClick={handleSendMessage} data-testid="sendButton">
+          <span>Send message</span>
         </Button>
       </div>
     </>

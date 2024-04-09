@@ -2,18 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "../store";
 
-import { DonorList } from "../../interfaces/Donor";
-import { getDonorsThunk } from "../thunk/donors";
+import { Donor, DonorList } from "../../interfaces/Donor";
+import { getDonorsThunk, getSingleDonorThunk } from "../thunk/donors";
 
 export interface DonorsState {
   loading: boolean;
   donors: DonorList;
   error: string | undefined;
+  singleDonor: Donor | null, //better to fetch
 }
 const initialState: DonorsState = {
   loading: false,
   donors: [],
   error: undefined,
+  singleDonor: null,
 };
 
 export const DonorsSlice = createSlice({
@@ -31,6 +33,18 @@ export const DonorsSlice = createSlice({
     builder.addCase(getDonorsThunk.rejected, (state, action) => {
       state.loading = false;
       state.donors = [];
+      state.error = action.error.message;
+    });
+    builder.addCase(getSingleDonorThunk.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSingleDonorThunk.fulfilled, (state, action) => {
+      state.loading = false;
+      state.singleDonor = action.payload;
+    });
+    builder.addCase(getSingleDonorThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.singleDonor = null;
       state.error = action.error.message;
     });
   },

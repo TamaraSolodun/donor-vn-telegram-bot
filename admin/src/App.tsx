@@ -3,18 +3,21 @@ import { customDataProvider } from "./services/providers/dataProvider";
 import { DonorsBoard } from "./pages/DonorsBoard";
 import { authProvider } from "./services/providers/authProvider";
 import { Dashboard } from "./pages/Dashboard";
+import { BrowserRouter } from "react-router-dom";
 
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-//add testing unit (check all tests docs)
+import SingleDonor from "./pages/SingleDonor";
 export const App = () => (
+  <BrowserRouter>
     <Provider store={store}>
       <Admin
+        dashboard={Dashboard}
         authProvider={authProvider}
         dataProvider={customDataProvider as DataProvider}
-        dashboard={Dashboard}
       >
-        <Resource name="donors" list={DonorsBoard} />
+        <Resource name="donors" list={DonorsBoard} edit={SingleDonor}/>
       </Admin>
     </Provider>
+  </BrowserRouter>
 );
