@@ -3,7 +3,7 @@ import useDashboard from "../hooks/useDashboard";
 import { Donor } from "../interfaces/Donor";
 import ErrorAlert from "../components/ErrorAlert";
 
-export const Dashboard = () => {
+export default function Dashboard(){
   const { donors, loading, error } = useDashboard();
 
   return (
@@ -24,3 +24,4 @@ export const Dashboard = () => {
     </Card>
   );
 };
+

@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/api/donors", getDonors);
-app.get("/api/donors/:id", getDonorById);
+app.get("/api/donors/:userId", getDonorById);
 app.post("/api/sendMessages", sendMessages);
 app.put("/api/donors/:id", updateDonor);
 

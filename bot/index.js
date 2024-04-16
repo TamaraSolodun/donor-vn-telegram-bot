@@ -26,6 +26,8 @@ const start = async () => {
       } else if (text === "/contacts") {
         await handleContactsCommand(chatId);
       }
+      //add object key : command
+      //not expected text
       if (text === "/registration") {
         await handleRegisterCommand(msg, chatId);
       }

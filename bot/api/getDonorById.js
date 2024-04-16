@@ -1,7 +1,7 @@
 const Donor = require("../Models/Donor");
 
 const getDonorById = async (req, res) => {
-    const id = req.body.userId;
+    const id = req.query.userId;
     try {
         const donor = await Donor.findOne({ userId: Number(id) });
         if (!donor) {
