@@ -1,20 +1,23 @@
-import { Admin, DataProvider, Resource } from "react-admin";
-import { customDataProvider } from "./services/providers/dataProvider";
-import { DonorsBoard } from "./pages/DonorsBoard";
-import { authProvider } from "./services/providers/authProvider";
-import { Dashboard } from "./pages/Dashboard";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-//add testing unit (check all tests docs)
+import Dashboard from "./pages/Dashboard";
+import DonorsBoard from "./pages/DonorsBoard";
+import SingleDonor from "./pages/SingleDonor";
+import { StyledWrapper } from "./styles/App.styled";
+
 export const App = () => (
-    <Provider store={store}>
-      <Admin
-        authProvider={authProvider}
-        dataProvider={customDataProvider as DataProvider}
-        dashboard={Dashboard}
-      >
-        <Resource name="donors" list={DonorsBoard} />
-      </Admin>
-    </Provider>
+  <StyledWrapper>
+    <BrowserRouter>
+      <Provider store={store}>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/donors-board" element={<DonorsBoard />} />
+          <Route path="/donors-board/:userId" element={<SingleDonor />} />
+        </Routes>
+      </Provider>
+    </BrowserRouter>
+  </StyledWrapper>
 );

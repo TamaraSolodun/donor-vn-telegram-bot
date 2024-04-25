@@ -1,6 +1,6 @@
-import { DonorList, donorListSchema } from "../interfaces/Donor";
+import { Donor, DonorList, donorListSchema, donorSchema } from "../interfaces/Donor";
 
-const apiUrl = "http://localhost:5000/api";
+const apiUrl = "http://localhost:8000/api";
 
 export const getDonors = async (): Promise<DonorList> => {
   const response = await fetch(`${apiUrl}/donors`);
@@ -14,8 +14,23 @@ export const getDonors = async (): Promise<DonorList> => {
   return parsedData;
 }
 
+export const getSingleDonor = async (donorId: number): Promise<Donor> => {
+  const response = await fetch(`${apiUrl}/donors/${donorId}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const parsedData = donorSchema.parse(data);
+
+  return parsedData;
+}
+
+
+
 export const sendMessages = async (
-  selectedUserIds: number[]
+  selectedUserIds: number[],
+  bloodGroup: string
 ): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/sendMessages`, {
@@ -23,7 +38,7 @@ export const sendMessages = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ selectedUserIds }),
+      body: JSON.stringify({ selectedUserIds, bloodGroup }),
     });
 
     if (response.ok) {
@@ -34,6 +49,28 @@ export const sendMessages = async (
     }
   } catch (error) {
     console.error("Error sending messages:", error);
+    throw error;
+  }
+};
+
+export const updateDonor = async (updatedDonor: Donor): Promise<void> => {
+  try {
+    const response = await fetch(`${apiUrl}/donors/${updatedDonor.userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedDonor),
+    });
+
+    if (response.ok) {
+      console.log("Donor updated successfully!");
+    } else {
+      console.error("Failed to update donor:", await response.text());
+      throw new Error(await response.text());
+    }
+  } catch (error) {
+    console.error("Error updating donor:", error);
     throw error;
   }
 };

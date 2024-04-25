@@ -24,12 +24,12 @@ const handleContactsCommand = async (chatId) => {
   await bot.sendLocation(chatId, 49.22877875159059, 28.450781729447773);
 };
 
-const handleSendMessage = async (selectedUserIds) => {
+const handleSendMessage = async (selectedUserIds, bloodGroup) => {
   try {
     console.log("Selected User IDs:", selectedUserIds);
-
+    
     const message =
-      "'Вінницький обласний центр служби крові' потребує донора крові А+. Очікуємо Вас!";
+      "'Вінницький обласний центр служби крові' потребує донора крові: " + bloodGroup + ". Очікуємо Вас!";
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 

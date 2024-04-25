@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "../store";
 
-import { DonorList } from "../../interfaces/Donor";
+import { Donor, DonorList } from "../../interfaces/Donor";
 import { getDonorsThunk } from "../thunk/donors";
 
 export interface DonorsState {
