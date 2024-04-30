@@ -1,39 +1,49 @@
-const bot = require("./bot");
+const bot = require('./bot');
 const {
   handleContactsCommand,
   handleInfoCommand,
   handleRegisterCommand,
   handleStartCommand,
-} = require("./handleFunctions.js");
+} = require('./handleFunctions.js');
 
-const { donorCommands } = require("./utils.js");
-const server = require("./server.js")
+const { donorCommands } = require('./utils.js');
+const server = require('./server.js');
 
 const start = async () => {
   server.listen(8000, () => console.log(`Server running on port 8000`));
 
   bot.setMyCommands(donorCommands);
-  bot.on("message", async (msg) => {
-
-    const text = msg.text;
-    const chatId = msg.chat.id;
+  bot.on('message', async (message) => {
+    const text = message.text;
+    const chatId = message.chat.id;
 
     try {
-      if (text === "/start") {
-        handleStartCommand(chatId);
-      } else if (text === "/info") {
-        handleInfoCommand(chatId);
-      } else if (text === "/contacts") {
-        await handleContactsCommand(chatId);
+      switch (text) {
+        case '/start': {
+          handleStartCommand(chatId);
+
+          break;
+        }
+        case '/info': {
+          handleInfoCommand(chatId);
+
+          break;
+        }
+        case '/contacts': {
+          await handleContactsCommand(chatId);
+
+          break;
+        }
+        // No default
       }
       //add object key : command
       //not expected text
-      if (text === "/registration") {
-        await handleRegisterCommand(msg, chatId);
+      if (text === '/registration') {
+        await handleRegisterCommand(message, chatId);
       }
-    } catch (e) {
-      console.error("Error during registration:", e);
-      return bot.sendMessage(chatId, "Щось пішло не так!)");
+    } catch (error) {
+      console.error('Error during registration:', error);
+      return bot.sendMessage(chatId, 'Щось пішло не так!)');
     }
   });
 };

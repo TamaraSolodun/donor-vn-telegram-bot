@@ -1,26 +1,43 @@
-import { EnhancedTableToolbar, EnhancedTableHead } from "../components/EnhancedTable";
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import Stack from '@mui/material/Stack';
-import useDonorsBoard from "../hooks/useDonorsBoard";
-import SendDialogs from "../components/SendDialogs";
-import Container from '@mui/material/Container';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
-import { StyledContainer } from "../styles/App.styled";
+
+import {
+  EnhancedTableHead,
+  EnhancedTableToolbar,
+} from '../components/EnhancedTable';
+import SendDialogs from '../components/SendDialogs';
+import useDonorsBoard from '../hooks/useDonorsBoard';
+
+import { StyledContainer } from '../styles/App.styled';
 
 export default function DonorsBoard() {
-
-  const { handleClick, handleSendMessage, dense, order, orderBy, donors, selected, handleSelectAllClick, handleRequestSort, isSelected, emptyRows, visibleRows, handleEdit } = useDonorsBoard();
+  const {
+    handleClick,
+    handleSendMessage,
+    dense,
+    order,
+    orderBy,
+    donors,
+    selected,
+    handleSelectAllClick,
+    handleRequestSort,
+    isSelected,
+    emptyRows,
+    visibleRows,
+    handleEdit,
+  } = useDonorsBoard();
   return (
     <Container maxWidth="lg">
-
       <Box sx={{ width: '100%' }}>
         <StyledContainer sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
@@ -39,53 +56,58 @@ export default function DonorsBoard() {
                 rowCount={donors.length}
               />
               <TableBody>
-                {visibleRows && visibleRows.map((donor, index) => {
-                  const isItemSelected = isSelected(donor.userId);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                {visibleRows &&
+                  visibleRows.map((donor, index) => {
+                    const isItemSelected = isSelected(donor.userId);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, donor.userId)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={donor.userId}
-                      selected={isItemSelected}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="donor"
-                        padding="none"
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, donor.userId)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={donor.userId}
+                        selected={isItemSelected}
+                        sx={{ cursor: 'pointer' }}
                       >
-                        {donor.userId}
-                      </TableCell>
-                      <TableCell align="left">{donor.firstName}</TableCell>
-                      <TableCell align="left">{donor.surname}</TableCell>
-                      <TableCell align="left">{donor.sex}</TableCell>
-                      <TableCell align="left">{donor.height}</TableCell>
-                      <TableCell align="left">{donor.weight}</TableCell>
-                      <TableCell align="left">{donor.bloodType}</TableCell>
-                      <TableCell align="left">{donor.rhesusFactor}</TableCell>
-                      <TableCell align="left">{donor.city}</TableCell>
-                      <TableCell align="left">
-                        <button aria-label="Example" onClick={() => handleEdit(donor.userId)}>
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </button></TableCell>
-                    </TableRow>
-                  );
-                })}
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              'aria-labelledby': labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="donor"
+                          padding="none"
+                        >
+                          {donor.userId}
+                        </TableCell>
+                        <TableCell align="left">{donor.firstName}</TableCell>
+                        <TableCell align="left">{donor.surname}</TableCell>
+                        <TableCell align="left">{donor.sex}</TableCell>
+                        <TableCell align="left">{donor.height}</TableCell>
+                        <TableCell align="left">{donor.weight}</TableCell>
+                        <TableCell align="left">{donor.bloodType}</TableCell>
+                        <TableCell align="left">{donor.rhesusFactor}</TableCell>
+                        <TableCell align="left">{donor.city}</TableCell>
+                        <TableCell align="left">
+                          <button
+                            aria-label="Example"
+                            onClick={() => handleEdit(donor.userId)}
+                          >
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 {emptyRows > 0 && (
                   <TableRow
                     style={{
@@ -103,10 +125,7 @@ export default function DonorsBoard() {
         <Stack spacing={5} direction="row">
           <SendDialogs handleSendMessage={handleSendMessage} />
         </Stack>
-
       </Box>
     </Container>
   );
-};
-
-
+}

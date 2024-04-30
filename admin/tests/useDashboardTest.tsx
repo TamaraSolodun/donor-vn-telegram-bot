@@ -1,28 +1,29 @@
-import { afterEach, describe, expect, it, jest } from "@jest/globals";
-import useDashboard from "../src/hooks/useDashboard";
-import useDonorsBoard from "../src/hooks/useDonorsBoard";
-import { renderHook } from "@testing-library/react-hooks";
-import TestWrapper from "./TestWrapper";
-import ButtonWrapperTest from "./ButtonWrapperTest";
-import { render } from "@testing-library/react";
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
+import { render } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 
-import { getDonors, sendMessages } from "../src/services/donorsService";
-jest.mock("../src/services/donorsService");
+import useDashboard from '../src/hooks/useDashboard';
+import useDonorsBoard from '../src/hooks/useDonorsBoard';
+import { getDonors, sendMessages } from '../src/services/donorsService';
+
+import ButtonWrapperTest from './ButtonWrapperTest';
+import TestWrapper from './TestWrapper';
+jest.mock('../src/services/donorsService');
 const getDonorsMock = getDonors as jest.Mock<typeof getDonors>;
 const sendMessagesMock = sendMessages as jest.Mock<typeof sendMessages>;
 
-describe("useDashboard hook", () => {
+describe('useDashboard hook', () => {
   afterEach(() => {
     getDonorsMock.mockReset();
   });
-  it("fetches donors on mount and updates state", async () => {
+  it('fetches donors on mount and updates state', async () => {
     const mockDonors = [
       {
         userId: 1,
-        username: "Toma",
-        phoneNumber: "+380963991209",
-        firstName: "Toma",
-        surname: "Solodun",
+        username: 'Toma',
+        phoneNumber: '+380963991209',
+        firstName: 'Toma',
+        surname: 'Solodun',
         dateOfBirth: null,
         sex: null,
         height: null,
@@ -33,10 +34,10 @@ describe("useDashboard hook", () => {
       },
       {
         userId: 2,
-        username: "Nata",
-        phoneNumber: "+380963991209",
-        firstName: "Nata",
-        surname: "Solodun",
+        username: 'Nata',
+        phoneNumber: '+380963991209',
+        firstName: 'Nata',
+        surname: 'Solodun',
         dateOfBirth: null,
         sex: null,
         height: null,
@@ -66,8 +67,8 @@ describe("useDashboard hook", () => {
     expect(result.current.error).toBeUndefined();
   });
 
-  it("handles API errors", async () => {
-    const mockError = new Error("API request failed");
+  it('handles API errors', async () => {
+    const mockError = new Error('API request failed');
     getDonorsMock.mockRejectedValue(mockError);
     const { result, waitForNextUpdate } = renderHook(() => useDashboard(), {
       wrapper: TestWrapper,
@@ -83,14 +84,14 @@ describe("useDashboard hook", () => {
     expect(result.current.error).toEqual(mockError.message);
   });
 
-  it("fetches donors, click send button", async () => {
+  it('fetches donors, click send button', async () => {
     const mockDonors = [
       {
         userId: 1,
-        username: "Toma",
-        phoneNumber: "+380963991209",
-        firstName: "Toma",
-        surname: "Solodun",
+        username: 'Toma',
+        phoneNumber: '+380963991209',
+        firstName: 'Toma',
+        surname: 'Solodun',
         dateOfBirth: null,
         isSelected: false,
         sex: null,
@@ -102,10 +103,10 @@ describe("useDashboard hook", () => {
       },
       {
         userId: 2,
-        username: "Nata",
-        phoneNumber: "+380963991209",
-        firstName: "Nata",
-        surname: "Solodun",
+        username: 'Nata',
+        phoneNumber: '+380963991209',
+        firstName: 'Nata',
+        surname: 'Solodun',
         dateOfBirth: null,
         isSelected: false,
         sex: null,
@@ -134,21 +135,20 @@ describe("useDashboard hook", () => {
     expect(result.current.error).toBeUndefined();
 
     const tamaraDonor = result.current.donors.find(
-      (donor) => donor.username === "Toma"
+      (donor) => donor.username === 'Toma',
     );
     console.log(tamaraDonor);
     expect(tamaraDonor).toBeDefined();
 
-
     const { getByText } = render(<ButtonWrapperTest label="Send message" />);
-    const buttonElement = getByText("Send message");
+    const buttonElement = getByText('Send message');
     expect(buttonElement).toBeDefined();
 
     const { result: donorsBoardResult } = renderHook(() =>
       useDonorsBoard({
         data: mockDonors,
         selectedIds: [],
-      })
+      }),
     );
 
     const { handleSendMessage } = donorsBoardResult.current;

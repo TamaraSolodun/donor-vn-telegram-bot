@@ -1,9 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from "../store";
-
-import { Donor, DonorList } from "../../interfaces/Donor";
-import { getDonorsThunk } from "../thunk/donors";
+import { Donor, DonorList } from '../../interfaces/Donor';
+import type { RootState } from '../store';
+import { getDonorsThunk } from '../thunk/donors';
 
 export interface DonorsState {
   loading: boolean;
@@ -17,7 +16,7 @@ const initialState: DonorsState = {
 };
 
 export const DonorsSlice = createSlice({
-  name: "donors",
+  name: 'donors',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

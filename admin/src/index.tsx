@@ -1,11 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { App } from "./App";
-import AppAppBar from "./components/AppBar";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+import AppAppBar from './components/AppBar';
+import { App } from './App';
 
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
+ReactDOM.createRoot(document.querySelector('#root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
 );

@@ -1,13 +1,11 @@
-import {
-  TextField,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { Donor } from "../interfaces/Donor";
+import { TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { getSingleDonor } from "../services/donorsService";
-import { useParams } from "react-router-dom";
-import { StyledContainer, StyledBox } from "../styles/App.styled";
+import { Donor } from '../interfaces/Donor';
+import { getSingleDonor } from '../services/donorsService';
 
+import { StyledBox, StyledContainer } from '../styles/App.styled';
 
 export default function SingleDonor() {
   const { userId } = useParams();
@@ -16,7 +14,7 @@ export default function SingleDonor() {
   useEffect(() => {
     const fetchDonor = async () => {
       try {
-        console.log(typeof userId)
+        console.log(typeof userId);
         const fetchedDonor: Donor = await getSingleDonor(Number(userId));
         setDonor(fetchedDonor);
         console.log(fetchedDonor);
@@ -33,19 +31,20 @@ export default function SingleDonor() {
     <StyledContainer maxWidth="lg">
       <StyledBox>
         <h1>Donor Details {donor?.userId}</h1>
-        {donor && Object.keys(donor).map((key) => (
-          <TextField
-            key={key}
-            label={key}
-            value={donor[key as keyof typeof donor]}
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        ))}
+        {donor &&
+          Object.keys(donor).map((key) => (
+            <TextField
+              key={key}
+              label={key}
+              value={donor[key as keyof typeof donor]}
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          ))}
       </StyledBox>
     </StyledContainer>
   );

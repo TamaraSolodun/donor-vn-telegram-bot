@@ -1,16 +1,16 @@
-const bot = require("./bot");
+const bot = require('./bot');
 
 const receiveTextFromBot = new Promise((resolve) => {
-  bot.once("text", (text) => resolve(text));
+  bot.once('text', (text) => resolve(text));
 });
 
 const donorCommands = [
-  { command: "/start", description: "Початкове привітання" },
-  { command: "/info", description: "Інформація про Вінницький центр крові" },
+  { command: '/start', description: 'Початкове привітання' },
+  { command: '/info', description: 'Інформація про Вінницький центр крові' },
   {
-    command: "/contacts",
-    description: "Контакти і місцерозташування центру",
+    command: '/contacts',
+    description: 'Контакти і місцерозташування центру',
   },
-  { command: "/registration", description: "Зареєструватись" },
+  { command: '/registration', description: 'Зареєструватись' },
 ];
 module.exports = { donorCommands, receiveTextFromBot };

@@ -1,9 +1,10 @@
-import { Card, CardHeader } from "@mui/material";
-import useDashboard from "../hooks/useDashboard";
-import { Donor } from "../interfaces/Donor";
-import ErrorAlert from "../components/ErrorAlert";
+import { Card, CardHeader } from '@mui/material';
 
-export default function Dashboard(){
+import ErrorAlert from '../components/ErrorAlert';
+import useDashboard from '../hooks/useDashboard';
+import { Donor } from '../interfaces/Donor';
+
+export default function Dashboard() {
   const { donors, loading, error } = useDashboard();
 
   return (
@@ -23,5 +24,4 @@ export default function Dashboard(){
       </div>
     </Card>
   );
-};
-
+}

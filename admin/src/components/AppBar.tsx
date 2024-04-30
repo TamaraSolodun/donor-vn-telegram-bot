@@ -1,15 +1,16 @@
-import * as React from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
 import { PaletteMode } from '@mui/material';
-import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+
 import ToggleColorMode from './ToggleColorMode';
 
 const logoStyle = {
@@ -193,7 +194,10 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       flexGrow: 1,
                     }}
                   >
-                    <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+                    <ToggleColorMode
+                      mode={mode}
+                      toggleColorMode={toggleColorMode}
+                    />
                   </Box>
                   <MenuItem onClick={() => scrollToSection('features')}>
                     Features
@@ -207,7 +211,9 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   <MenuItem onClick={() => scrollToSection('pricing')}>
                     Pricing
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
+                  <MenuItem onClick={() => scrollToSection('faq')}>
+                    FAQ
+                  </MenuItem>
                   <Divider />
                   <MenuItem>
                     <Button

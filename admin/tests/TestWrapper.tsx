@@ -1,10 +1,10 @@
-import { Provider } from "react-redux";
-import { ReactNode } from "react";
-import { configureStore } from "@reduxjs/toolkit";
-//import logger from "redux-logger";
-import donorsReducer from "../src/store/donor/DonorSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
 
-import { QueryClient, QueryClientProvider } from "react-query";
+//import logger from "redux-logger";
+import donorsReducer from '../src/store/donor/DonorSlice';
 export default function TestWrapper({ children }: { children: ReactNode }) {
   const store = configureStore({
     reducer: {
@@ -15,8 +15,8 @@ export default function TestWrapper({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
 
   return (
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>{children}</Provider>
-      </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>{children}</Provider>
+    </QueryClientProvider>
   );
 }
