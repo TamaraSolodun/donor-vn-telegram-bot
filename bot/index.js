@@ -49,3 +49,6 @@ const start = async () => {
 };
 
 start();
+
+/* TO DO : tests for bot part*/ 
+/* TO DO : For secrets use dotenv */

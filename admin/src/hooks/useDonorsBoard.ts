@@ -103,7 +103,7 @@ const useDonorsBoard = () => {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, donors],
   );
 
   const handleSendMessage = async (bloodGroup: string) => {
