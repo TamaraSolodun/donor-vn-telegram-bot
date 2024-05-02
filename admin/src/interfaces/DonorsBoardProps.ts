@@ -1,6 +1,6 @@
-import { Donor } from "./Donor";
+import { Donor } from './Donor';
 
-export interface DonorsBoardProps{
-    data: Donor[]; 
-    selectedIds: number[];
-  }
+export interface DonorsBoardProps {
+  data: Donor[];
+  selectedIds: number[];
+}

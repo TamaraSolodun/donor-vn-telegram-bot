@@ -1,5 +1,5 @@
-const TelegramApi = require("node-telegram-bot-api");
-const config = require("./config");
+const TelegramApi = require('node-telegram-bot-api');
+const config = require('./config');
 
 const bot = new TelegramApi(config.token, { polling: true });
 

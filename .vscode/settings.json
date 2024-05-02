@@ -1,11 +1,11 @@
 {
-    "eslint.format.enable": true,
-    "eslint.run": "onSave",
-    "editor.formatOnSave": false,
-    "eslint.validate": ["typescript", "typescriptreact", "javascript"],
-    "editor.codeActionsOnSave": [
-      "source.fixAll.eslint"
-    ],
-    "files.trimTrailingWhitespace": false,
-    "editor.trimAutoWhitespace": false,
+  "eslint.format.enable": true,
+  "eslint.run": "onSave",
+  "editor.formatOnSave": false,
+  "eslint.validate": ["javascript", "json", "typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": [
+    "source.fixAll.eslint"
+  ],
+  "files.trimTrailingWhitespace": false,
+  "editor.trimAutoWhitespace": false,
 }

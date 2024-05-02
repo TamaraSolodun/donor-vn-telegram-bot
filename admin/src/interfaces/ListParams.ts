@@ -1,4 +1,4 @@
-export interface ListParams {
+export interface ListParameters {
   pagination: {
     page: number;
     perPage: number;

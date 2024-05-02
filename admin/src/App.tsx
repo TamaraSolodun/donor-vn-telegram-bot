@@ -1,12 +1,12 @@
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from './pages/Dashboard';
+import DonorsBoard from './pages/DonorsBoard';
+import SingleDonor from './pages/SingleDonor';
+import { store } from './store/store';
 
-import { Provider } from "react-redux";
-import { store } from "./store/store";
-import Dashboard from "./pages/Dashboard";
-import DonorsBoard from "./pages/DonorsBoard";
-import SingleDonor from "./pages/SingleDonor";
-import { StyledWrapper } from "./styles/App.styled";
+import { StyledWrapper } from './styles/App.styled';
 
 export const App = () => (
   <StyledWrapper>
@@ -21,7 +21,3 @@ export const App = () => (
     </BrowserRouter>
   </StyledWrapper>
 );
- 
-/* TODO npm i react-i18next */
-
-/* TODO add text to json */

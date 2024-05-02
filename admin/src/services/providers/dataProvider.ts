@@ -1,16 +1,17 @@
-import axios from "axios";
-import { stringify } from "query-string";
-import { ListParams } from "../../interfaces/ListParams";
-import { DataProvider } from "react-admin";
-import { Donor } from "../../interfaces/Donor";
+import axios from 'axios';
+import { stringify } from 'query-string';
+import { DataProvider } from 'react-admin';
 
-const apiUrl = "http://localhost:5000/api";
+import { Donor } from '../../interfaces/Donor';
+import { ListParameters } from '../../interfaces/ListParams';
+
+const apiUrl = 'http://localhost:5000/api';
 
 export const customDataProvider: Partial<DataProvider> = {
-  getList: async (resource: string, params: ListParams) => {
-    const { page, perPage } = params.pagination;
+  getList: async (resource: string, parameters: ListParameters) => {
+    const { page, perPage } = parameters.pagination;
     const query = {
-      ...params.filter,
+      ...parameters.filter,
       _start: (page - 1) * perPage,
       _end: page * perPage,
     };
@@ -19,7 +20,8 @@ export const customDataProvider: Partial<DataProvider> = {
 
     try {
       const response = await axios.get(url);
-      const totalCount = parseInt(response.headers["x-total-count"], 10);
+      // TODO: Use zod here
+      const totalCount = Number.parseInt(response.headers['x-total-count'], 10);
       const dataWithIds = response.data.map((item: Donor, index: number) => ({
         ...item,
         id: `${index + 1}`,
@@ -31,7 +33,7 @@ export const customDataProvider: Partial<DataProvider> = {
       };
     } catch (error) {
       console.error(error);
-      throw new Error("Error fetching data");
+      throw new Error('Error fetching data');
     }
   },
 };

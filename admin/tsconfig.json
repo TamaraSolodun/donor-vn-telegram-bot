@@ -29,5 +29,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "vite.config.ts", "jest-setup.ts"]
 }

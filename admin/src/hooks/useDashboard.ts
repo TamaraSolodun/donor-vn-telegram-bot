@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { DonorList } from "../interfaces/Donor";
-import { useAppDispatch, useAppSelector } from "../store/store";
-import { donorsSelector } from "../store/donor/DonorSlice";
-import { getDonorsThunk } from "../store/thunk/donors";
+import { useEffect, useState } from 'react';
+
+import { DonorList } from '../interfaces/Donor';
+import { donorsSelector } from '../store/donor/DonorSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { getDonorsThunk } from '../store/thunk/donors';
 
 const useDashboard = () => {
   const dispatch = useAppDispatch();

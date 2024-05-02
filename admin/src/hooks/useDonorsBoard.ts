@@ -1,10 +1,11 @@
-import { useState, useEffect, ChangeEvent, MouseEvent, useMemo } from "react";
-import { Donor, DonorList } from "../interfaces/Donor";
-import { useAppDispatch, useAppSelector } from "../store/store";
-import { getDonorsThunk } from "../store/thunk/donors";
-import { Order, stableSort, getComparator } from "../components/EnhancedTable";
-import { sendMessages } from "../services/donorsService";
-import { useNavigate } from "react-router-dom";
+import { ChangeEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { getComparator, Order, stableSort } from '../components/EnhancedTable';
+import { Donor, DonorList } from '../interfaces/Donor';
+import { sendMessages } from '../services/donorsService';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { getDonorsThunk } from '../store/thunk/donors';
 
 const useDonorsBoard = () => {
   const dispatch = useAppDispatch();
@@ -17,9 +18,8 @@ const useDonorsBoard = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const donorsData = useAppSelector(state => state.donors.donors);
+  const donorsData = useAppSelector((state) => state.donors.donors);
   const [donors, setDonors] = useState<DonorList>([]);
-
 
   useEffect(() => {
     dispatch(getDonorsThunk());
@@ -30,9 +30,8 @@ const useDonorsBoard = () => {
   }, [donorsData]);
 
   useEffect(() => {
-    console.log("Donors Data:", donorsData); 
+    console.log('Donors Data:', donorsData);
   }, [donorsData]);
-
 
   const handleRequestSort = (
     event: MouseEvent<unknown>,
@@ -56,32 +55,44 @@ const useDonorsBoard = () => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: number[] = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
+    switch (selectedIndex) {
+      case -1: {
+        newSelected = newSelected.concat(selected, id);
+
+        break;
+      }
+      case 0: {
+        newSelected = newSelected.concat(selected.slice(1));
+
+        break;
+      }
+      case selected.length - 1: {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+
+        break;
+      }
+      default: {
+        if (selectedIndex > 0) {
+          newSelected = newSelected.concat(
+            selected.slice(0, selectedIndex),
+            selected.slice(selectedIndex + 1),
+          );
+        }
+      }
     }
     setSelected(newSelected);
-
   };
   const handleEdit = (id: number) => {
     //const selectedIndex = selected.indexOf(id);
-    console.log(id)
-    navigate(`/donors-board/${id}`)
+    console.log(id);
+    navigate(`/donors-board/${id}`);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+  const isSelected = (id: number) => selected.includes(id);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - donors.length) : 0;
@@ -92,19 +103,33 @@ const useDonorsBoard = () => {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage, donors],
+    [order, orderBy, page, rowsPerPage],
   );
 
   const handleSendMessage = async (bloodGroup: string) => {
     try {
       sendMessages(selected, bloodGroup);
     } catch (error) {
-      console.error("Error handling send messages:", error);
+      console.error('Error handling send messages:', error);
     }
   };
 
-
-  return { handleClick, dense, order, orderBy, donors, selected, handleRequestSort, handleSelectAllClick, handleChangePage, isSelected, emptyRows, visibleRows, handleSendMessage, handleEdit }
+  return {
+    handleClick,
+    dense,
+    order,
+    orderBy,
+    donors,
+    selected,
+    handleRequestSort,
+    handleSelectAllClick,
+    handleChangePage,
+    isSelected,
+    emptyRows,
+    visibleRows,
+    handleSendMessage,
+    handleEdit,
+  };
 };
 
 export default useDonorsBoard;
