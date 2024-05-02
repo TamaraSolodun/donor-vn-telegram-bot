@@ -1,6 +1,3 @@
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,24 +6,32 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-import useDonorsBoard from '../hooks/useDonorsBoard';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
+import { StyledBox, StyledButton, StyledDialog } from '../styles/App.styled';
+import Dialog from '@mui/material/Dialog';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
-    },
-}));
+
 interface SendDialogsProps {
-    handleSendMessage: () => Promise<void>
+    handleSendMessage: (bloodGroup: string) => Promise<void>
 }
-export default function SendDialogs({handleSendMessage}: SendDialogsProps) {
+export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
     const [open, setOpen] = useState(false);
+
+    const [bloodGroup, setBloodGroup] = useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setBloodGroup(event.target.value as string);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
+        // setTimeout(() => {
+        //     setOpen(false);
+        // }, 5000)
     };
     const handleClose = () => {
         setOpen(false);
@@ -34,16 +39,16 @@ export default function SendDialogs({handleSendMessage}: SendDialogsProps) {
 
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen} endIcon={<SendIcon />}>
+            <StyledButton variant="outlined" onClick={handleClickOpen} endIcon={<SendIcon />}>
                 Send Message
-            </Button>
-            <BootstrapDialog
+            </StyledButton>
+            <Dialog
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Modal title
+                    Send Message
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -57,18 +62,37 @@ export default function SendDialogs({handleSendMessage}: SendDialogsProps) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+                    <Box sx={{ minWidth: 120 }}>
+                        <Typography gutterBottom>
+                        &quot Вінницький обласний центр служби крові &quot потребує донора крові:  </Typography>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Blood Group</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={bloodGroup}
+                                label="BloodGroup"
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={'A+'}>A+</MenuItem>
+                                <MenuItem value={"A-"}>A-</MenuItem>
+                                <MenuItem value={"B+"}>B+</MenuItem>
+                                <MenuItem value={"B-"}>B-</MenuItem>
+                                <MenuItem value={"AB+"}>AB+</MenuItem>
+                                <MenuItem value={"AB-"}>AB-</MenuItem>
+                                <MenuItem value={"O+"}>O+</MenuItem>
+                                <MenuItem value={"O-"}>O-</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <Typography gutterBottom>Очікуємо Вас!</Typography>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleSendMessage}>
-                        Save changes
-                    </Button>
+                    <StyledButton autoFocus onClick={() => handleSendMessage(bloodGroup)}>
+                        Confirm sending
+                    </StyledButton>
                 </DialogActions>
-            </BootstrapDialog>
+            </Dialog>
         </>
     );
 }

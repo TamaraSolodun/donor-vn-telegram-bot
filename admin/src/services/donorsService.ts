@@ -1,6 +1,6 @@
 import { Donor, DonorList, donorListSchema, donorSchema } from "../interfaces/Donor";
 
-const apiUrl = "http://localhost:5000/api";
+const apiUrl = "http://localhost:8000/api";
 
 export const getDonors = async (): Promise<DonorList> => {
   const response = await fetch(`${apiUrl}/donors`);
@@ -16,7 +16,6 @@ export const getDonors = async (): Promise<DonorList> => {
 
 export const getSingleDonor = async (donorId: number): Promise<Donor> => {
   const response = await fetch(`${apiUrl}/donors/${donorId}`);
-
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
@@ -30,7 +29,8 @@ export const getSingleDonor = async (donorId: number): Promise<Donor> => {
 
 
 export const sendMessages = async (
-  selectedUserIds: number[]
+  selectedUserIds: number[],
+  bloodGroup: string
 ): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/sendMessages`, {
@@ -38,7 +38,7 @@ export const sendMessages = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ selectedUserIds }),
+      body: JSON.stringify({ selectedUserIds, bloodGroup }),
     });
 
     if (response.ok) {

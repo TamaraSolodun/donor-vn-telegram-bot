@@ -10,7 +10,7 @@ const { donorCommands } = require("./utils.js");
 const server = require("./server.js")
 
 const start = async () => {
-  server.listen(5000, () => console.log(`Server running on port 5000`));
+  server.listen(8000, () => console.log(`Server running on port 8000`));
 
   bot.setMyCommands(donorCommands);
   bot.on("message", async (msg) => {

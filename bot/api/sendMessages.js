@@ -2,9 +2,9 @@ const { handleSendMessage } = require("../handleFunctions");
 
 const sendMessages = async (req, res) => {
   try {
-    const { selectedUserIds } = req.body;
+    const { selectedUserIds, bloodGroup } = req.body;
 
-    await handleSendMessage(selectedUserIds);
+    await handleSendMessage(selectedUserIds, bloodGroup);
 
     res.status(200).send("Messages sent successfully!");
   } catch (error) {

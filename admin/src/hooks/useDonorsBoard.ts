@@ -1,6 +1,5 @@
 import { useState, useEffect, ChangeEvent, MouseEvent, useMemo } from "react";
 import { Donor, DonorList } from "../interfaces/Donor";
-import { donorsSelector } from "../store/donor/DonorSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getDonorsThunk } from "../store/thunk/donors";
 import { Order, stableSort, getComparator } from "../components/EnhancedTable";
@@ -9,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const useDonorsBoard = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Donor>('userId');
   const [selected, setSelected] = useState<number[]>([]);
@@ -16,18 +17,22 @@ const useDonorsBoard = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const donorsData = useAppSelector(state => state.donors.donors);
   const [donors, setDonors] = useState<DonorList>([]);
-  const selectedDonors = useAppSelector(donorsSelector);
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getDonorsThunk());
   }, [dispatch]);
 
   useEffect(() => {
-    setDonors(selectedDonors.donors);
-  }, [selectedDonors]);
+    setDonors(donorsData);
+  }, [donorsData]);
+
+  useEffect(() => {
+    console.log("Donors Data:", donorsData); 
+  }, [donorsData]);
+
 
   const handleRequestSort = (
     event: MouseEvent<unknown>,
@@ -64,7 +69,12 @@ const useDonorsBoard = () => {
       );
     }
     setSelected(newSelected);
-    navigate(`/donors-board/${newSelected}`)
+
+  };
+  const handleEdit = (id: number) => {
+    //const selectedIndex = selected.indexOf(id);
+    console.log(id)
+    navigate(`/donors-board/${id}`)
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -82,20 +92,19 @@ const useDonorsBoard = () => {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, donors],
   );
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (bloodGroup: string) => {
     try {
-      console.log(selected)
-      sendMessages(selected);
+      sendMessages(selected, bloodGroup);
     } catch (error) {
       console.error("Error handling send messages:", error);
     }
   };
 
 
-  return { handleClick, dense, order, orderBy, donors, selected, handleRequestSort, handleSelectAllClick, handleChangePage, isSelected, emptyRows, visibleRows, handleSendMessage }
+  return { handleClick, dense, order, orderBy, donors, selected, handleRequestSort, handleSelectAllClick, handleChangePage, isSelected, emptyRows, visibleRows, handleSendMessage, handleEdit }
 };
 
 export default useDonorsBoard;

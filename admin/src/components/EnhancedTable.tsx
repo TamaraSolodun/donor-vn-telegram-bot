@@ -53,7 +53,7 @@ export function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => n
 }
 
 export interface HeadCell {
-    id: keyof Donor;
+    id: keyof Donor; 
     label: string;
     numeric: boolean;
 }
@@ -157,6 +157,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell padding="checkbox"></TableCell>
             </TableRow>
         </TableHead>
     );
@@ -196,7 +197,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                     id="tableTitle"
                     component="div"
                 >
-                    Nutrition
+                    Donors
                 </Typography>
             )}
             {numSelected > 0 ? (

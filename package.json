@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.6.4",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
@@ -19,8 +21,7 @@
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.1",
     "node-telegram-bot-api": "^0.63.0",
-    "nodemon": "^2.0.7"
-  },
-  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "styled-components": "^6.1.8"
   }
 }
