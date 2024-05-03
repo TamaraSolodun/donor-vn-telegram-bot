@@ -59,7 +59,7 @@
         "simple-import-sort/exports": "error",
         "unicorn/filename-case": [
           "warn",
-          { "cases": { "kebabCase": true, "pascalCase": true } }
+          { "cases": { "camelCase": true, "pascalCase": true } }
         ],
         "unicorn/no-null": "off",
         "unicorn/prevent-abbreviations": [
@@ -95,7 +95,7 @@
       "rules": {
         "unicorn/filename-case": [
           "warn",
-          { "cases": { "kebabCase": true, "pascalCase": true } }
+          { "cases": { "camelCase": true, "pascalCase": true } }
         ],
         "unicorn/no-null": "off",
         "unicorn/prefer-module": "off"

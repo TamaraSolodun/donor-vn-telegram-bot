@@ -57,7 +57,7 @@ const useDonorsBoard = () => {
 
     switch (selectedIndex) {
       case -1: {
-        newSelected = newSelected.concat(selected, id);
+        newSelected = [...newSelected, ...selected, id];
 
         break;
       }
@@ -103,12 +103,12 @@ const useDonorsBoard = () => {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, donors],
   );
 
   const handleSendMessage = async (bloodGroup: string) => {
     try {
-      sendMessages(selected, bloodGroup);
+      await sendMessages(selected, bloodGroup);
     } catch (error) {
       console.error('Error handling send messages:', error);
     }

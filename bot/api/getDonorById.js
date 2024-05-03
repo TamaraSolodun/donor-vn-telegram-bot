@@ -1,17 +1,17 @@
 const Donor = require('../Models/Donor');
 
-const getDonorById = async (request, res) => {
+const getDonorById = async (request, response) => {
   const id = request.params.userId;
   console.log(typeof id);
   try {
     const donor = await Donor.findOne({ userId: Number(id) });
     if (!donor) {
-      return res.status(404).json({ message: 'Donor not found' });
+      return response.status(404).json({ message: 'Donor not found' });
     }
-    res.json(donor);
+    response.json(donor);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server Error');
+    response.status(500).send('Server Error');
   }
 };
 

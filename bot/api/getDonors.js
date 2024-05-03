@@ -1,13 +1,13 @@
 const Donor = require('../Models/Donor');
 
-const getDonors = async (request, res) => {
+const getDonors = async (request, response) => {
   try {
     const donors = await Donor.find();
-    res.json(donors);
+    response.json(donors);
     console.log(donors);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server Error');
+    response.status(500).send('Server Error');
   }
 };
 

@@ -15,7 +15,7 @@ const useDashboard = () => {
   const selectedDonors = useAppSelector(donorsSelector);
 
   useEffect(() => {
-    dispatch(getDonorsThunk());
+    void dispatch(getDonorsThunk());
   }, [dispatch]);
 
   useEffect(() => {

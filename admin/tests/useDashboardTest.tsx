@@ -6,7 +6,7 @@ import useDashboard from '../src/hooks/useDashboard';
 import useDonorsBoard from '../src/hooks/useDonorsBoard';
 import { getDonors, sendMessages } from '../src/services/donorsService';
 
-import ButtonWrapperTest from './ButtonWrapperTest';
+import ButtonWrapperTest from './ButtonWrapper.test';
 import TestWrapper from './TestWrapper';
 jest.mock('../src/services/donorsService');
 const getDonorsMock = getDonors as jest.Mock<typeof getDonors>;

@@ -1,15 +1,15 @@
 const { handleSendMessage } = require('../handleFunctions');
 
-const sendMessages = async (request, res) => {
+const sendMessages = async (request, response) => {
   try {
     const { selectedUserIds, bloodGroup } = request.body;
 
     await handleSendMessage(selectedUserIds, bloodGroup);
 
-    res.status(200).send('Messages sent successfully!');
+    response.status(200).send('Messages sent successfully!');
   } catch (error) {
     console.error('Error sending messages:', error);
-    res.status(500).send('Internal Server Error');
+    response.status(500).send('Internal Server Error');
   }
 };
 module.exports = { sendMessages };
