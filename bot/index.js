@@ -34,7 +34,9 @@ const start = async () => {
 
           break;
         }
-        // No default
+        default: {
+          handleInfoCommand(chatId);
+        }
       }
       //add object key : command
       //not expected text

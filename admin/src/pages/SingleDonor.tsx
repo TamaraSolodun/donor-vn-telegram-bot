@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { Donor } from '../interfaces/Donor';
 import { getSingleDonor } from '../services/donorsService';
+import textData from '../textData.json';
 
 import { StyledBox, StyledContainer } from '../styles/App.styled';
 
@@ -32,7 +33,9 @@ export default function SingleDonor() {
   return (
     <StyledContainer maxWidth="lg">
       <StyledBox>
-        <h1>Donor Details {donor?.userId}</h1>
+        <h1>
+          {textData.donor} {donor?.userId}
+        </h1>
         {donor &&
           Object.keys(donor).map((key) => (
             <TextField

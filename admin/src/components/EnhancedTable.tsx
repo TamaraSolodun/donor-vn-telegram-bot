@@ -15,6 +15,7 @@ import { visuallyHidden } from '@mui/utils';
 import { ChangeEvent, MouseEvent } from 'react';
 
 import { Donor } from '../interfaces/Donor';
+import textData from '../textData.json';
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -204,7 +205,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} {textData.selected}
         </Typography>
       ) : (
         <Typography
@@ -213,7 +214,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Donors
+          {textData.donors}
         </Typography>
       )}
       {numSelected > 0 ? (

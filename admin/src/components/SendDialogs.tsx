@@ -13,10 +13,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
+import textData from '../textData.json';
+
 import { StyledButton } from '../styles/App.styled';
 
 interface SendDialogsProps {
-  handleSendMessage: (bloodGroup: string) => Promise<void>;
+  handleSendMessage: (bloodGroup: string) => void;
 }
 export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
   const [open, setOpen] = useState(false);
@@ -44,7 +46,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         onClick={handleClickOpen}
         endIcon={<SendIcon />}
       >
-        Send Message
+        {textData.sendMessage}
       </StyledButton>
       <Dialog
         onClose={handleClose}
@@ -52,7 +54,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Send Message
+          {textData.sendMessage}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -67,11 +69,11 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         </IconButton>
         <DialogContent dividers>
           <Box sx={{ minWidth: 120 }}>
-            <Typography gutterBottom>
-              'Вінницький обласний центр служби крові' потребує донора крові:{' '}
-            </Typography>
+            <Typography gutterBottom>{textData.dialogMessage}</Typography>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Blood Group</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                {textData.bloodGroupLabel}
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -79,22 +81,22 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
                 label="BloodGroup"
                 onChange={handleChange}
               >
-                <MenuItem value={'A+'}>A+</MenuItem>
-                <MenuItem value={'A-'}>A-</MenuItem>
-                <MenuItem value={'B+'}>B+</MenuItem>
-                <MenuItem value={'B-'}>B-</MenuItem>
-                <MenuItem value={'AB+'}>AB+</MenuItem>
-                <MenuItem value={'AB-'}>AB-</MenuItem>
-                <MenuItem value={'O+'}>O+</MenuItem>
-                <MenuItem value={')-'}>O-</MenuItem>
+                <MenuItem value={textData.APlus}>{textData.APlus}</MenuItem>
+                <MenuItem value={textData.AMinus}>{textData.AMinus}</MenuItem>
+                <MenuItem value={textData.BPlus}>{textData.BPlus}</MenuItem>
+                <MenuItem value={textData.BMinus}>{textData.BMinus}</MenuItem>
+                <MenuItem value={textData.ABPlus}>{textData.ABPlus}</MenuItem>
+                <MenuItem value={textData.ABMinus}>{textData.ABMinus}</MenuItem>
+                <MenuItem value={textData.OPlus}>{textData.OPlus}</MenuItem>
+                <MenuItem value={textData.OMinus}>{textData.OMinus}</MenuItem>
               </Select>
             </FormControl>
-            <Typography gutterBottom>Очікуємо Вас!</Typography>
+            <Typography gutterBottom>{textData.messageWait}</Typography>
           </Box>
         </DialogContent>
         <DialogActions>
-          <StyledButton autoFocus onClick={() => handleSendMessage(bloodGroup)}>
-            Confirm sending
+          <StyledButton onClick={() => handleSendMessage(bloodGroup)}>
+            {textData.confirmSendMessage}
           </StyledButton>
         </DialogActions>
       </Dialog>

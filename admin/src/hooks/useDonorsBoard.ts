@@ -102,7 +102,7 @@ const useDonorsBoard = () => {
     [order, orderBy, page, rowsPerPage, donors],
   );
 
-  const handleSendMessage = async (bloodGroup: string) => {
+  const handleSendMessage = async (bloodGroup: string): Promise<void> => {
     try {
       await sendMessages(selected, bloodGroup);
     } catch (error) {
