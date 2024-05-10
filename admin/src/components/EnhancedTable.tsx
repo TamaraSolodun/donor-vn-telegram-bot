@@ -13,9 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
 import { ChangeEvent, MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { textData } from '../i18n/TextData';
 import { Donor } from '../interfaces/Donor';
-import textData from '../textData.json';
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -65,52 +66,51 @@ export interface HeadCell {
   label: string;
   numeric: boolean;
 }
-
 export const headCells: readonly HeadCell[] = [
   {
     id: 'userId',
     numeric: true,
-    label: 'ID',
+    label: textData.ua.id,
   },
   {
     id: 'firstName',
     numeric: false,
-    label: 'First name',
+    label: textData.ua.firstName,
   },
   {
     id: 'surname',
     numeric: false,
-    label: 'Surname',
+    label: textData.ua.surname,
   },
   {
     id: 'sex',
     numeric: false,
-    label: 'Sex',
+    label: textData.ua.sex,
   },
   {
     id: 'height',
     numeric: true,
-    label: 'Height',
+    label: textData.ua.height,
   },
   {
     id: 'weight',
     numeric: true,
-    label: 'Weight',
+    label: textData.ua.weight,
   },
   {
     id: 'bloodType',
     numeric: false,
-    label: 'BloodType',
+    label: textData.ua.bloodType,
   },
   {
     id: 'rhesusFactor',
     numeric: false,
-    label: 'Rhesus Factor',
+    label: textData.ua.rhesusFactor,
   },
   {
     id: 'city',
     numeric: false,
-    label: 'City',
+    label: textData.ua.city,
   },
 ];
 
@@ -136,7 +136,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     (property: keyof Donor) => (event: MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
-
+  const { t } = useTranslation();
   return (
     <TableHead>
       <TableRow>
@@ -162,7 +162,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              {t(headCell.label)}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -183,7 +183,7 @@ export interface EnhancedTableToolbarProps {
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
-
+  const { t } = useTranslation();
   return (
     <Toolbar
       sx={{
@@ -205,7 +205,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} {textData.selected}
+          {numSelected} {t(textData.ua.selected)}
         </Typography>
       ) : (
         <Typography
@@ -214,7 +214,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          {textData.donors}
+          {t(textData.ua.donors)}
         </Typography>
       )}
       {numSelected > 0 ? (

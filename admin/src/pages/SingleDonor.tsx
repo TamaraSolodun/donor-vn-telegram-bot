@@ -1,17 +1,18 @@
 import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import { textData } from '../i18n/TextData';
 import { Donor } from '../interfaces/Donor';
 import { getSingleDonor } from '../services/donorsService';
-import textData from '../textData.json';
 
 import { StyledBox, StyledContainer } from '../styles/App.styled';
 
 export default function SingleDonor() {
   const { userId } = useParams();
   const [donor, setDonor] = useState<Donor | undefined>();
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchDonor = async () => {
       try {
@@ -34,7 +35,7 @@ export default function SingleDonor() {
     <StyledContainer maxWidth="lg">
       <StyledBox>
         <h1>
-          {textData.donor} {donor?.userId}
+          {t(textData.ua.donor)} {donor?.userId}
         </h1>
         {donor &&
           Object.keys(donor).map((key) => (

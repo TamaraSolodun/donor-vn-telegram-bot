@@ -12,17 +12,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import textData from '../textData.json';
+import { textData } from '../i18n/TextData';
 
 import { StyledButton } from '../styles/App.styled';
 
 interface SendDialogsProps {
-  handleSendMessage: (bloodGroup: string) => void;
+  handleSendMessage: (bloodGroup: string) => Promise<void>;
 }
 export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
   const [open, setOpen] = useState(false);
-
+  const { t } = useTranslation();
   const [bloodGroup, setBloodGroup] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -31,9 +32,9 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
 
   const handleClickOpen = () => {
     setOpen(true);
-    // setTimeout(() => {
-    //     setOpen(false);
-    // }, 5000)
+    setTimeout(() => {
+      setOpen(false);
+    }, 5000);
   };
   const handleClose = () => {
     setOpen(false);
@@ -46,7 +47,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         onClick={handleClickOpen}
         endIcon={<SendIcon />}
       >
-        {textData.sendMessage}
+        {t(textData.ua.sendMessage)}
       </StyledButton>
       <Dialog
         onClose={handleClose}
@@ -54,7 +55,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          {textData.sendMessage}
+          {t(textData.ua.sendMessage)}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -69,10 +70,10 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         </IconButton>
         <DialogContent dividers>
           <Box sx={{ minWidth: 120 }}>
-            <Typography gutterBottom>{textData.dialogMessage}</Typography>
+            <Typography gutterBottom>{t(textData.ua.dialogMessage)}</Typography>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
-                {textData.bloodGroupLabel}
+                {t(textData.ua.bloodGroupLabel)}
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -81,22 +82,42 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
                 label="BloodGroup"
                 onChange={handleChange}
               >
-                <MenuItem value={textData.APlus}>{textData.APlus}</MenuItem>
-                <MenuItem value={textData.AMinus}>{textData.AMinus}</MenuItem>
-                <MenuItem value={textData.BPlus}>{textData.BPlus}</MenuItem>
-                <MenuItem value={textData.BMinus}>{textData.BMinus}</MenuItem>
-                <MenuItem value={textData.ABPlus}>{textData.ABPlus}</MenuItem>
-                <MenuItem value={textData.ABMinus}>{textData.ABMinus}</MenuItem>
-                <MenuItem value={textData.OPlus}>{textData.OPlus}</MenuItem>
-                <MenuItem value={textData.OMinus}>{textData.OMinus}</MenuItem>
+                <MenuItem value={t(textData.ua.APlus)}>
+                  {t(textData.ua.APlus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.AMinus)}>
+                  {t(textData.ua.AMinus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.BPlus)}>
+                  {t(textData.ua.BPlus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.BMinus)}>
+                  {t(textData.ua.BMinus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.ABPlus)}>
+                  {t(textData.ua.ABPlus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.ABMinus)}>
+                  {t(textData.ua.ABMinus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.OPlus)}>
+                  {t(textData.ua.OPlus)}
+                </MenuItem>
+                <MenuItem value={t(textData.ua.OMinus)}>
+                  {t(textData.ua.OMinus)}
+                </MenuItem>
               </Select>
             </FormControl>
-            <Typography gutterBottom>{textData.messageWait}</Typography>
+            <Typography gutterBottom>{t(textData.ua.messageWait)}</Typography>
           </Box>
         </DialogContent>
         <DialogActions>
-          <StyledButton onClick={() => handleSendMessage(bloodGroup)}>
-            {textData.confirmSendMessage}
+          <StyledButton
+            onClick={() => {
+              void handleSendMessage(bloodGroup);
+            }}
+          >
+            {t(textData.ua.confirmSendMessage)}
           </StyledButton>
         </DialogActions>
       </Dialog>

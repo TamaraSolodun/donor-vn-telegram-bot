@@ -122,7 +122,7 @@ export default function DonorsBoard() {
         </StyledContainer>
 
         <Stack spacing={5} direction="row">
-          <SendDialogs handleSendMessage={() => handleSendMessage} />
+          <SendDialogs handleSendMessage={handleSendMessage} />
         </Stack>
       </Box>
     </Container>

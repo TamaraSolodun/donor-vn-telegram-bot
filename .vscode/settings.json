@@ -2,7 +2,7 @@
   "eslint.format.enable": true,
   "eslint.run": "onSave",
   "editor.formatOnSave": false,
-  "eslint.validate": ["javascript", "json", "typescript", "typescriptreact"],
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "editor.codeActionsOnSave": [
     "source.fixAll.eslint"
   ],
