@@ -15,14 +15,14 @@ const useDonorsBoard = () => {
   const [orderBy, setOrderBy] = useState<keyof Donor>('userId');
   const [selected, setSelected] = useState<number[]>([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [dense] = useState(false);
+  const [rowsPerPage] = useState(5);
 
   const donorsData = useAppSelector((state) => state.donors.donors);
   const [donors, setDonors] = useState<DonorList>([]);
 
   useEffect(() => {
-    dispatch(getDonorsThunk());
+    void dispatch(getDonorsThunk());
   }, [dispatch]);
 
   useEffect(() => {
@@ -58,33 +58,29 @@ const useDonorsBoard = () => {
     switch (selectedIndex) {
       case -1: {
         newSelected = [...newSelected, ...selected, id];
-
         break;
       }
       case 0: {
-        newSelected = newSelected.concat(selected.slice(1));
-
+        newSelected = [...newSelected, ...selected.slice(1)];
         break;
       }
       case selected.length - 1: {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-
+        newSelected = [...newSelected, ...selected.slice(0, -1)];
         break;
       }
       default: {
         if (selectedIndex > 0) {
-          newSelected = newSelected.concat(
-            selected.slice(0, selectedIndex),
-            selected.slice(selectedIndex + 1),
-          );
+          newSelected = [
+            ...newSelected,
+            ...selected.slice(0, selectedIndex),
+            ...selected.slice(selectedIndex + 1),
+          ];
         }
       }
     }
     setSelected(newSelected);
   };
   const handleEdit = (id: number) => {
-    //const selectedIndex = selected.indexOf(id);
-    console.log(id);
     navigate(`/donors-board/${id}`);
   };
 

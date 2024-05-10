@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 export const StyledContainer = styled(Container)`
   max-width: 1000px;

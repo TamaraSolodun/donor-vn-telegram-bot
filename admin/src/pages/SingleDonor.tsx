@@ -22,8 +22,10 @@ export default function SingleDonor() {
         console.error('Error fetching donor:', error);
       }
     };
-    if (!isNaN(Number(userId))) {
-      fetchDonor();
+    if (!Number.isNaN(Number(userId))) {
+      fetchDonor().catch((error) =>
+        console.error('Error for handling promise:', error),
+      );
     }
   }, [userId]);
 

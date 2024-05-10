@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Donor, DonorList } from '../../interfaces/Donor';
+import { DonorList } from '../../interfaces/Donor';
 import type { RootState } from '../store';
 import { getDonorsThunk } from '../thunk/donors';
 
@@ -35,6 +35,5 @@ export const DonorsSlice = createSlice({
   },
 });
 
-//export const {} = DonorsSlice.actions;
 export const donorsSelector = (state: RootState) => state.donors;
 export default DonorsSlice.reducer;

@@ -13,7 +13,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-import { StyledBox, StyledButton, StyledDialog } from '../styles/App.styled';
+import { StyledButton } from '../styles/App.styled';
 
 interface SendDialogsProps {
   handleSendMessage: (bloodGroup: string) => Promise<void>;

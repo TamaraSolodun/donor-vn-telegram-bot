@@ -1,6 +1,6 @@
 const Donor = require('../Models/Donor');
 
-const updateDonor = async (request, res) => {
+const updateDonor = async (request, response) => {
   try {
     const donorId = request.params.id;
     const donorUpdates = request.body;
@@ -10,13 +10,13 @@ const updateDonor = async (request, res) => {
     });
 
     if (!updatedDonor) {
-      return res.status(404).send('Donor not found');
+      return response.status(404).send('Donor not found');
     }
 
-    res.json(updatedDonor);
+    response.json(updatedDonor);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server Error');
+    response.status(500).send('Server Error');
   }
 };
 module.exports = { updateDonor };
