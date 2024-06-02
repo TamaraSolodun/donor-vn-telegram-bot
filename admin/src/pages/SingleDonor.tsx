@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import { textData } from '../i18n/TextData';
 import { Donor } from '../interfaces/Donor';
 import { getSingleDonor } from '../services/donorsService';
 
@@ -16,10 +15,8 @@ export default function SingleDonor() {
   useEffect(() => {
     const fetchDonor = async () => {
       try {
-        console.log(typeof userId);
         const fetchedDonor: Donor = await getSingleDonor(Number(userId));
         setDonor(fetchedDonor);
-        console.log(fetchedDonor);
       } catch (error) {
         console.error('Error fetching donor:', error);
       }
@@ -35,7 +32,7 @@ export default function SingleDonor() {
     <StyledContainer maxWidth="lg">
       <StyledBox>
         <h1>
-          {t(textData.ua.donor)} {donor?.userId}
+          {t('donor')} {donor?.userId}
         </h1>
         {donor &&
           Object.keys(donor).map((key) => (

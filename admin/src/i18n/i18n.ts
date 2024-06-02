@@ -2,17 +2,17 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import textDataEN from '../i18n/en.locale.json' assert { type: 'json' };
+import textDataUA from '../i18n/ua.locate.json' assert { type: 'json' };
 
-import { textData } from './TextData';
 const resources = {
-  en: {
+  EN: {
     translation: {
       ...textDataEN,
     },
   },
-  ua: {
+  UA: {
     translation: {
-      ...textData.ua,
+      ...textDataUA,
     },
   },
 };
@@ -20,8 +20,8 @@ const resources = {
 // eslint-disable-next-line import/no-named-as-default-member
 void i18n.use(initReactI18next).init({
   resources,
-  lng: 'ua',
-  fallbackLng: 'en',
+  lng: 'UA',
+  fallbackLng: 'EN',
   interpolation: {
     escapeValue: false,
   },

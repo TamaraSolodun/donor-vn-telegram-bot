@@ -15,7 +15,6 @@ import { visuallyHidden } from '@mui/utils';
 import { ChangeEvent, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { textData } from '../i18n/TextData';
 import { Donor } from '../interfaces/Donor';
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -70,47 +69,47 @@ export const headCells: readonly HeadCell[] = [
   {
     id: 'userId',
     numeric: true,
-    label: textData.ua.id,
+    label: 'id',
   },
   {
     id: 'firstName',
     numeric: false,
-    label: textData.ua.firstName,
+    label: 'firstName',
   },
   {
     id: 'surname',
     numeric: false,
-    label: textData.ua.surname,
+    label: 'surname',
   },
   {
     id: 'sex',
     numeric: false,
-    label: textData.ua.sex,
+    label: 'sex',
   },
   {
     id: 'height',
     numeric: true,
-    label: textData.ua.height,
+    label: 'height',
   },
   {
     id: 'weight',
     numeric: true,
-    label: textData.ua.weight,
+    label: 'weight',
   },
   {
     id: 'bloodType',
     numeric: false,
-    label: textData.ua.bloodType,
+    label: 'bloodType',
   },
   {
     id: 'rhesusFactor',
     numeric: false,
-    label: textData.ua.rhesusFactor,
+    label: 'rhesusFactor',
   },
   {
     id: 'city',
     numeric: false,
-    label: textData.ua.city,
+    label: 'city',
   },
 ];
 
@@ -205,7 +204,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} {t(textData.ua.selected)}
+          {numSelected} {t('selected')}
         </Typography>
       ) : (
         <Typography
@@ -214,7 +213,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          {t(textData.ua.donors)}
+          {t('donors')}
         </Typography>
       )}
       {numSelected > 0 ? (

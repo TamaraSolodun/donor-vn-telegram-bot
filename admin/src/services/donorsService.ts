@@ -1,3 +1,4 @@
+import i18n from '../i18n/i18n';
 import {
   Donor,
   DonorList,
@@ -75,5 +76,13 @@ export const updateDonor = async (updatedDonor: Donor): Promise<void> => {
   } catch (error) {
     console.error('Error updating donor:', error);
     throw error;
+  }
+};
+
+export const changeLanguageHandler = async (lang: string | undefined) => {
+  try {
+    await i18n.changeLanguage(lang === 'EN' ? 'UA' : 'EN');
+  } catch (error) {
+    console.error('Error changing language:', error);
   }
 };

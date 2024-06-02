@@ -11,6 +11,7 @@ const useDashboard = () => {
   const [donors, setDonors] = useState<DonorList>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const [language, setLanguage] = useState<string | undefined>();
 
   const selectedDonors = useAppSelector(donorsSelector);
 
@@ -22,9 +23,10 @@ const useDashboard = () => {
     setLoading(selectedDonors.loading);
     setError(selectedDonors.error);
     setDonors(selectedDonors.donors);
+    setLanguage(selectedDonors.language);
   }, [selectedDonors]);
 
-  return { donors, loading, error };
+  return { donors, loading, error, language };
 };
 
 export default useDashboard;

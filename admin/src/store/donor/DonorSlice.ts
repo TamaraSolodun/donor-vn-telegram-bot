@@ -8,17 +8,30 @@ export interface DonorsState {
   loading: boolean;
   donors: DonorList;
   error: string | undefined;
+  language: string | undefined;
 }
 const initialState: DonorsState = {
   loading: false,
   donors: [],
   error: undefined,
+  language: 'UA',
 };
-
+interface SaveLanguageAction {
+  type: string;
+  payload: string;
+}
+export const changeLanguageAction = (
+  state: DonorsState,
+  action: SaveLanguageAction,
+) => {
+  state.language = action.payload;
+};
 export const DonorsSlice = createSlice({
   name: 'donors',
   initialState,
-  reducers: {},
+  reducers: {
+    changeLanguageAction,
+  },
   extraReducers: (builder) => {
     builder.addCase(getDonorsThunk.pending, (state) => {
       state.loading = true;
@@ -34,6 +47,5 @@ export const DonorsSlice = createSlice({
     });
   },
 });
-
 export const donorsSelector = (state: RootState) => state.donors;
 export default DonorsSlice.reducer;

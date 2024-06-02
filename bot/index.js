@@ -50,4 +50,4 @@ const start = async () => {
   });
 };
 
-await start();
+start();
