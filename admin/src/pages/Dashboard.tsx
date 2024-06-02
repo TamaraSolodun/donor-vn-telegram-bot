@@ -3,21 +3,17 @@ import { useTranslation } from 'react-i18next';
 
 import '../i18n/i18n';
 
-import ErrorAlert from '../components/ErrorAlert';
+import AlertMessage from '../components/AlertMessage';
 import useDashboard from '../hooks/useDashboard';
 import { Donor } from '../interfaces/Donor';
-import { changeLanguageHandler } from '../services/donorsService';
-
-import { StyledButton } from '../styles/App.styled';
 
 export default function Dashboard() {
-  const { donors, loading, error, language } = useDashboard();
+  const { donors, loading, message, severity, closeAlert } = useDashboard();
   const { t } = useTranslation();
 
   return (
     <Card>
       {loading && <h2>{t('loading')}</h2>}
-      {error && <ErrorAlert error={error} />}
       <CardHeader title={t('welcomeToAdmin')} />
       <div>
         <ul>
@@ -29,9 +25,12 @@ export default function Dashboard() {
             ))}
         </ul>
       </div>
-      <StyledButton onClick={() => void changeLanguageHandler(language)}>
-        TRANSLATE
-      </StyledButton>
+
+      <AlertMessage
+        message={message}
+        severity={severity}
+        onClose={closeAlert}
+      />
     </Card>
   );
 }

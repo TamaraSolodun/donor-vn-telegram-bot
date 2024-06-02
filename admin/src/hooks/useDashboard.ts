@@ -5,6 +5,8 @@ import { donorsSelector } from '../store/donor/DonorSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getDonorsThunk } from '../store/thunk/donors';
 
+import useAlert from './useAlert';
+
 const useDashboard = () => {
   const dispatch = useAppDispatch();
 
@@ -14,6 +16,7 @@ const useDashboard = () => {
   const [language, setLanguage] = useState<string | undefined>();
 
   const selectedDonors = useAppSelector(donorsSelector);
+  const { message, severity, showAlert, closeAlert } = useAlert();
 
   useEffect(() => {
     void dispatch(getDonorsThunk());
@@ -24,9 +27,21 @@ const useDashboard = () => {
     setError(selectedDonors.error);
     setDonors(selectedDonors.donors);
     setLanguage(selectedDonors.language);
-  }, [selectedDonors]);
+    if (selectedDonors.error) {
+      showAlert(selectedDonors.error, 'error');
+    }
+  }, [selectedDonors, showAlert]);
 
-  return { donors, loading, error, language };
+  return {
+    donors,
+    loading,
+    error,
+    language,
+    message,
+    severity,
+    showAlert,
+    closeAlert,
+  };
 };
 
 export default useDashboard;

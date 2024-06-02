@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
+import AlertMessage from '../components/AlertMessage';
 import {
   EnhancedTableHead,
   EnhancedTableToolbar,
@@ -34,6 +35,9 @@ export default function DonorsBoard() {
     emptyRows,
     visibleRows,
     handleEdit,
+    message,
+    severity,
+    closeAlert,
   } = useDonorsBoard();
   return (
     <Container maxWidth="lg">
@@ -124,6 +128,12 @@ export default function DonorsBoard() {
         <Stack spacing={5} direction="row">
           <SendDialogs handleSendMessage={handleSendMessage} />
         </Stack>
+
+        <AlertMessage
+          message={message}
+          severity={severity}
+          onClose={closeAlert}
+        />
       </Box>
     </Container>
   );

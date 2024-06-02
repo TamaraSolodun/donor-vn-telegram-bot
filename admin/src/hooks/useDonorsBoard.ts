@@ -7,6 +7,8 @@ import { sendMessages } from '../services/donorsService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getDonorsThunk } from '../store/thunk/donors';
 
+import useAlert from './useAlert';
+
 const useDonorsBoard = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ const useDonorsBoard = () => {
 
   const donorsData = useAppSelector((state) => state.donors.donors);
   const [donors, setDonors] = useState<DonorList>([]);
+
+  const { message, severity, showAlert, closeAlert } = useAlert();
 
   useEffect(() => {
     void dispatch(getDonorsThunk());
@@ -105,8 +109,17 @@ const useDonorsBoard = () => {
   const handleSendMessage = async (bloodGroup: string): Promise<void> => {
     try {
       await sendMessages(selected, bloodGroup);
+      const selectedAsString: string = selected.join(', ');
+      showAlert(
+        `Messages sent successfully to: ${selectedAsString}!`,
+        'success',
+      );
     } catch (error) {
       console.error('Error handling send messages:', error);
+      showAlert(
+        (error as Error).message || 'Failed to send messages.',
+        'error',
+      );
     }
   };
 
@@ -125,6 +138,9 @@ const useDonorsBoard = () => {
     visibleRows,
     handleSendMessage,
     handleEdit,
+    message,
+    severity,
+    closeAlert,
   };
 };
 

@@ -27,7 +27,6 @@ export const App = () => (
     </Provider>
   </BrowserRouter>
 );
-/* TO DO: mongo */
 /* TO DO: alerts */
 /* TO DO: tests on bot */
 /* TO DO: login */
