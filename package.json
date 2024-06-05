@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "postinstall": "cd admin && npm i",
     "start": "dotenv -e .env.production node server.js",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +28,7 @@
     "nodemon": "^2.0.7",
     "react-i18next": "^14.1.1",
     "styled-components": "^6.1.8",
+    "telegram-bot-api": "^2.0.1",
     "telegram-test-api": "^4.2.1"
   },
   "devDependencies": {

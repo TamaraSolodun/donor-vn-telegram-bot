@@ -14,14 +14,14 @@ mongoose.connect(token.mongoURI, {
   useUnifiedTopology: true,
 });
 
-const app = express();
+const server = express();
 
-app.use(cors());
-app.use(express.json());
+server.use(cors());
+server.use(express.json());
 
-app.get('/api/donors', getDonors);
-app.get('/api/donors/:userId', getDonorById);
-app.post('/api/sendMessages', sendMessages);
-app.put('/api/donors/:id', updateDonor);
+server.get('/api/donors', getDonors);
+server.get('/api/donors/:userId', getDonorById);
+server.post('/api/sendMessages', sendMessages);
+server.put('/api/donors/:id', updateDonor);
 
-module.exports = app;
+module.exports = server;
