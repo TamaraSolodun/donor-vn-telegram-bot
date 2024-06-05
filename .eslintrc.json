@@ -108,13 +108,14 @@
         "node": true
       },
       "extends": [
+        "eslint:recommended",
         "plugin:jest/recommended",
         "plugin:jest/style",
         "plugin:testing-library/react",
         "prettier",
         "plugin:prettier/recommended"
       ],
-      "files": ["admin/**/*.test.tsx", "admin/**/*.test.ts", "admin/tests"],
+      "files": ["admin/**/*.test.tsx", "admin/**/*.test.ts", "admin/tests", "bot/tests", "bot/**/*.test.js"],
       "parserOptions": {
         "ecmaVersion": 2023
       }
@@ -122,11 +123,15 @@
   ],
   "plugins": ["jest", "jsx-a11y", "simple-import-sort", "styled-components-a11y"],
   "rules": {
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "n/no-unpublished-import": ["error", {
+      "allowModules": [],
+      "convertPath": null
+  }]
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+      "@typescript-eslint/parser": [".ts", ".tsx", ".js"]
     },
     "import/resolver": {
       "node": true,
