@@ -3,21 +3,18 @@ const server = require('../server');
 const Donor = require('../Models/Donor');
 const mongoose = require('mongoose');
 
-jest.mock('../bot.js', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            once: jest.fn(),
-            setWebHook: jest.fn(),
-            setPolling: jest.fn(),
-            stopPolling: jest.fn(),
-            sendMessage: jest.fn(),
-        };
-    });
-});
-
-
 const bot = require('../bot.js');;
 const token = require('../config.js');
+
+jest.mock('../bot.js', () => {
+    return {
+        once: jest.fn(),
+        setWebHook: jest.fn(),
+        setPolling: jest.fn(),
+        stopPolling: jest.fn(),
+        sendMessages: jest.fn(),
+    };
+});
 
 
 const mockDonors = [
@@ -38,23 +35,25 @@ const mockDonors = [
 ];
 
 describe('GET /api/donors', () => {
-    afterEach(() => {
-        bot.stopPolling();
-        jest.restoreAllMocks();
-    });
+    
     beforeAll(async () => {
         await mongoose.connect(token.mongoURI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
     });
+    
+    afterEach(() => {
+        bot.stopPolling();
+        jest.restoreAllMocks();
+    });
 
     afterAll(async () => {
         await mongoose.connection.close();
         bot.stopPolling();
     });
-    it('should fetch all donors', async () => {
 
+    it('should fetch all donors', async () => {
         jest.spyOn(Donor, 'find').mockResolvedValue(mockDonors);
 
         const response = await request(server).get('/api/donors');
@@ -69,8 +68,7 @@ describe('GET /api/donors', () => {
             throw new Error(errorMessage);
         });
 
-        const response = await request(server)
-            .get('/api/donors');
+        const response = await request(server).get('/api/donors');
 
         expect(response.status).toBe(500);
         expect(response.text).toEqual('Server Error');
@@ -82,6 +80,7 @@ describe('GET /api/donors/:userId', () => {
         bot.stopPolling();
         jest.restoreAllMocks();
     });
+
     beforeAll(async () => {
         await mongoose.connect(token.mongoURI, {
             useNewUrlParser: true,
@@ -93,13 +92,14 @@ describe('GET /api/donors/:userId', () => {
         await mongoose.connection.close();
         bot.stopPolling();
     });
-    it('should fetch a donor by user id', async () => {
-        jest.spyOn(Donor, 'findOne').mockResolvedValue(mockDonors);
 
-        const response = await request(server).get(`/api/donors/${mockDonors.userId}`);
+    it('should fetch a donor by user id', async () => {
+        jest.spyOn(Donor, 'findOne').mockResolvedValue(mockDonors[0]);
+
+        const response = await request(server).get(`/api/donors/${mockDonors[0].userId}`);
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual(mockDonors);
+        expect(response.body).toEqual(mockDonors[0]);
     });
 
     it('should return a 404 error if the donor is not found', async () => {
@@ -123,13 +123,12 @@ describe('GET /api/donors/:userId', () => {
     });
 });
 
-
-
-describe('POST /api/sendmessage', () => {
+describe('POST /api/sendMessages', () => {
     afterEach(() => {
         bot.stopPolling();
         jest.restoreAllMocks();
     });
+
     beforeAll(async () => {
         await mongoose.connect(token.mongoURI, {
             useNewUrlParser: true,
@@ -143,19 +142,19 @@ describe('POST /api/sendmessage', () => {
     });
 
     it('should send messages to selected users', async () => {
-
         jest.spyOn(Donor, 'find').mockResolvedValue(mockDonors);
-
+        jest.spyOn(bot, 'sendMessages').mockImplementation(() => Promise.resolve());
+    
         const selectedUserIds = [1, 2];
         const bloodGroup = 'A+';
-
+    
         const response = await request(server)
-            .post('/api/sendmessage')
+            .post('/api/sendmessages')
             .send({ selectedUserIds, bloodGroup });
-
-        expect(bot.sendMessage).toHaveBeenCalledTimes(selectedUserIds.length);
+    
         expect(response.status).toBe(200);
         expect(response.text).toBe('Messages sent successfully!');
+        expect(bot.sendMessages).toHaveBeenCalledTimes(selectedUserIds.length);
     });
 
     it('should return a 500 error if there is a server error', async () => {
@@ -168,10 +167,10 @@ describe('POST /api/sendmessage', () => {
         const bloodGroup = 'A+';
 
         const response = await request(server)
-            .post('/api/sendmessage')
+            .post('/api/sendmessages')
             .send({ selectedUserIds, bloodGroup });
 
         expect(response.status).toBe(500);
-        expect(response.text).toBe('Internal Server Error');
+        expect(response.text).toBe('Server Error');
     });
-})
+});

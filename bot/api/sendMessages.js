@@ -9,7 +9,7 @@ const sendMessages = async (request, response) => {
     response.status(200).send('Messages sent successfully!');
   } catch (error) {
     console.error('Error sending messages:', error);
-    response.status(500).send('Internal Server Error');
+    response.status(500).send('Server Error');
   }
 };
 module.exports = { sendMessages };
