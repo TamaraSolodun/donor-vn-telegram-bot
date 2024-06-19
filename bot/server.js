@@ -30,3 +30,6 @@ router.post('/api/register', registerUser);
 
 
 module.exports = server;
+
+//https://dvmhn07.medium.com/jwt-authentication-in-node-js-a-practical-guide-c8ab1b432a49
+//https://github.com/nodkz/mongodb-memory-server

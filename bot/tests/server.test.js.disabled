@@ -1,11 +1,11 @@
 const request = require('supertest');
-const server = require('../server');
-const Donor = require('../Models/Donor');
+const server = require('../server.js');
+const Donor = require('../Models/Donor.js');
 const mongoose = require('mongoose');
 
 const bot = require('../bot.js');;
-const token = require('../config.js');
-
+// const token = require('../config.js');
+// token cant be directly from mongo db 
 jest.mock('../bot.js', () => {
     return {
         once: jest.fn(),
