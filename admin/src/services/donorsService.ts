@@ -70,8 +70,8 @@ export const updateDonor = async (updatedDonor: Donor): Promise<void> => {
     if (response.ok) {
       console.log('Donor updated successfully!');
     } else {
-      console.error('Failed to update donor:', await response.text());
-      throw new Error(await response.text());
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
     }
   } catch (error) {
     console.error('Error updating donor:', error);

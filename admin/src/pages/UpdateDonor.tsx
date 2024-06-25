@@ -7,11 +7,16 @@ import { Donor } from '../interfaces/Donor';
 import { getSingleDonor, updateDonor } from '../services/donorsService';
 
 import { StyledBox, StyledButton, StyledContainer } from '../styles/App.styled';
+import useAlert from '../hooks/useAlert';
+import AlertMessage from '../components/AlertMessage';
 
 export default function UpdateDonor() {
     const { userId } = useParams();
-    const [donor, setDonor] = useState<Donor | null>();
+    const [donor, setDonor] = useState<Donor | null>(null);
     const { t } = useTranslation();
+    const { message, severity, showAlert, closeAlert } = useAlert();
+
+
     useEffect(() => {
         const fetchDonor = async () => {
             try {
@@ -23,10 +28,30 @@ export default function UpdateDonor() {
         };
         if (!Number.isNaN(Number(userId))) {
             fetchDonor().catch((error) =>
-                console.error('Error for handling promise:', error),
+                console.error('Error handling promise:', error),
             );
         }
     }, [userId]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setDonor((prevDonor) => (prevDonor ? { ...prevDonor, [name]: value } : null));
+    };
+    
+    const handleUpdateDonor = async (): Promise<void> => {
+        try {
+            if (donor) {
+                await updateDonor(donor);
+                showAlert('Donor updated successfully', 'success');
+            }
+        } catch (error) {
+            console.error('Error updating donor:', error);
+            showAlert(
+                (error as Error).message || 'Error updating donor.',
+                'error',
+              );
+        }
+    };
 
     return (
         <StyledContainer maxWidth="lg">
@@ -34,25 +59,24 @@ export default function UpdateDonor() {
                 <h1>
                     {t('donor')} {donor?.userId}
                 </h1>
-                {/* {donor &&
-          Object.keys(donor).map((key) => (
-            <TextField
-              key={key}
-              label={key}
-              value={donor[key as keyof typeof donor]}
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-              type='text'
-            />
-          ))} */}
                 <TextField
-                    key={donor?.userId}
-                    label={donor?.userId}
-                    value={donor?.userId}
+                    name="userId"
+                    label={t('userId')}
+                    value={donor?.userId || ''}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    type='text'
+                />
+                <TextField
+                    name="firstName"
+                    label={t('firstName')}
+                    value={donor?.firstName || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -62,20 +86,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.bloodType}
-                    label={donor?.bloodType}
-                    value={donor?.bloodType}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                />
-                <TextField
-                    key={donor?.firstName}
-                    label={donor?.firstName}
-                    value={donor?.firstName}
+                    name="surname"
+                    label={t('surname')}
+                    value={donor?.surname || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -85,9 +99,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.surname}
-                    label={donor?.surname}
-                    value={donor?.surname}
+                    name="phoneNumber"
+                    label={t('phoneNumber')}
+                    value={donor?.phoneNumber || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -97,9 +112,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.sex}
-                    label={donor?.sex}
-                    value={donor?.sex}
+                    name="sex"
+                    label={t('sex')}
+                    value={donor?.sex || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -109,9 +125,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.dateOfBirth}
-                    label={donor?.dateOfBirth}
-                    value={donor?.dateOfBirth}
+                    name="dateOfBirth"
+                    label={t('dateOfBirth')}
+                    value={donor?.dateOfBirth || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -121,9 +138,10 @@ export default function UpdateDonor() {
                     type='date'
                 />
                 <TextField
-                    key={donor?.bloodType}
-                    label={donor?.bloodType}
-                    value={donor?.bloodType}
+                    name="bloodType"
+                    label={t('bloodType')}
+                    value={donor?.bloodType || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -133,9 +151,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.rhesusFactor}
-                    label={donor?.rhesusFactor}
-                    value={donor?.rhesusFactor}
+                    name="rhesusFactor"
+                    label={t('rhesusFactor')}
+                    value={donor?.rhesusFactor || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -145,9 +164,10 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
-                    key={donor?.height}
-                    label={donor?.height}
-                    value={donor?.height}
+                    name="height"
+                    label={t('height')}
+                    value={donor?.height || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -157,9 +177,10 @@ export default function UpdateDonor() {
                     type='number'
                 />
                 <TextField
-                    key={donor?.weight}
-                    label={donor?.weight}
-                    value={donor?.weight}
+                    name="weight"
+                    label={t('weight')}
+                    value={donor?.weight || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -169,9 +190,10 @@ export default function UpdateDonor() {
                     type='number'
                 />
                 <TextField
-                    key={donor?.city}
-                    label={donor?.city}
-                    value={donor?.city}
+                    name="city"
+                    label={t('city')}
+                    value={donor?.city || ''}
+                    onChange={handleChange}
                     fullWidth
                     variant="outlined"
                     margin="normal"
@@ -180,13 +202,14 @@ export default function UpdateDonor() {
                     }}
                     type='text'
                 />
-                <StyledButton
-                    onClick={() => {
-                        void updateDonor(donor);
-                    }}
-                >
+                 <StyledButton onClick={handleUpdateDonor}>
                     {t('updateDonor')}
                 </StyledButton>
+                <AlertMessage
+                    message={message}
+                    severity={severity}
+                    onClose={closeAlert}
+                />
             </StyledBox>
         </StyledContainer>
     );

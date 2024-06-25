@@ -10,6 +10,7 @@ import SingleDonor from './pages/SingleDonor';
 import { store } from './store/store';
 
 import { StyledWrapper } from './styles/App.styled';
+import UpdateDonor from './pages/UpdateDonor';
 
 export const App = () => (
   <BrowserRouter>
@@ -20,7 +21,7 @@ export const App = () => (
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/donors-board" element={<DonorsBoard />} />
-            <Route path="/donors-board/:userId" element={<SingleDonor />} />
+            <Route path="/donors-board/:userId" element={<UpdateDonor />} />
           </Routes>
         </StyledWrapper>
       </I18nextProvider>

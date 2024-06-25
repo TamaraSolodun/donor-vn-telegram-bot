@@ -4,6 +4,6 @@ import { DonorList } from '../../interfaces/Donor';
 import { getDonors } from '../../services/donorsService';
 
 export const getDonorsThunk = createAsyncThunk<DonorList>(
-  'donors/addDonor',
+  'donors/getDonors',
   getDonors,
 );

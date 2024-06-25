@@ -5,9 +5,7 @@ const updateDonor = async (request, response) => {
     const donorId = request.params.id;
     const donorUpdates = request.body;
 
-    const updatedDonor = await Donor.findByIdAndUpdate(donorId, donorUpdates, {
-      new: true,
-    });
+    const updatedDonor = await Donor.findOneAndUpdate({ userId: donorId }, donorUpdates, { new: true });
 
     if (!updatedDonor) {
       return response.status(404).send('Donor not found');
@@ -15,7 +13,7 @@ const updateDonor = async (request, response) => {
 
     response.json(updatedDonor);
   } catch (error) {
-    console.error(error);
+    console.error('Error updating donor:', error);
     response.status(500).send('Server Error');
   }
 };
