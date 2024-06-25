@@ -7,7 +7,6 @@ const { registerUser } = require('./api/registerUser.js');
 
 const { sendMessages } = require('./api/sendMessages.js');
 const token = require('./config.js');
-
 const mongoose = require('mongoose');
 const { getDonorById } = require('./api/getDonorById.js');
 mongoose.connect(token.mongoURI, {
@@ -26,7 +25,7 @@ server.post('/api/sendMessages', sendMessages);
 server.put('/api/donors/:id', updateDonor);
 
 
-router.post('/api/register', registerUser);
+server.post('/api/register', registerUser);
 
 
 module.exports = server;

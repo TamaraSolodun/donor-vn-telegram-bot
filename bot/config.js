@@ -1,6 +1,6 @@
-require('dotenv').config({ path: './.env' });
+require('dotenv').config({ path: '../.env' });
 
 module.exports = {
-  token: process.env.TOKEN,
+  botToken: process.env.TOKEN,
   mongoURI: process.env.MONGO_URI,
 };
