@@ -40,7 +40,7 @@ export default function DonorsBoard() {
     closeAlert,
   } = useDonorsBoard();
   return (
-    <Container maxWidth="lg">
+    <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>
         <StyledContainer sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
@@ -125,7 +125,7 @@ export default function DonorsBoard() {
           </TableContainer>
         </StyledContainer>
 
-        <Stack spacing={5} direction="row">
+        <Stack spacing={5} direction="row" justifyContent="flex-end">
           <SendDialogs handleSendMessage={handleSendMessage} />
         </Stack>
 
@@ -135,6 +135,6 @@ export default function DonorsBoard() {
           onClose={closeAlert}
         />
       </Box>
-    </Container>
+    </StyledContainer>
   );
 }

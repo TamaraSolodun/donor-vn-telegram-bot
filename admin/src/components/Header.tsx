@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import donorImage from '../../../admin/assets/10-removebg-preview.png';
 import i18n from '../i18n/i18n';
 import { useAppSelector } from '../store/store';
+import { StyledAppBarContainer } from '../styles/Header.styled';
 const pages = [
   {
     pageName: 'Dashboard',
@@ -77,7 +78,7 @@ function Header() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <StyledAppBarContainer maxWidth="xl">
         <Toolbar disableGutters>
           <img src={donorImage} width={40} alt="donor-vn-logo" />
           <Typography
@@ -135,25 +136,7 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -232,7 +215,7 @@ function Header() {
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
+      </StyledAppBarContainer>
     </AppBar>
   );
 }

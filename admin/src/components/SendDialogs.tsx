@@ -1,11 +1,9 @@
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { StyledButton } from '../styles/App.styled';
+import { StyledButton, StyledDialog, StyledFormControl, StyledSelect } from '../styles/App.styled';
 
 interface SendDialogsProps {
   handleSendMessage: (bloodGroup: string) => Promise<void>;
@@ -24,15 +22,15 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
   const { t } = useTranslation();
   const [bloodGroup, setBloodGroup] = useState('');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setBloodGroup(event.target.value);
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
+    setBloodGroup(event.target.value as string);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 5000);
+    // setTimeout(() => {
+    //   setOpen(false);
+    // }, 5000);
   };
   const handleClose = () => {
     setOpen(false);
@@ -47,7 +45,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
       >
         {t('sendMessage')}
       </StyledButton>
-      <Dialog
+      <StyledDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
@@ -69,28 +67,30 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         <DialogContent dividers>
           <Box sx={{ minWidth: 120 }}>
             <Typography gutterBottom>{t('dialogMessage')}</Typography>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                {t('bloodGroupLabel')}
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={bloodGroup}
-                label="BloodGroup"
-                onChange={handleChange}
-              >
-                <MenuItem value={t('APlus')}>{t('APlus')}</MenuItem>
-                <MenuItem value={t('AMinus')}>{t('AMinus')}</MenuItem>
-                <MenuItem value={t('BPlus')}>{t('BPlus')}</MenuItem>
-                <MenuItem value={t('BMinus')}>{t('BMinus')}</MenuItem>
-                <MenuItem value={t('ABPlus')}>{t('ABPlus')}</MenuItem>
-                <MenuItem value={t('ABMinus')}>{t('ABMinus')}</MenuItem>
-                <MenuItem value={t('OPlus')}>{t('OPlus')}</MenuItem>
-                <MenuItem value={t('OMinus')}>{t('OMinus')}</MenuItem>
-              </Select>
-            </FormControl>
-            <Typography gutterBottom>{t('messageWait')}</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <StyledFormControl sx={{ width: '25%', marginRight: 2 }}>
+                <InputLabel id="demo-simple-select-label">
+                  {t('bloodGroupLabel')}
+                </InputLabel>
+                <StyledSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={bloodGroup}
+                  label="BloodGroup"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="A+">{t('APlus')}</MenuItem>
+                  <MenuItem value="A-">{t('AMinus')}</MenuItem>
+                  <MenuItem value="B+">{t('BPlus')}</MenuItem>
+                  <MenuItem value="B-">{t('BMinus')}</MenuItem>
+                  <MenuItem value="AB+">{t('ABPlus')}</MenuItem>
+                  <MenuItem value="AB-">{t('ABMinus')}</MenuItem>
+                  <MenuItem value="O+">{t('OPlus')}</MenuItem>
+                  <MenuItem value="O-">{t('OMinus')}</MenuItem>
+                </StyledSelect>
+              </StyledFormControl>
+              <Typography gutterBottom>{t('messageWait')}</Typography>
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -102,7 +102,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
             {t('confirmSendMessage')}
           </StyledButton>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
     </>
   );
 }
