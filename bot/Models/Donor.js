@@ -19,8 +19,8 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        return /^[a-z]{2,}$/i.test(v);
+      validator: function (firstName) {
+        return /^[A-Za-z]{2,}$/i.test(firstName);
       },
       message: (properties) =>
         `${properties.value} is not a valid first name! It should contain only letters and be at least 2 characters long.`,
@@ -30,8 +30,8 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        return /^[a-z]{2,}$/i.test(v);
+      validator: function (surname) {
+        return /^[A-Za-z]{2,}$/i.test(surname);
       },
       message: (properties) =>
         `${properties.value} is not a valid surname! It should contain only letters and be at least 2 characters long.`,
