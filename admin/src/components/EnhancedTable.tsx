@@ -112,6 +112,11 @@ export const headCells: readonly HeadCell[] = [
     label: 'dateOfNextDonation',
   },
   {
+    id: 'willDonate',
+    numeric: false,
+    label: 'willDonate',
+  },
+  {
     id: 'height',
     numeric: true,
     label: 'height',

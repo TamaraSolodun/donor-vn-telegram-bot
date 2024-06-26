@@ -24,14 +24,16 @@ const handleContactsCommand = async (chatId) => {
   await bot.sendLocation(chatId, 49.228_778_751_590_59, 28.450_781_729_447_773);
 };
 
-const handleSendMessage = async (selectedUserIds, bloodGroup) => {
+const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation) => {
   try {
     console.log('Selected User IDs:', selectedUserIds);
 
     const message =
       "'Вінницький обласний центр служби крові' потребує донора крові: " +
       bloodGroup +
-      '. Очікуємо Вас!';
+      '.\nОчікуємо Вас: ' +
+      dateOfNextDonation + 
+      '!';
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
@@ -40,12 +42,21 @@ const handleSendMessage = async (selectedUserIds, bloodGroup) => {
     for (const user of users) {
       const { userId } = user;
       console.log('Sending message to:', userId);
-      await bot.sendMessage(userId, message);
+      await bot.sendMessage(userId, message, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: 'Так', callback_data: `yes:${dateOfNextDonation}` },
+              { text: 'Ні', callback_data: 'no' },
+            ],
+          ],
+        },
+      });
       console.log('Message sent to:', userId);
     }
+    console.log('Messages sent successfully!');
     //await handleInfoCommand(userId)
     //await handleContactsCommand(userId)
-    console.log('Messages sent successfully!');
   } catch (error) {
     console.error('Error sending messages:', error);
     throw error;
@@ -87,10 +98,34 @@ const handleRegisterCommand = async (message, chatId) => {
   await bot.sendMessage(chatId, 'Вас успішно зареєстровано!');
 };
 
+const handleCallbackQuery = async (callbackQuery) => {
+  const { data, message } = callbackQuery;
+  const chatId = message.chat.id;
+
+  const [response, dateOfNextDonation] = data.split(':');
+  const update = { willDonate: response };
+
+  if (response === 'yes' && dateOfNextDonation) {
+    update.dateOfNextDonation = dateOfNextDonation;
+  } else {
+    update.dateOfNextDonation = null;
+  }
+
+  try {
+    await Donor.updateOne({ userId: chatId }, { $set: update });
+    await bot.sendMessage(chatId, 'Дякуємо за вашу відповідь!');
+  } catch (error) {
+    console.error('Error updating database:', error);
+    throw error;
+  }
+};
+
+
 module.exports = {
   handleContactsCommand,
   handleInfoCommand,
   handleRegisterCommand,
   handleStartCommand,
   handleSendMessage,
+  handleCallbackQuery,
 };

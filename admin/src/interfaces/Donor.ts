@@ -15,6 +15,7 @@ export const donorSchema = z.object({
   city: z.string().nullable(),
   dateOfLastDonation: z.string().nullable(),
   dateOfNextDonation: z.string().nullable(),
+  willDonate: z.string().nullable(),
   countOfDonations: z.number().nullable(),
 });
 

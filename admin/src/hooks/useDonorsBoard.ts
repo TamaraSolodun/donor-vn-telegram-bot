@@ -116,9 +116,9 @@ const useDonorsBoard = () => {
     [order, orderBy, page, rowsPerPage, donors],
   );
 
-  const handleSendMessage = async (bloodGroup: string): Promise<void> => {
+  const handleSendMessage = async (bloodGroup: string, dateOfNextDonation: string): Promise<void> => {
     try {
-      await sendMessages(selected, bloodGroup);
+      await sendMessages(selected, bloodGroup, dateOfNextDonation);
       const selectedDonors = donors.filter(donor => selected.includes(donor.userId));
       const selectedNames = selectedDonors.map(donor => `${donor.firstName} ${donor.surname}`).join(', ');
       showAlert(`Messages sent successfully to: ${selectedNames}!`, 'success');

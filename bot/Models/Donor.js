@@ -47,6 +47,7 @@ const donorSchema = new mongoose.Schema({
   dateOfLastDonation: { type: String, default: null },
   countOfDonations: { type: Number, default: null },
   dateOfNextDonation: { type: String, default: null },
+  willDonate: { type: String, default: null }
 });
 
 module.exports = mongoose.model('donors', donorSchema);

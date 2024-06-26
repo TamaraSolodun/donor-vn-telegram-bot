@@ -35,6 +35,7 @@ export const getSingleDonor = async (donorId: number): Promise<Donor> => {
 export const sendMessages = async (
   selectedUserIds: number[],
   bloodGroup: string,
+  dateOfNextDonation: string,
 ): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/sendMessages`, {
@@ -42,9 +43,8 @@ export const sendMessages = async (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ selectedUserIds, bloodGroup }),
+      body: JSON.stringify({ selectedUserIds, bloodGroup, dateOfNextDonation }),
     });
-
     if (response.ok) {
       console.log('Messages sent successfully!');
     } else {
