@@ -14,6 +14,7 @@ export const donorSchema = z.object({
   rhesusFactor: z.string().nullable(),
   city: z.string().nullable(),
   dateOfLastDonation: z.string().nullable(),
+  dateOfNextDonation: z.string().nullable(),
   countOfDonations: z.number().nullable(),
 });
 

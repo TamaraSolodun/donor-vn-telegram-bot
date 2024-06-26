@@ -28,5 +28,6 @@
   "rhesusFactor": "Rhesus Factor",
   "city": "City",
   "dateOfLastDonation": "Last Donation",
+  "dateOfNextDonation": "Next Donation",
   "countOfDonations": "Donations"
 }

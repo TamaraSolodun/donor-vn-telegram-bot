@@ -107,6 +107,11 @@ export const headCells: readonly HeadCell[] = [
     label: 'rhesusFactor',
   },
   {
+    id: 'dateOfNextDonation',
+    numeric: false,
+    label: 'dateOfNextDonation',
+  },
+  {
     id: 'height',
     numeric: true,
     label: 'height',

@@ -212,6 +212,19 @@ export default function UpdateDonor() {
                         type='number'
                     />
                     <TextField
+                        name="dateOfNextDonation"
+                        label={t('dateOfNextDonation')}
+                        value={donor?.dateOfNextDonation || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='date'
+                    />
+                    <TextField
                         name="height"
                         label={t('height')}
                         value={donor?.height || ''}

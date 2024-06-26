@@ -41,6 +41,7 @@ const mockDonors: DonorList = [
     city: null,
     dateOfLastDonation: null,
     countOfDonations: null,
+    dateOfNextDonation: null,
   },
   {
     userId: 2,
@@ -57,6 +58,7 @@ const mockDonors: DonorList = [
     city: null,
     dateOfLastDonation: null,
     countOfDonations: null,
+    dateOfNextDonation: null,
   },
 ];
 

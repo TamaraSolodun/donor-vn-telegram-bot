@@ -28,5 +28,6 @@
     "rhesusFactor": "Резус",
     "city": "Місто",
     "dateOfLastDonation": "Остання донація",
+    "dateOfNextDonation": "Наступна донація",
     "countOfDonations": "К-сть донацій"
 }
