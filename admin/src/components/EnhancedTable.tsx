@@ -87,14 +87,14 @@ export const headCells: readonly HeadCell[] = [
     label: 'sex',
   },
   {
-    id: 'height',
-    numeric: true,
-    label: 'height',
+    id: 'dateOfLastDonation',
+    numeric: false,
+    label: 'dateOfLastDonation',
   },
   {
-    id: 'weight',
+    id: 'countOfDonations',
     numeric: true,
-    label: 'weight',
+    label: 'countOfDonations',
   },
   {
     id: 'bloodType',
@@ -105,6 +105,16 @@ export const headCells: readonly HeadCell[] = [
     id: 'rhesusFactor',
     numeric: false,
     label: 'rhesusFactor',
+  },
+  {
+    id: 'height',
+    numeric: true,
+    label: 'height',
+  },
+  {
+    id: 'weight',
+    numeric: true,
+    label: 'weight',
   },
   {
     id: 'city',

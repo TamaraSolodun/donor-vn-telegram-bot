@@ -13,6 +13,8 @@ export const donorSchema = z.object({
   bloodType: z.string().nullable(),
   rhesusFactor: z.string().nullable(),
   city: z.string().nullable(),
+  dateOfLastDonation: z.string().nullable(),
+  countOfDonations: z.number().nullable(),
 });
 
 export const donorListSchema = z.array(donorSchema);

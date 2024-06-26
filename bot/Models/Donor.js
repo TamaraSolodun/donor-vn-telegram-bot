@@ -44,6 +44,8 @@ const donorSchema = new mongoose.Schema({
   bloodType: { type: String, default: null },
   rhesusFactor: { type: String, default: null },
   city: { type: String, default: null },
+  dateOfLastDonation: { type: String, default: null },
+  countOfDonations: { type: Number, default: null },
 });
 
 module.exports = mongoose.model('donors', donorSchema);

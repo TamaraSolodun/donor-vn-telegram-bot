@@ -2,13 +2,13 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import Tooltip from '@mui/material/Tooltip';
 
 import AlertMessage from '../components/AlertMessage';
 import {
@@ -39,6 +39,15 @@ export default function DonorsBoard() {
     severity,
     closeAlert,
   } = useDonorsBoard();
+
+  const isDisabled = (dateOfLastDonation: string, countOfDonations: number) => {
+    if (!dateOfLastDonation) return false;
+    const lastDonationDate = new Date(dateOfLastDonation);
+    const currentDate = new Date();
+    const differenceInDays = (currentDate.getTime() - lastDonationDate.getTime()) / (1000 * 3600 * 24);
+    return differenceInDays < 60 || countOfDonations > 6;
+  };
+
   return (
     <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>
@@ -63,52 +72,68 @@ export default function DonorsBoard() {
                   visibleRows.map((donor, index) => {
                     const isItemSelected = isSelected(donor.userId);
                     const labelId = `enhanced-table-checkbox-${index}`;
+                    const disabled = isDisabled(donor.dateOfLastDonation, donor.countOfDonations);
 
                     return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, donor.userId)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
+                      <Tooltip
+                        title={
+                          disabled
+                            ? 'Donation can be only after 60 days and count of them not more than 6'
+                            : ''
+                        }
+                        placement="top"
+                        arrow
                         key={donor.userId}
-                        selected={isItemSelected}
-                        sx={{ cursor: 'pointer' }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              'aria-labelledby': labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="donor"
-                          padding="none"
+                        <TableRow
+                          hover={!disabled}
+                          onClick={disabled ? undefined : (event) => handleClick(event, donor.userId)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={donor.userId}
+                          selected={isItemSelected}
+                          sx={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
                         >
-                          {donor.userId}
-                        </TableCell>
-                        <TableCell align="left">{donor.firstName}</TableCell>
-                        <TableCell align="left">{donor.surname}</TableCell>
-                        <TableCell align="left">{donor.sex}</TableCell>
-                        <TableCell align="left">{donor.height}</TableCell>
-                        <TableCell align="left">{donor.weight}</TableCell>
-                        <TableCell align="left">{donor.bloodType}</TableCell>
-                        <TableCell align="left">{donor.rhesusFactor}</TableCell>
-                        <TableCell align="left">{donor.city}</TableCell>
-                        <TableCell align="left">
-                          <button
-                            aria-label="Example"
-                            onClick={() => handleEdit(donor.userId)}
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              disabled={disabled}
+                              inputProps={{
+                                'aria-labelledby': labelId,
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="donor"
+                            padding="none"
                           >
-                            <FontAwesomeIcon icon={faPenToSquare} />
-                          </button>
-                        </TableCell>
-                      </TableRow>
+                            {donor.userId}
+                          </TableCell>
+                          <TableCell align="left">{donor.firstName}</TableCell>
+                          <TableCell align="left">{donor.surname}</TableCell>
+                          <TableCell align="left">{donor.sex}</TableCell>
+                          <TableCell align="left">{donor.dateOfLastDonation}</TableCell>
+                          <TableCell align="left">{donor.countOfDonations}</TableCell>
+                          <TableCell align="left">{donor.bloodType}</TableCell>
+                          <TableCell align="left">{donor.rhesusFactor}</TableCell>
+                          <TableCell align="left">{donor.height}</TableCell>
+                          <TableCell align="left">{donor.weight}</TableCell>
+                          <TableCell align="left">{donor.city}</TableCell>
+                          <TableCell align="left">
+                            <button
+                              aria-label="Edit"
+                              onClick={() => handleEdit(donor.userId)}
+                              disabled={false}
+                            >
+                              <FontAwesomeIcon icon={faPenToSquare} />
+                            </button>
+                          </TableCell>
+                        </TableRow>
+                      </Tooltip>
                     );
                   })}
                 {emptyRows > 0 && (

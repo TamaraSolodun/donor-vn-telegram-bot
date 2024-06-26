@@ -164,6 +164,32 @@ export default function UpdateDonor() {
                     type='text'
                 />
                 <TextField
+                    name="dateOfLastDonation"
+                    label={t('dateOfLastDonation')}
+                    value={donor?.dateOfLastDonation || ''}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                        readOnly: false,
+                    }}
+                    type='date'
+                />
+                <TextField
+                    name="countOfDonations"
+                    label={t('countOfDonations')}
+                    value={donor?.countOfDonations || ''}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                        readOnly: false,
+                    }}
+                    type='number'
+                />
+                <TextField
                     name="height"
                     label={t('height')}
                     value={donor?.height || ''}
