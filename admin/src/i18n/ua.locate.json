@@ -26,5 +26,7 @@
     "weight": "Вага",
     "bloodType": "Група крові",
     "rhesusFactor": "Резус",
-    "city": "Місто"
+    "city": "Місто",
+    "dateOfLastDonation": "Остання донація",
+    "countOfDonations": "К-сть донацій"
 }

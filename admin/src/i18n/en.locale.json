@@ -26,5 +26,7 @@
   "weight": "Weight",
   "bloodType": "Blood Type",
   "rhesusFactor": "Rhesus Factor",
-  "city": "City"
+  "city": "City",
+  "dateOfLastDonation": "Last Donation",
+  "countOfDonations": "Donations"
 }
