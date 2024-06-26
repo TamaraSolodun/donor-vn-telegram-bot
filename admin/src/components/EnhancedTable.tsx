@@ -130,6 +130,7 @@ export interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+  hasDisabledRows: boolean;
 }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
@@ -140,6 +141,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     numSelected,
     rowCount,
     onRequestSort,
+    hasDisabledRows,
   } = props;
   const createSortHandler =
     (property: keyof Donor) => (event: MouseEvent<unknown>) => {
@@ -155,6 +157,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
+            disabled={hasDisabledRows}
             inputProps={{
               'aria-label': 'select all desserts',
             }}

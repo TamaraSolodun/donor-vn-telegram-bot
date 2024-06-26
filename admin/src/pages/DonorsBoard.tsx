@@ -38,15 +38,10 @@ export default function DonorsBoard() {
     message,
     severity,
     closeAlert,
+    isDisabledCheckbox,
   } = useDonorsBoard();
 
-  const isDisabled = (dateOfLastDonation: string, countOfDonations: number) => {
-    if (!dateOfLastDonation) return false;
-    const lastDonationDate = new Date(dateOfLastDonation);
-    const currentDate = new Date();
-    const differenceInDays = (currentDate.getTime() - lastDonationDate.getTime()) / (1000 * 3600 * 24);
-    return differenceInDays < 60 || countOfDonations > 6;
-  };
+
 
   return (
     <StyledContainer maxWidth="lg">
@@ -66,13 +61,14 @@ export default function DonorsBoard() {
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
                 rowCount={donors.length}
+                hasDisabledRows={donors.some(donor => isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))}
               />
               <TableBody>
                 {visibleRows &&
                   visibleRows.map((donor, index) => {
                     const isItemSelected = isSelected(donor.userId);
                     const labelId = `enhanced-table-checkbox-${index}`;
-                    const disabled = isDisabled(donor.dateOfLastDonation, donor.countOfDonations);
+                    const disabled = isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations);
 
                     return (
                       <Tooltip
@@ -151,7 +147,7 @@ export default function DonorsBoard() {
         </StyledContainer>
 
         <Stack spacing={5} direction="row" justifyContent="flex-end">
-          <SendDialogs handleSendMessage={handleSendMessage} />
+          <SendDialogs handleSendMessage={handleSendMessage}/>
         </Stack>
 
         <AlertMessage

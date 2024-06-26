@@ -45,10 +45,20 @@ const useDonorsBoard = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  
+  const isDisabledCheckbox = (dateOfLastDonation: string | null, countOfDonations: number | null) => {
+    if (!dateOfLastDonation) return false;
+    const lastDonationDate = new Date(dateOfLastDonation);
+    const currentDate = new Date();
+    const differenceInDays = (currentDate.getTime() - lastDonationDate.getTime()) / (1000 * 3600 * 24);
+    return differenceInDays < 60 || (countOfDonations ?? 0) > 6;;
+  };
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = donors.map((n) => n.userId);
+      const newSelected = donors
+        .filter(donor => !isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))
+        .map(donor => donor.userId);
       setSelected(newSelected);
       return;
     }
@@ -109,11 +119,10 @@ const useDonorsBoard = () => {
   const handleSendMessage = async (bloodGroup: string): Promise<void> => {
     try {
       await sendMessages(selected, bloodGroup);
-      const selectedAsString: string = selected.join(', ');
-      showAlert(
-        `Messages sent successfully to: ${selectedAsString}!`,
-        'success',
-      );
+      const selectedDonors = donors.filter(donor => selected.includes(donor.userId));
+      const selectedNames = selectedDonors.map(donor => `${donor.firstName} ${donor.surname}`).join(', ');
+      showAlert(`Messages sent successfully to: ${selectedNames}!`, 'success');
+
     } catch (error) {
       console.error('Error handling send messages:', error);
       showAlert(
@@ -141,6 +150,7 @@ const useDonorsBoard = () => {
     message,
     severity,
     closeAlert,
+    isDisabledCheckbox,
   };
 };
 

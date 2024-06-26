@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Donor } from '../interfaces/Donor';
 import { getSingleDonor, updateDonor } from '../services/donorsService';
@@ -10,12 +10,21 @@ import { StyledBox, StyledButton, StyledContainer } from '../styles/App.styled';
 import useAlert from '../hooks/useAlert';
 import AlertMessage from '../components/AlertMessage';
 
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Stack from '@mui/material/Stack';
+
+
 export default function UpdateDonor() {
     const { userId } = useParams();
     const [donor, setDonor] = useState<Donor | null>(null);
     const { t } = useTranslation();
     const { message, severity, showAlert, closeAlert } = useAlert();
-
+    const bloodTypes = ['A', 'B', 'AB', 'O'];
+    const rhesusFactors = ['+', '-'];
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDonor = async () => {
@@ -37,200 +46,217 @@ export default function UpdateDonor() {
         const { name, value } = e.target;
         setDonor((prevDonor) => (prevDonor ? { ...prevDonor, [name]: value } : null));
     };
-    
+    const handleSelectChange = (e: SelectChangeEvent<string>) => {
+        const { name, value } = e.target;
+        setDonor((prevDonor) => (prevDonor ? { ...prevDonor, [name!]: value } : null));
+    };
+
     const handleUpdateDonor = async (): Promise<void> => {
         try {
             if (donor) {
                 await updateDonor(donor);
                 showAlert('Donor updated successfully', 'success');
+                setTimeout(() => {
+                    navigate('/donors-board');
+                }, 5000);
             }
         } catch (error) {
             console.error('Error updating donor:', error);
             showAlert(
                 (error as Error).message || 'Error updating donor.',
                 'error',
-              );
+            );
         }
     };
 
     return (
         <StyledContainer maxWidth="lg">
             <StyledBox>
-                <h1>
-                    {t('donor')} {donor?.userId}
-                </h1>
-                <TextField
-                    name="userId"
-                    label={t('userId')}
-                    value={donor?.userId || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: true,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="firstName"
-                    label={t('firstName')}
-                    value={donor?.firstName || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="surname"
-                    label={t('surname')}
-                    value={donor?.surname || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="phoneNumber"
-                    label={t('phoneNumber')}
-                    value={donor?.phoneNumber || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="sex"
-                    label={t('sex')}
-                    value={donor?.sex || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="dateOfBirth"
-                    label={t('dateOfBirth')}
-                    value={donor?.dateOfBirth || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='date'
-                />
-                <TextField
-                    name="bloodType"
-                    label={t('bloodType')}
-                    value={donor?.bloodType || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="rhesusFactor"
-                    label={t('rhesusFactor')}
-                    value={donor?.rhesusFactor || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                <TextField
-                    name="dateOfLastDonation"
-                    label={t('dateOfLastDonation')}
-                    value={donor?.dateOfLastDonation || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='date'
-                />
-                <TextField
-                    name="countOfDonations"
-                    label={t('countOfDonations')}
-                    value={donor?.countOfDonations || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='number'
-                />
-                <TextField
-                    name="height"
-                    label={t('height')}
-                    value={donor?.height || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='number'
-                />
-                <TextField
-                    name="weight"
-                    label={t('weight')}
-                    value={donor?.weight || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='number'
-                />
-                <TextField
-                    name="city"
-                    label={t('city')}
-                    value={donor?.city || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                        readOnly: false,
-                    }}
-                    type='text'
-                />
-                 <StyledButton onClick={handleUpdateDonor}>
-                    {t('updateDonor')}
-                </StyledButton>
+                <StyledContainer sx={{ width: '100%', mb: 2 }}>
+
+                    <h1>
+                        {t('donor')} {donor?.userId}
+                    </h1>
+                    <TextField
+                        name="userId"
+                        label={t('userId')}
+                        value={donor?.userId || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        type='text'
+                    />
+                    <TextField
+                        name="firstName"
+                        label={t('firstName')}
+                        value={donor?.firstName || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='text'
+                    />
+                    <TextField
+                        name="surname"
+                        label={t('surname')}
+                        value={donor?.surname || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='text'
+                    />
+                    <TextField
+                        name="phoneNumber"
+                        label={t('phoneNumber')}
+                        value={donor?.phoneNumber || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='text'
+                    />
+                    <TextField
+                        name="sex"
+                        label={t('sex')}
+                        value={donor?.sex || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='text'
+                    />
+                    <TextField
+                        name="dateOfBirth"
+                        label={t('dateOfBirth')}
+                        value={donor?.dateOfBirth || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='date'
+                    />
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                        <InputLabel>{t('bloodType')}</InputLabel>
+                        <Select
+                            name="bloodType"
+                            value={donor?.bloodType || ''}
+                            onChange={handleSelectChange}
+                            label={t('bloodType')}
+                        >
+                            {bloodTypes.map((type) => (
+                                <MenuItem key={type} value={type}>
+                                    {type}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                        <InputLabel>{t('rhesusFactor')}</InputLabel>
+                        <Select
+                            name="rhesusFactor"
+                            value={donor?.rhesusFactor || ''}
+                            onChange={handleSelectChange}
+                            label={t('rhesusFactor')}
+                        >
+                            {rhesusFactors.map((factor) => (
+                                <MenuItem key={factor} value={factor}>
+                                    {factor}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <TextField
+                        name="dateOfLastDonation"
+                        label={t('dateOfLastDonation')}
+                        value={donor?.dateOfLastDonation || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='date'
+                    />
+                    <TextField
+                        name="countOfDonations"
+                        label={t('countOfDonations')}
+                        value={donor?.countOfDonations || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='number'
+                    />
+                    <TextField
+                        name="height"
+                        label={t('height')}
+                        value={donor?.height || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='number'
+                    />
+                    <TextField
+                        name="weight"
+                        label={t('weight')}
+                        value={donor?.weight || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='number'
+                    />
+                    <TextField
+                        name="city"
+                        label={t('city')}
+                        value={donor?.city || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        InputProps={{
+                            readOnly: false,
+                        }}
+                        type='text'
+                    />
+                </StyledContainer>
+
+                <Stack spacing={5} direction="row" justifyContent="flex-end">
+                    <StyledButton onClick={handleUpdateDonor}>
+                        {t('updateDonor')}
+                    </StyledButton>
+                </Stack>
                 <AlertMessage
                     message={message}
                     severity={severity}

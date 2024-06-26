@@ -6,7 +6,6 @@ import Header from './components/Header';
 import i18n from './i18n/i18n';
 import Dashboard from './pages/Dashboard';
 import DonorsBoard from './pages/DonorsBoard';
-import SingleDonor from './pages/SingleDonor';
 import { store } from './store/store';
 
 import { StyledWrapper } from './styles/App.styled';
