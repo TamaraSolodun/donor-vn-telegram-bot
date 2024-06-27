@@ -46,7 +46,6 @@ export default function DonorsBoard() {
   return (
     <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>
-        <StyledContainer sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
             <Table
@@ -146,9 +145,8 @@ export default function DonorsBoard() {
               </TableBody>
             </Table>
           </TableContainer>
-        </StyledContainer>
 
-        <Stack spacing={5} direction="row" justifyContent="flex-end">
+        <Stack spacing={5} direction="row" justifyContent="flex-end" marginTop={5} marginBottom={2}>
           <SendDialogs handleSendMessage={handleSendMessage}/>
         </Stack>
 

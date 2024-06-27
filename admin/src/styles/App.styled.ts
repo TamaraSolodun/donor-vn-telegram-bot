@@ -8,17 +8,17 @@ import Select from '@mui/material/Select';
 import { styled } from 'styled-components';
 
 export const StyledContainer = styled(Container)`
-  max-width: 1000px;
+  max-width: 90% !important;
   margin: 40px;
   padding: 20px !important;
   background-color: #ffff;
   border-radius: 24px;
 `;
-export const StyledDialog = styled(Dialog)(({ theme }) => ({
+export const StyledDialog = styled(Dialog)`
   '& .MuiPaper-root': {
     borderRadius: '15px',
   },
-}));
+`;
 
 export const StyledFormControl = styled(FormControl)`
   border-radius: 7px !important;

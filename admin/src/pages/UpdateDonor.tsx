@@ -70,11 +70,11 @@ export default function UpdateDonor() {
     };
 
     return (
-        <StyledContainer maxWidth="lg">
+        <StyledContainer sx={{ width: '60%', mb: 2 }}>
             <StyledBox>
-                <StyledContainer sx={{ width: '100%', mb: 2 }}>
+                <StyledContainer sx={{ width: '90%', mb: 2 }}>
 
-                    <h1>
+                    <h1 >
                         {t('donor')} {donor?.userId}
                     </h1>
                     <TextField
