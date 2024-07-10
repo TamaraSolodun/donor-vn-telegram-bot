@@ -50,16 +50,19 @@ export const StyledWrapper = styled.div`
 export const StyledButton = styled(Button)`
   border-radius: 8px !important;
   line-height: 1.3 !important;
-  background-color: #aba194 !important;
-  color: black !important;
+  background-color: #ffff !important;
+  color: #8c271e !important;
   outline: none !important;
-  border: 0px !important;
+  border: 1px solid #8c271e !important;
   text-transform: inherit !important;
   font-size: 1em !important;
   padding: 8px !important;
   font-weight: 400 !important;
   &:hover {
-    border: 0px !important;
+    border: 1px solid #8c271e !important;
+    color: #ffff !important;
+    background-color: #8c271e !important;
+
   }
 
   .MuiButton-endIcon {

@@ -116,7 +116,7 @@ export default function DonorsBoard() {
                           <TableCell align="left">{donor.bloodType}</TableCell>
                           <TableCell align="left">{donor.rhesusFactor}</TableCell>
                           <TableCell align="left">{donor.dateOfNextDonation}</TableCell>
-                          <TableCell align="left">{donor.willDonate === 'yes' ? 'Yes' : donor.willDonate === 'no' ? 'No' : 'N/A'}</TableCell>
+                          <TableCell align="left">{donor.willDonate === 'yes' ? 'Yes' : donor.willDonate === 'no' ? 'No' : ''}</TableCell>
                           <TableCell align="left">{donor.height}</TableCell>
                           <TableCell align="left">{donor.weight}</TableCell>
                           <TableCell align="left">{donor.city}</TableCell>

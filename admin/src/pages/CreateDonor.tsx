@@ -1,69 +1,60 @@
-import { TextField } from '@mui/material';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { TextField, Stack, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Donor } from '../interfaces/Donor';
-import { getSingleDonor, updateDonor } from '../services/donorsService';
+import { createDonor } from '../services/donorsService';
 
 import { StyledBox, StyledButton, StyledContainer } from '../styles/App.styled';
 import useAlert from '../hooks/useAlert';
 import AlertMessage from '../components/AlertMessage';
 
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Stack from '@mui/material/Stack';
-
-
-export default function UpdateDonor() {
-    const { userId } = useParams();
-    const [donor, setDonor] = useState<Donor | null>(null);
+export default function CreateDonor() {
+    const [donor, setDonor] = useState<Donor>({
+        userId: 0,
+        username: '',
+        firstName: '',
+        surname: '',
+        phoneNumber: '',
+        sex: '',
+        dateOfBirth: '',
+        bloodType: '',
+        rhesusFactor: '',
+        dateOfLastDonation: '',
+        countOfDonations: 0,
+        dateOfNextDonation: '',
+        willDonate: '',
+        height: 0,
+        weight: 0,
+        city: ''
+    });
     const { t } = useTranslation();
     const { message, severity, showAlert, closeAlert } = useAlert();
     const bloodTypes = ['A', 'B', 'AB', 'O'];
     const rhesusFactors = ['+', '-'];
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchDonor = async () => {
-            try {
-                const fetchedDonor: Donor = await getSingleDonor(Number(userId));
-                setDonor(fetchedDonor);
-            } catch (error) {
-                console.error('Error fetching donor:', error);
-            }
-        };
-        if (!Number.isNaN(Number(userId))) {
-            fetchDonor().catch((error) =>
-                console.error('Error handling promise:', error),
-            );
-        }
-    }, [userId]);
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setDonor((prevDonor) => (prevDonor ? { ...prevDonor, [name]: value } : null));
+        setDonor((prevDonor) => ({ ...prevDonor, [name]: value }));
     };
     const handleSelectChange = (e: SelectChangeEvent<string>) => {
         const { name, value } = e.target;
-        setDonor((prevDonor) => (prevDonor ? { ...prevDonor, [name!]: value } : null));
+        setDonor((prevDonor) => ({ ...prevDonor, [name!]: value }));
     };
 
-    const handleUpdateDonor = async (): Promise<void> => {
+    const handleCreateDonor = async (): Promise<void> => {
         try {
-            if (donor) {
-                await updateDonor(donor);
-                showAlert('Donor updated successfully', 'success');
-                setTimeout(() => {
-                    navigate('/donors-board');
-                }, 5000);
-            }
+            await createDonor(donor);
+            showAlert('Donor created successfully', 'success');
+            setTimeout(() => {
+                navigate('/donors-board');
+            }, 5000);
         } catch (error) {
-            console.error('Error updating donor:', error);
+            console.error('Error creating donor:', error);
             showAlert(
-                (error as Error).message || 'Error updating donor.',
+                (error as Error).message || 'Error creating donor.',
                 'error',
             );
         }
@@ -73,27 +64,11 @@ export default function UpdateDonor() {
         <StyledContainer sx={{ width: '60%', mb: 2 }}>
             <StyledBox>
                 <StyledContainer sx={{ width: '90%', mb: 2 }}>
-
-                    <h1 >
-                        {t('donor')} {donor?.userId}
-                    </h1>
-                    <TextField
-                        name="userId"
-                        label={t('userId')}
-                        value={donor?.userId || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        InputProps={{
-                            readOnly: true,
-                        }}
-                        type='text'
-                    />
+                    <h1>{t('createDonor')}</h1>
                     <TextField
                         name="firstName"
                         label={t('firstName')}
-                        value={donor?.firstName || ''}
+                        value={donor.firstName}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -106,7 +81,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="surname"
                         label={t('surname')}
-                        value={donor?.surname || ''}
+                        value={donor.surname}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -119,7 +94,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="phoneNumber"
                         label={t('phoneNumber')}
-                        value={donor?.phoneNumber || ''}
+                        value={donor.phoneNumber}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -132,7 +107,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="sex"
                         label={t('sex')}
-                        value={donor?.sex || ''}
+                        value={donor.sex}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -145,7 +120,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="dateOfBirth"
                         label={t('dateOfBirth')}
-                        value={donor?.dateOfBirth || ''}
+                        value={donor.dateOfBirth}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -159,7 +134,7 @@ export default function UpdateDonor() {
                         <InputLabel>{t('bloodType')}</InputLabel>
                         <Select
                             name="bloodType"
-                            value={donor?.bloodType || ''}
+                            value={donor.bloodType}
                             onChange={handleSelectChange}
                             label={t('bloodType')}
                         >
@@ -174,7 +149,7 @@ export default function UpdateDonor() {
                         <InputLabel>{t('rhesusFactor')}</InputLabel>
                         <Select
                             name="rhesusFactor"
-                            value={donor?.rhesusFactor || ''}
+                            value={donor.rhesusFactor}
                             onChange={handleSelectChange}
                             label={t('rhesusFactor')}
                         >
@@ -188,7 +163,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="dateOfLastDonation"
                         label={t('dateOfLastDonation')}
-                        value={donor?.dateOfLastDonation || ''}
+                        value={donor.dateOfLastDonation}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -201,7 +176,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="countOfDonations"
                         label={t('countOfDonations')}
-                        value={donor?.countOfDonations || ''}
+                        value={donor.countOfDonations}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -214,7 +189,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="dateOfNextDonation"
                         label={t('dateOfNextDonation')}
-                        value={donor?.dateOfNextDonation || ''}
+                        value={donor.dateOfNextDonation}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -227,7 +202,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="height"
                         label={t('height')}
-                        value={donor?.height || ''}
+                        value={donor.height}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -240,7 +215,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="weight"
                         label={t('weight')}
-                        value={donor?.weight || ''}
+                        value={donor.weight}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -253,7 +228,7 @@ export default function UpdateDonor() {
                     <TextField
                         name="city"
                         label={t('city')}
-                        value={donor?.city || ''}
+                        value={donor.city}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
@@ -265,9 +240,9 @@ export default function UpdateDonor() {
                     />
                 </StyledContainer>
 
-                <Stack spacing={5} direction="row" justifyContent="flex-end">
-                    <StyledButton onClick={handleUpdateDonor}>
-                        {t('updateDonor')}
+                <Stack spacing={5} direction="row" justifyContent="flex-end" sx={{ mt: 5, mb: 5 }}>
+                    <StyledButton onClick={handleCreateDonor}>
+                        {t('createDonor')}
                     </StyledButton>
                 </Stack>
                 <AlertMessage

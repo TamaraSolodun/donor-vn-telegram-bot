@@ -1,6 +1,6 @@
 const User = require('../Models/User');
 
-const registerUser = async (request, response) => {
+const loginUser = async (request, response) => {
     try {
         const { username, password } = request.body;
         const user = await User.findOne({ username });
@@ -20,4 +20,4 @@ const registerUser = async (request, response) => {
     }
   }
 
-module.exports = { registerUser };
+module.exports = { loginUser };

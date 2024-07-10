@@ -1,4 +1,5 @@
 const Donor = require('./Models/Donor');
+const { scheduleFollowUpJob } = require('./api/scheduleFollowUpJob');
 const bot = require('./bot');
 const { receiveTextFromBot } = require('./utils');
 
@@ -32,36 +33,54 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
       "'Вінницький обласний центр служби крові' потребує донора крові: " +
       bloodGroup +
       '.\nОчікуємо Вас: ' +
-      dateOfNextDonation + 
+      dateOfNextDonation +
       '!';
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
     console.log('Users retrieved:', users);
 
+    const notFoundUsers = selectedUserIds.filter(id => !users.some(user => user.userId === id));
+    const failedSends = [];
+    const successfulSends = [];
+
     for (const user of users) {
       const { userId } = user;
-      console.log('Sending message to:', userId);
-      await bot.sendMessage(userId, message, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              { text: 'Так', callback_data: `yes:${dateOfNextDonation}` },
-              { text: 'Ні', callback_data: 'no' },
+      try {
+        console.log('Sending message to:', userId);
+        await bot.sendMessage(userId, message, {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: 'Так', callback_data: `yes:${dateOfNextDonation}` },
+                { text: 'Ні', callback_data: 'no' },
+              ],
             ],
-          ],
-        },
-      });
-      console.log('Message sent to:', userId);
+          },
+        });
+        console.log('Message sent to:', userId);
+        successfulSends.push(userId);
+
+      } catch (sendError) {
+        console.error('Error sending message to:', userId, sendError);
+        failedSends.push(userId);
+      }
     }
-    console.log('Messages sent successfully!');
-    //await handleInfoCommand(userId)
-    //await handleContactsCommand(userId)
+
+    console.log('Messages sent successfully to:', successfulSends);
+    if (failedSends.length > 0) {
+      console.error('Failed to send messages to:', failedSends);
+    }
+    if (notFoundUsers.length > 0) {
+      console.error('Users not found:', notFoundUsers);
+    }
+
   } catch (error) {
-    console.error('Error sending messages:', error);
+    console.error('Error handling send messages:', error);
     throw error;
   }
 };
+
 
 const handleRegisterCommand = async (message, chatId) => {
   const existingDonor = await Donor.findOne({ userId: chatId });
@@ -102,21 +121,42 @@ const handleCallbackQuery = async (callbackQuery) => {
   const { data, message } = callbackQuery;
   const chatId = message.chat.id;
 
-  const [response, dateOfNextDonation] = data.split(':');
-  const update = { willDonate: response };
-
-  if (response === 'yes' && dateOfNextDonation) {
-    update.dateOfNextDonation = dateOfNextDonation;
-  } else {
-    update.dateOfNextDonation = null;
-  }
-
   try {
-    await Donor.updateOne({ userId: chatId }, { $set: update });
-    await bot.sendMessage(chatId, 'Дякуємо за вашу відповідь!');
+    if (data.startsWith('yes:') || data.startsWith('no')) {
+      const [response, dateOfNextDonation] = data.split(':');
+      const update = { willDonate: response };
+
+      if (response === 'yes' && dateOfNextDonation) {
+        update.dateOfNextDonation = dateOfNextDonation;
+        scheduleFollowUpJob(chatId, dateOfNextDonation);
+      } else {
+        update.dateOfNextDonation = null;
+      }
+
+      await Donor.updateOne({ userId: chatId }, { $set: update });
+      await bot.sendMessage(chatId, 'Дякуємо за відповідь!');
+      
+    } else if (data.startsWith('confirm:') || data === 'not_confirm') {
+      if (data.startsWith('confirm:')) {
+        const donationDate = new Date(data.split(':')[1]);
+        const formattedDate = `${donationDate.getFullYear()}-${(donationDate.getMonth() + 1).toString().padStart(2, '0')}-${donationDate.getDate().toString().padStart(2, '0')}`;
+        await Donor.findOneAndUpdate(
+          { userId: chatId },
+          {
+            dateOfLastDonation: formattedDate,
+            dateOfNextDonation: null,
+            willDonate: null,
+          }
+        );
+
+        await bot.sendMessage(chatId, 'Дякуємо за підтвердження!');
+      } else if (data === 'not_confirm') {
+        await bot.sendMessage(chatId, 'Дякуємо за відповідь.');
+      }
+    }
   } catch (error) {
-    console.error('Error updating database:', error);
-    throw error;
+    console.error('Error processing callback query:', error);
+    await bot.sendMessage(chatId, 'Error processing your response. Please try again later.');
   }
 };
 
