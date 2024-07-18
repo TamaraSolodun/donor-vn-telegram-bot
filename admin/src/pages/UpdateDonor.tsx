@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Donor } from '../interfaces/Donor';
 import { getSingleDonor, updateDonor } from '../services/donorsService';
 
-import { StyledBox, StyledButton, StyledContainer } from '../styles/App.styled';
+import { StyledBox, StyledButton, StyledContainer, StyledContainerHeader } from '../styles/App.styled';
 import useAlert from '../hooks/useAlert';
 import AlertMessage from '../components/AlertMessage';
 
@@ -71,12 +71,10 @@ export default function UpdateDonor() {
 
     return (
         <StyledContainer sx={{ width: '60%', mb: 2 }}>
-            <StyledBox>
-                <StyledContainer sx={{ width: '90%', mb: 2 }}>
 
-                    <h1 >
+                    <StyledContainerHeader >
                         {t('donor')} {donor?.userId}
-                    </h1>
+                    </StyledContainerHeader>
                     <TextField
                         name="userId"
                         label={t('userId')}
@@ -263,9 +261,8 @@ export default function UpdateDonor() {
                         }}
                         type='text'
                     />
-                </StyledContainer>
 
-                <Stack spacing={5} direction="row" justifyContent="flex-end">
+                <Stack spacing={5} direction="row" justifyContent="flex-end" sx={{mt: 3 }}>
                     <StyledButton onClick={handleUpdateDonor}>
                         {t('updateDonor')}
                     </StyledButton>
@@ -275,7 +272,6 @@ export default function UpdateDonor() {
                     severity={severity}
                     onClose={closeAlert}
                 />
-            </StyledBox>
         </StyledContainer>
     );
 }

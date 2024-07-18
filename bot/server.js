@@ -12,6 +12,7 @@ const { getDonorById } = require('./api/getDonorById.js');
 
 const authRoutes = require('./routes/auth');
 const protectedRoute = require('./routes/protectedRoute');
+const { getLogs } = require('./api/getLogs.js');
 
 mongoose.connect(token.mongoURI, {
     useNewUrlParser: true,
@@ -30,7 +31,7 @@ server.get('/api/donors', getDonors);
 server.get('/api/donors/:userId', getDonorById);
 server.post('/api/sendMessages', sendMessages);
 server.put('/api/donors/:id', updateDonor);
-
+server.get('/api/logs', getLogs);
 
 module.exports = server;
 

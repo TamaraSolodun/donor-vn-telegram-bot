@@ -1,10 +1,8 @@
-import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import donorImage from '../../../admin/assets/10-removebg-preview.png';
 import i18n from '../i18n/i18n';
@@ -31,7 +30,8 @@ const pages = [
 const settings = ['Profile', 'Logout'];
 const languages = ['UA', 'EN'];
 
-function Header() {
+export default function Header() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const language = useAppSelector((state) => state.donors.language);
 
@@ -144,7 +144,7 @@ function Header() {
                 onClick={() => handleNavigateToPage(page.pageRoute)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page.pageName}
+                {t(page.pageName)}
               </Button>
             ))}
           </Box>
@@ -219,4 +219,3 @@ function Header() {
     </AppBar>
   );
 }
-export default Header;

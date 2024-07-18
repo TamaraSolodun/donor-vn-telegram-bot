@@ -5,6 +5,7 @@ import {
   donorListSchema,
   donorSchema,
 } from '../interfaces/Donor';
+import { logMessageListSchema } from '../interfaces/LogMessage';
 
 const apiUrl = 'http://localhost:8000/api';
 
@@ -18,6 +19,17 @@ export const getDonors = async (): Promise<DonorList> => {
   const parsedData = donorListSchema.parse(data);
 
   return parsedData;
+};
+
+export const getLogs = async () => {
+
+  const response = await fetch(`${apiUrl}/logs`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  const logs = await response.json();
+  //const parsedLogs = logMessageListSchema.parse(logs);
+  return logs;
 };
 
 export const getSingleDonor = async (donorId: number): Promise<Donor> => {
@@ -45,11 +57,12 @@ export const sendMessages = async (
       },
       body: JSON.stringify({ selectedUserIds, bloodGroup, dateOfNextDonation }),
     });
+    const responseText = await response.text();
     if (response.ok) {
       console.log('Messages sent successfully!');
     } else {
-      console.error('Failed to send messages:', await response.text());
-      throw new Error(await response.text());
+      console.error('Failed to send messages:', responseText);
+      throw new Error(responseText);
     }
   } catch (error) {
     console.error('Error sending messages:', error);

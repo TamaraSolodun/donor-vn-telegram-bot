@@ -1,4 +1,5 @@
 const Donor = require('./Models/Donor');
+const LogMessage = require('./Models/LogMessage');
 const { scheduleFollowUpJob } = require('./api/scheduleFollowUpJob');
 const bot = require('./bot');
 const { receiveTextFromBot } = require('./utils');
@@ -32,7 +33,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
     const message =
       "'Вінницький обласний центр служби крові' потребує донора крові: " +
       bloodGroup +
-      '.\nОчікуємо Вас: ' +
+      '.\nОчікувати Вас: ' +
       dateOfNextDonation +
       '!';
 
@@ -45,7 +46,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
     const successfulSends = [];
 
     for (const user of users) {
-      const { userId } = user;
+      const { userId, firstName, surname } = user;
       try {
         console.log('Sending message to:', userId);
         await bot.sendMessage(userId, message, {
@@ -60,10 +61,33 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
         });
         console.log('Message sent to:', userId);
         successfulSends.push(userId);
+        
+        await LogMessage.create({
+          userId: userId,
+          firstName: firstName,
+          surname: surname,
+          success: true,
+          message: message,
+          messageType: 'willDonate',
+          messageProps: {
+            bloodGroup,
+            dateOfNextDonation,
+          },
+        });
 
       } catch (sendError) {
         console.error('Error sending message to:', userId, sendError);
         failedSends.push(userId);
+        await LogMessage.create({
+          userId: userId,
+          success: false,
+          message: message,
+          messageType: 'willDonate',
+          messageProps: {
+            bloodGroup,
+            dateOfNextDonation,
+          },
+        });
       }
     }
 

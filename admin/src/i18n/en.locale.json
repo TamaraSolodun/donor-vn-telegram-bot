@@ -2,6 +2,8 @@
   "welcomeToAdmin": "Welcome to administrator page",
   "selected": "Selected",
   "donors": "Donors",
+  "Donors": "Donors",
+  "Dashboard": "Dashboard",
   "APlus": "A+",
   "AMinus": "A-",
   "BPlus": "B+",
@@ -30,5 +32,10 @@
   "dateOfLastDonation": "Last Donation",
   "dateOfNextDonation": "Next Donation",
   "countOfDonations": "Donations",
-  "willDonate": "Confirm"
+  "willDonate": "Confirm",
+  "lastMessages": "History of sent messages",
+  "logMessageSent": "Message: ",
+  "logMessageSentTo": "Donor: ",
+  "logMessageTimeStamp": "Time: ",
+  "resendMessage": "Resend"
 }

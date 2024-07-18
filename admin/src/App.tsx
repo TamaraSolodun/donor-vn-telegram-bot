@@ -10,6 +10,7 @@ import { store } from './store/store';
 
 import { StyledWrapper } from './styles/App.styled';
 import UpdateDonor from './pages/UpdateDonor';
+import LogsHistory from './pages/LogsHistory';
 
 export const App = () => (
   <BrowserRouter>
@@ -21,6 +22,7 @@ export const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/donors-board" element={<DonorsBoard />} />
             <Route path="/donors-board/:userId" element={<UpdateDonor />} />
+            <Route path="/logs" element={<LogsHistory />} />
           </Routes>
         </StyledWrapper>
       </I18nextProvider>

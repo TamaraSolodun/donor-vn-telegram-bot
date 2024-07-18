@@ -2,6 +2,8 @@
     "welcomeToAdmin": "Вітаємо на сторінці адміністратора",
     "selected": "Вибрано",
     "donors": "Донори",
+    "Donors": "Донори",
+    "Dashboard": "Головна",
     "APlus": "A+",
     "AMinus": "A-",
     "BPlus": "B+",
@@ -30,5 +32,10 @@
     "dateOfLastDonation": "Остання донація",
     "dateOfNextDonation": "Наступна донація",
     "countOfDonations": "К-сть донацій",
-    "willDonate": "Підтвердження"
+    "willDonate": "Підтвердження",
+    "lastMessages": "Історія надісланих повідомлень",
+    "logMessageSent": "Повідомлення: ",
+    "logMessageSentTo": "Донор: ",
+    "logMessageTimeStamp": "Час: ",
+    "resendMessage": "Надіслати ще раз"
 }

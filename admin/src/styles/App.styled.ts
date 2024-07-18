@@ -4,13 +4,14 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Card from '@mui/material/Card';
 
 import { styled } from 'styled-components';
 
 export const StyledContainer = styled(Container)`
   max-width: 90% !important;
   margin: 40px;
-  padding: 20px !important;
+  padding: 40px !important;
   background-color: #ffff;
   border-radius: 24px;
 `;
@@ -69,3 +70,14 @@ export const StyledButton = styled(Button)`
     margin-right: 0px !important;  
   }
 `;
+
+export const StyledGridCard = styled(Card)`
+  max-height: 250px !important;
+  height: 100% !important;
+`;
+
+export const StyledContainerHeader = styled.h2(() => ({
+  color: '#8c271e',
+  padding: '20px 0',
+  textAlign: 'center',
+}));
