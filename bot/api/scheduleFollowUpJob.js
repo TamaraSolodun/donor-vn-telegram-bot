@@ -32,6 +32,8 @@ const scheduleFollowUpJob = (userId, dateOfNextDonation) => {
                 console.log(`Sent follow-up message to user ${donor.userId}.`);
                 await LogMessage.create({
                     userId: userId,
+                    firstName: donor.firstName,
+                    surname: donor.surname,
                     success: true,
                     message: message,
                     messageType: 'confirmDonate',
@@ -43,6 +45,8 @@ const scheduleFollowUpJob = (userId, dateOfNextDonation) => {
                 console.error(`Donor with userId ${userId} not found.`);
                 await LogMessage.create({
                     userId: userId,
+                    firstName: donor.firstName,
+                    surname: donor.surname,
                     success: false,
                     message: message,
                     messageType: 'confirmDonate',
@@ -55,6 +59,8 @@ const scheduleFollowUpJob = (userId, dateOfNextDonation) => {
             console.error('Error sending follow-up message:', error);
             await LogMessage.create({
                 userId: userId,
+                firstName: donor.firstName,
+                surname: donor.surname,
                 success: false,
                 message: message,
                 messageType: 'confirmDonate',

@@ -35,7 +35,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
       bloodGroup +
       '.\nОчікувати Вас: ' +
       dateOfNextDonation +
-      '!';
+      '?';
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
