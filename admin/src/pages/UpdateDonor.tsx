@@ -9,6 +9,8 @@ import { getSingleDonor, updateDonor } from '../services/donorsService';
 import { StyledBox, StyledButton, StyledContainer, StyledContainerHeader } from '../styles/App.styled';
 import useAlert from '../hooks/useAlert';
 import AlertMessage from '../components/AlertMessage';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -55,7 +57,7 @@ export default function UpdateDonor() {
         try {
             if (donor) {
                 await updateDonor(donor);
-                showAlert('Donor updated successfully', 'success');
+                showAlert(t('successUpdateDonor'), 'success');
                 setTimeout(() => {
                     navigate('/donors-board');
                 }, 5000);
@@ -63,18 +65,19 @@ export default function UpdateDonor() {
         } catch (error) {
             console.error('Error updating donor:', error);
             showAlert(
-                (error as Error).message || 'Error updating donor.',
+                (error as Error).message || t('failedUpdateDonor'),
                 'error',
             );
         }
     };
 
     return (
-        <StyledContainer sx={{ width: '60%', mb: 2 }}>
-
-                    <StyledContainerHeader >
-                        {t('donor')} {donor?.userId}
-                    </StyledContainerHeader>
+        <StyledContainer sx={{ width: '80%', mb: 2 }}>
+            <StyledContainerHeader>
+                {t('donor')} {donor?.userId}
+            </StyledContainerHeader>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         name="userId"
                         label={t('userId')}
@@ -96,9 +99,6 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='text'
                     />
                     <TextField
@@ -109,9 +109,6 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='text'
                     />
                     <TextField
@@ -122,9 +119,6 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='text'
                     />
                     <TextField
@@ -135,24 +129,20 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='text'
                     />
                     <TextField
                         name="dateOfBirth"
                         label={t('dateOfBirth')}
-                        value={donor?.dateOfBirth || ''}
+                        value={donor?.dateOfBirth || ' '}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='date'
                     />
+                </Grid>
+                <Grid item xs={12} md={6}>
                     <FormControl fullWidth variant="outlined" margin="normal">
                         <InputLabel>{t('bloodType')}</InputLabel>
                         <Select
@@ -186,14 +176,11 @@ export default function UpdateDonor() {
                     <TextField
                         name="dateOfLastDonation"
                         label={t('dateOfLastDonation')}
-                        value={donor?.dateOfLastDonation || ''}
+                        value={donor?.dateOfLastDonation || ' '}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='date'
                     />
                     <TextField
@@ -204,22 +191,16 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='number'
                     />
                     <TextField
                         name="dateOfNextDonation"
                         label={t('dateOfNextDonation')}
-                        value={donor?.dateOfNextDonation || ''}
+                        value={donor?.dateOfNextDonation || ' '}
                         onChange={handleChange}
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='date'
                     />
                     <TextField
@@ -230,9 +211,6 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='number'
                     />
                     <TextField
@@ -243,9 +221,6 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='number'
                     />
                     <TextField
@@ -256,22 +231,20 @@ export default function UpdateDonor() {
                         fullWidth
                         variant="outlined"
                         margin="normal"
-                        InputProps={{
-                            readOnly: false,
-                        }}
                         type='text'
                     />
-
-                <Stack spacing={5} direction="row" justifyContent="flex-end" sx={{mt: 3 }}>
-                    <StyledButton onClick={handleUpdateDonor}>
-                        {t('updateDonor')}
-                    </StyledButton>
-                </Stack>
-                <AlertMessage
-                    message={message}
-                    severity={severity}
-                    onClose={closeAlert}
-                />
+                </Grid>
+            </Grid>
+            <Stack spacing={5} direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                <StyledButton onClick={handleUpdateDonor}>
+                    {t('updateDonor')}
+                </StyledButton>
+            </Stack>
+            <AlertMessage
+                message={message}
+                severity={severity}
+                onClose={closeAlert}
+            />
         </StyledContainer>
     );
 }

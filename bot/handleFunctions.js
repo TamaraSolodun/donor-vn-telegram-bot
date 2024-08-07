@@ -2,7 +2,47 @@ const Donor = require('./Models/Donor');
 const LogMessage = require('./Models/LogMessage');
 const { scheduleFollowUpJob } = require('./api/scheduleFollowUpJob');
 const bot = require('./bot');
+const twilio = require('twilio');
+const token = require('./config.js');
+
 const { receiveTextFromBot } = require('./utils');
+
+const accountSid = token.accountSidTwilio;
+const authToken = token.authTokenTwilio;
+const twilioClient = new twilio(accountSid, authToken);
+
+const handleInviteDonor = async (phoneNumber, message = "Реєструйтесь у телеграм боті 'Вінницького центру служби крові' для швидшого отримання повідомлень про потребу донорів! Посилання: https://t.me/vn_donor_bot") => {
+  try {
+    const result = await twilioClient.messages.create({
+      body: message,
+      from: '+19787234018',
+      to: phoneNumber
+    });
+    console.log(`Invite sent with SID: ${result.sid}`);
+    await LogMessage.create({
+      userId: 'unknown',
+      firstName: 'unknown',
+      surname: 'unknown',
+      success: true,
+      message: message,
+      messageType: 'inviteDonor',
+      messageProps: {},
+    });
+    return result.sid;
+  } catch (error) {
+    console.error('Error sending invite:', error);
+    await LogMessage.create({
+      userId: 'unknown',
+      firstName: 'unknown',
+      surname: 'unknown',
+      success: false,
+      message: message,
+      messageType: 'inviteDonor',
+      messageProps: {},
+    });
+    throw error;
+  }
+};
 
 const handleStartCommand = (chatId) => {
   bot.sendMessage(
@@ -21,12 +61,24 @@ const handleInfoCommand = (chatId) => {
 const handleContactsCommand = async (chatId) => {
   await bot.sendMessage(
     chatId,
-    "Сторінки в соцмережах : \nhttps://www.facebook.com/donorvn/ \nhttps://www.instagram.com/vinnytsia_bloodservice/ \n\nГрафік роботи: \n🔹Понеділок - п'ятниця з 8:00 до 15:00 \n🔹Субота з з 8:00 до 13:00 \n🔹Неділя - вихідний \n\n☎️ Контакти: +380432551575, +380674920034\n\n📍 Адреса: вул. Пирогова 48, м.Вінниця, 21018",
+    "Сторінки в соцмережах : \nhttps://www.facebook.com/donorvn/ \nhttps://www.instagram.com/vinnytsia_bloodservice/ \n\nГрафік роботи: \n🔹Понеділок - п'ятниця з 8:00 до 15:00 \n🔹Субота з з 8:00 до 14:00 \n🔹Неділя - вихідний \n\n☎️ Контакти: +380432551575, +380674920034\n\n📍 Адреса: вул. Пирогова 48, м.Вінниця, 21018",
   );
   await bot.sendLocation(chatId, 49.228_778_751_590_59, 28.450_781_729_447_773);
 };
 
-const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation) => {
+const handlePartnersCommand = async (chatId) => {
+  const imagePath = 'images/1.PNG';
+
+  bot.sendPhoto(chatId, imagePath, { caption: 'Партнери та подаруночки донорам' })
+    .then(() => {
+      console.log('Image sent successfully');
+    })
+    .catch(err => {
+      console.error('Error sending image:', err);
+    });
+};
+
+const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation, notes) => {
   try {
     console.log('Selected User IDs:', selectedUserIds);
 
@@ -35,7 +87,8 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
       bloodGroup +
       '.\nОчікувати Вас: ' +
       dateOfNextDonation +
-      '?';
+      '?' +
+      '\nПримітка: ' + notes;
 
     const users = await Donor.find({ userId: { $in: selectedUserIds } });
 
@@ -61,7 +114,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
         });
         console.log('Message sent to:', userId);
         successfulSends.push(userId);
-        
+
         await LogMessage.create({
           userId: userId,
           firstName: firstName,
@@ -72,6 +125,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
           messageProps: {
             bloodGroup,
             dateOfNextDonation,
+            notes
           },
         });
 
@@ -86,6 +140,7 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
           messageProps: {
             bloodGroup,
             dateOfNextDonation,
+            notes
           },
         });
       }
@@ -159,7 +214,7 @@ const handleCallbackQuery = async (callbackQuery) => {
 
       await Donor.updateOne({ userId: chatId }, { $set: update });
       await bot.sendMessage(chatId, 'Дякуємо за відповідь!');
-      
+
     } else if (data.startsWith('confirm:') || data === 'not_confirm') {
       if (data.startsWith('confirm:')) {
         const donationDate = new Date(data.split(':')[1]);
@@ -174,6 +229,8 @@ const handleCallbackQuery = async (callbackQuery) => {
         );
 
         await bot.sendMessage(chatId, 'Дякуємо за підтвердження!');
+        await handlePartnersCommand(userId);
+
       } else if (data === 'not_confirm') {
         await bot.sendMessage(chatId, 'Дякуємо за відповідь.');
       }
@@ -192,4 +249,6 @@ module.exports = {
   handleStartCommand,
   handleSendMessage,
   handleCallbackQuery,
+  handleInviteDonor,
+  handlePartnersCommand
 };

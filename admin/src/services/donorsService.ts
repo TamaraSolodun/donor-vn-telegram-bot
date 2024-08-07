@@ -48,6 +48,7 @@ export const sendMessages = async (
   selectedUserIds: number[],
   bloodGroup: string,
   dateOfNextDonation: string,
+  notes: string,
 ): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/sendMessages`, {
@@ -55,7 +56,7 @@ export const sendMessages = async (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ selectedUserIds, bloodGroup, dateOfNextDonation }),
+      body: JSON.stringify({ selectedUserIds, bloodGroup, dateOfNextDonation, notes }),
     });
     const responseText = await response.text();
     if (response.ok) {
@@ -92,10 +93,49 @@ export const updateDonor = async (updatedDonor: Donor): Promise<void> => {
   }
 };
 
-export const changeLanguageHandler = async (lang: string | undefined) => {
+export const deleteDonor = async (userId: number): Promise<void> => {
   try {
-    await i18n.changeLanguage(lang === 'EN' ? 'UA' : 'EN');
+    const response = await fetch(`${apiUrl}/donors/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      console.log('Donor deleted successfully!');
+    } else {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    console.error('Error changing language:', error);
+    console.error('Error deleting donor:', error);
+    throw error;
+  }
+};
+
+
+export const inviteDonor = async (
+  phoneNumber: string,
+  message: string
+): Promise<void> => {
+  try {
+    const response = await fetch(`${apiUrl}/inviteDonor`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ phoneNumber, message }),
+    });
+    const responseText = await response.text();
+    if (response.ok) {
+      console.log('Invite sent successfully!');
+    } else {
+      console.error('Failed to send invite:', responseText);
+      throw new Error(responseText);
+    }
+  } catch (error) {
+    console.error('Error sending invite:', error);
+    throw error;
   }
 };

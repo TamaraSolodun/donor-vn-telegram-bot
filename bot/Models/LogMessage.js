@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const LogMessageSchema = new mongoose.Schema({
   userId: { type: String, required: true },
-  firstName: {type: String, required: true},
-  surname: {type: String, required: true},
+  firstName: { type: String, required: true },
+  surname: { type: String, required: true },
   success: { type: Boolean, required: true },
   timestamp: { type: Date, default: Date.now },
   message: { type: String, required: true },
@@ -11,6 +11,7 @@ const LogMessageSchema = new mongoose.Schema({
   messageProps: {
     bloodGroup: { type: String, required: false },
     dateOfNextDonation: { type: String, required: false },
+    notes: { type: String, required: false }
   },
 });
 

@@ -194,6 +194,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
           </TableCell>
         ))}
         <TableCell padding="checkbox"></TableCell>
+        <TableCell padding="checkbox"></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -206,6 +207,8 @@ export interface EnhancedTableToolbarProps {
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
   const { t } = useTranslation();
+
+
   return (
     <Toolbar
       sx={{
@@ -239,13 +242,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {t('donors')}
         </Typography>
       )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
+      {numSelected > 0 ? <></>: (
         <Tooltip title="Filter list">
           <IconButton>
             <FilterListIcon />

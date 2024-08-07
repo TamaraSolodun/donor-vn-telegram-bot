@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { getComparator, Order, stableSort } from '../components/EnhancedTable';
 import { Donor, DonorList } from '../interfaces/Donor';
-import { sendMessages } from '../services/donorsService';
+import { deleteDonor, sendMessages } from '../services/donorsService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getDonorsThunk } from '../store/thunk/donors';
 
 import useAlert from './useAlert';
+import { useTranslation } from 'react-i18next';
 
 const useDonorsBoard = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ const useDonorsBoard = () => {
 
   const donorsData = useAppSelector((state) => state.donors.donors);
   const [donors, setDonors] = useState<DonorList>([]);
-
+  const { t } = useTranslation();
   const { message, severity, showAlert, closeAlert } = useAlert();
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const useDonorsBoard = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  
+
   const isDisabledCheckbox = (dateOfLastDonation: string | null, countOfDonations: number | null) => {
     if (!dateOfLastDonation) return false;
     const lastDonationDate = new Date(dateOfLastDonation);
@@ -102,6 +103,23 @@ const useDonorsBoard = () => {
     setPage(newPage);
   };
 
+  const handleDelete = async (id: number): Promise<void> => {
+    try {
+        if (window.confirm(t('confirmDeleteAlert'))) {
+          await deleteDonor(id);
+          showAlert(t('successDeleteDonor'), 'success');
+          setTimeout(() => {
+            navigate('/donors-board');
+          }, 5000);
+        }
+    } catch (error) {
+      console.error('Error deleting donor:', error);
+      showAlert(
+        (error as Error).message || t('failedDeleteDonor'),
+        'error',
+      );
+    }
+  };
   const isSelected = (id: number) => selected.includes(id);
 
   const emptyRows =
@@ -116,17 +134,17 @@ const useDonorsBoard = () => {
     [order, orderBy, page, rowsPerPage, donors],
   );
 
-  const handleSendMessage = async (bloodGroup: string, dateOfNextDonation: string): Promise<void> => {
+  const handleSendMessage = async (bloodGroup: string, dateOfNextDonation: string, notes: string): Promise<void> => {
     try {
-      await sendMessages(selected, bloodGroup, dateOfNextDonation);
+      await sendMessages(selected, bloodGroup, dateOfNextDonation, notes);
       const selectedDonors = donors.filter(donor => selected.includes(donor.userId));
       const selectedNames = selectedDonors.map(donor => `${donor.firstName} ${donor.surname}`).join(', ');
-      showAlert(`Messages sent successfully to: ${selectedNames}!`, 'success');
+      showAlert(`${t('successMessageSentToAlert')} ${selectedNames}!`, 'success');
 
     } catch (error) {
       console.error('Error handling send messages:', error);
       showAlert(
-        (error as Error).message || 'Failed to send messages.',
+        (error as Error).message || t('failedMessageSentToAlert'),
         'error',
       );
     }
@@ -151,6 +169,7 @@ const useDonorsBoard = () => {
     severity,
     closeAlert,
     isDisabledCheckbox,
+    handleDelete
   };
 };
 

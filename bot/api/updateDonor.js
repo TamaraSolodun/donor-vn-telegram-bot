@@ -6,7 +6,7 @@ const updateDonor = async (request, response) => {
     const donorUpdates = request.body;
 
     const updatedDonor = await Donor.findOneAndUpdate({ userId: donorId }, donorUpdates, { new: true });
-
+    console.log('Update id:', { userId: donorId })
     if (!updatedDonor) {
       return response.status(404).send('Donor not found');
     }

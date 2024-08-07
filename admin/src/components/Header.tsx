@@ -1,6 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -9,13 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import donorImage from '../../../admin/assets/10-removebg-preview.png';
 import i18n from '../i18n/i18n';
-import { useAppSelector } from '../store/store';
 import { StyledAppBarContainer } from '../styles/Header.styled';
 const pages = [
   {
@@ -27,27 +25,23 @@ const pages = [
     pageRoute: 'donors-board',
   },
 ];
-const settings = ['Profile', 'Logout'];
 const languages = ['UA', 'EN'];
 
 export default function Header() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const language = useAppSelector((state) => state.donors.language);
+  const savedLanguage = localStorage.getItem('language') || 'UA';
+  const [language, setLanguage] = useState(savedLanguage);
 
   const [anchorElementNav, setAnchorElementNav] = useState<null | HTMLElement>(
     null,
   );
-  const [anchorElementUser, setAnchorElementUser] =
-    useState<null | HTMLElement>(null);
+
   const [anchorElementLanguage, setAnchorElementLanguage] =
     useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElementNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElementUser(event.currentTarget);
   };
 
   const handleOpenLanguageMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -56,10 +50,6 @@ export default function Header() {
 
   const handleCloseNavMenu = () => {
     setAnchorElementNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElementUser(null);
   };
 
   const handleCloseLanguageMenu = () => {
@@ -72,9 +62,20 @@ export default function Header() {
   };
 
   const handleLanguageChange = async (newLanguage: string) => {
-    await i18n.changeLanguage(newLanguage);
-    console.log(newLanguage);
+    try {
+      await i18n.changeLanguage(newLanguage);
+      localStorage.setItem('language', newLanguage);
+      console.log(newLanguage);
+      setLanguage(newLanguage);
+    } catch (error) {
+      console.error('Error changing language:', error);
+    }
+    handleCloseLanguageMenu();
   };
+  
+  useEffect(() => {
+    setLanguage(savedLanguage);
+  }, [savedLanguage]);
 
   return (
     <AppBar position="static">
@@ -149,35 +150,6 @@ export default function Header() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElementUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElementUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Change language">
               <Button

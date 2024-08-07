@@ -17,10 +17,12 @@ const resources = {
   },
 };
 
+const savedLanguage = localStorage.getItem('language') || 'UA';
+
 // eslint-disable-next-line import/no-named-as-default-member
 void i18n.use(initReactI18next).init({
   resources,
-  lng: 'UA',
+  lng: savedLanguage,
   fallbackLng: 'EN',
   interpolation: {
     escapeValue: false,

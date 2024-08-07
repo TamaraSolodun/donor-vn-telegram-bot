@@ -12,5 +12,7 @@ const donorCommands = [
     description: 'Контакти і місцерозташування центру',
   },
   { command: '/registration', description: 'Зареєструватись' },
+  { command: '/partners', description: 'Партнери та подарунки' },
+
 ];
 module.exports = { donorCommands, receiveTextFromBot };

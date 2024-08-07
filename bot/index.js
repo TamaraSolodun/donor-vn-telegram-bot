@@ -5,6 +5,7 @@ const {
   handleRegisterCommand,
   handleStartCommand,
   handleCallbackQuery,
+  handlePartnersCommand,
 } = require('./handleFunctions.js');
 
 const { donorCommands } = require('./utils.js');
@@ -34,6 +35,11 @@ const start = async () => {
         case '/contacts': {
           await handleContactsCommand(chatId);
 
+          break;
+        }
+        case '/partners': {
+          await handlePartnersCommand(chatId);
+          
           break;
         }
         default: {

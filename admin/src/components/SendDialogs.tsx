@@ -10,14 +10,13 @@ import MenuItem from '@mui/material/MenuItem';
 import { TextField } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { StyledButton, StyledDialog, StyledFormControl } from '../styles/App.styled';
+import Typography from '@mui/material/Typography';
 
 interface SendDialogsProps {
-  handleSendMessage: (bloodGroup: string, dateOfNextDonation: string) => Promise<void>;
+  handleSendMessage: (bloodGroup: string, dateOfNextDonation: string, notes: string) => Promise<void>;
 }
 
 export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
@@ -25,6 +24,8 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
   const { t } = useTranslation();
   const [bloodGroup, setBloodGroup] = useState('');
   const [dateOfNextDonation, setDateOfNextDonation] = useState('');
+  const [notes, setNotes] = useState('');
+  const [messagePreview, setMessagePreview] = useState('');
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setBloodGroup(event.target.value as string);
@@ -34,12 +35,30 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
     setDateOfNextDonation(event.target.value);
   };
 
+  const handleNotesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNotes(event.target.value);
+  };
+
+  useEffect(() => {
+    setMessagePreview(
+      `\n'Вінницький обласний центр служби крові' потребує донора крові: ${bloodGroup}
+      Очікувати Вас: ${dateOfNextDonation} ?
+      Примітка: ${notes};`
+    );
+  }, [bloodGroup, dateOfNextDonation, notes]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSendClick = () => {
+    if (window.confirm(t('confirmSendMessageAlert'))) {
+      void handleSendMessage(bloodGroup, dateOfNextDonation, notes);
+    }
   };
 
   return (
@@ -49,7 +68,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         onClick={handleClickOpen}
         endIcon={<SendIcon />}
       >
-        {t('sendMessage')}
+        {t('inviteDonorsMessageTitle')}
       </StyledButton>
       <StyledDialog
         onClose={handleClose}
@@ -57,7 +76,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          {t('sendMessage')}
+          {t('inviteDonorsMessageTitle')}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -72,8 +91,8 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
         </IconButton>
         <DialogContent dividers>
           <Box sx={{ minWidth: 400 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <StyledFormControl sx={{ width: '100%', marginRight: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <StyledFormControl sx={{ width: '100%', marginBottom: 2 }}>
                 <InputLabel id="demo-simple-select-label">
                   {t('bloodGroupLabel')}
                 </InputLabel>
@@ -93,31 +112,42 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
                   <MenuItem value="O+">{t('OPlus')}</MenuItem>
                   <MenuItem value="O-">{t('OMinus')}</MenuItem>
                 </Select>
-                <TextField
-                  name="dateOfNextDonation"
-                  label=""
-                  value={dateOfNextDonation}
-                  onChange={handleDateChange}
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  InputProps={{
-                    readOnly: false,
-                  }}
-                  type='date'
-                />
               </StyledFormControl>
-            </Box>
+              <TextField
+                name="dateOfNextDonation"
+                label=""
+                value={dateOfNextDonation}
+                onChange={handleDateChange}
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                InputProps={{
+                  readOnly: false,
+                }}
+                type='date'
+              />
+              <TextField
+                name="notes"
+                label="Примітка:"
+                value={notes}
+                onChange={handleNotesChange}
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                InputProps={{
+                  readOnly: false,
+                }}
+              />
 
+              <Typography variant="body2" sx={{ marginTop: 2, whiteSpace: 'pre-line', fontSize: '0.875rem' }}>
+                {'Повідомлення, що буде надіслано:\n'} 
+                {messagePreview}
+              </Typography>
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
-          <StyledButton
-            onClick={() => {
-              void handleSendMessage(bloodGroup, dateOfNextDonation);
-              handleClose();
-            }}
-          >
+          <StyledButton onClick={handleSendClick}>
             {t('confirmSendMessage')}
           </StyledButton>
         </DialogActions>
