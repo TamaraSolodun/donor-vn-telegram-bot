@@ -11,7 +11,8 @@ const LogMessageSchema = new mongoose.Schema({
   messageProps: {
     bloodGroup: { type: String, required: false },
     dateOfNextDonation: { type: String, required: false },
-    notes: { type: String, required: false }
+    notes: { type: String, required: false },
+    phoneNumber: { type: String, required: false }
   },
 });
 

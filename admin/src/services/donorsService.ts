@@ -71,6 +71,31 @@ export const sendMessages = async (
   }
 };
 
+export const confirmDonation = async (
+  userId: number,
+  dateOfNextDonation: string
+): Promise<void> => {
+  try {
+    const response = await fetch(`${apiUrl}/confirmDonation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, dateOfNextDonation }),
+    });
+    const responseText = await response.text();
+    if (response.ok) {
+      console.log('Messages sent successfully!');
+    } else {
+      console.error('Failed to send messages:', responseText);
+      throw new Error(responseText);
+    }
+  } catch (error) {
+    console.error('Error sending messages:', error);
+    throw error;
+  }
+};
+
 export const updateDonor = async (updatedDonor: Donor): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/donors/${updatedDonor.userId}`, {

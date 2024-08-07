@@ -26,7 +26,9 @@ const handleInviteDonor = async (phoneNumber, message = "Реєструйтес�
       success: true,
       message: message,
       messageType: 'inviteDonor',
-      messageProps: {},
+      messageProps: {
+        phoneNumber: phoneNumber
+      },
     });
     return result.sid;
   } catch (error) {
@@ -38,7 +40,9 @@ const handleInviteDonor = async (phoneNumber, message = "Реєструйтес�
       success: false,
       message: message,
       messageType: 'inviteDonor',
-      messageProps: {},
+      messageProps: {
+        phoneNumber: phoneNumber
+      },
     });
     throw error;
   }
@@ -161,6 +165,67 @@ const handleSendMessage = async (selectedUserIds, bloodGroup, dateOfNextDonation
 };
 
 
+const handleConfirmDonation = async (userId, dateOfNextDonation) => {
+  const donor = await Donor.findOne({ userId: userId });
+    try {
+      console.log(`Executing follow-up job for user ${userId}`);
+      
+      if (donor) {
+        const message = `Добрий день! Чи відвідали Ви центр служби крові ${dateOfNextDonation}?`;
+
+        await bot.sendMessage(donor.userId, message, {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: 'Так', callback_data: `confirm:${dateOfNextDonation}` },
+                { text: 'Ні', callback_data: 'not_confirm' },
+              ],
+            ],
+          },
+        });
+
+        console.log(`Sent follow-up message to user ${donor.userId}.`);
+        await LogMessage.create({
+          userId: userId,
+          firstName: donor.firstName,
+          surname: donor.surname,
+          success: true,
+          message: message,
+          messageType: 'confirmDonate',
+          messageProps: {
+            dateOfNextDonation,
+          },
+        });
+      } else {
+        console.error(`Donor with userId ${userId} not found.`);
+        await LogMessage.create({
+          userId: userId,
+          firstName: donor.firstName,
+          surname: donor.surname,
+          success: false,
+          message: message,
+          messageType: 'confirmDonate',
+          messageProps: {
+            dateOfNextDonation,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Error sending follow-up message:', error);
+      await LogMessage.create({
+        userId: userId,
+        firstName: donor.firstName,
+        surname: donor.surname,
+        success: false,
+        message: message,
+        messageType: 'confirmDonate',
+        messageProps: {
+          dateOfNextDonation,
+        },
+      });
+    }
+  }
+
 const handleRegisterCommand = async (message, chatId) => {
   const existingDonor = await Donor.findOne({ userId: chatId });
   if (existingDonor) {
@@ -199,6 +264,7 @@ const handleRegisterCommand = async (message, chatId) => {
 const handleCallbackQuery = async (callbackQuery) => {
   const { data, message } = callbackQuery;
   const chatId = message.chat.id;
+  const messageId = message.message_id;
 
   try {
     if (data.startsWith('yes:') || data.startsWith('no')) {
@@ -211,7 +277,7 @@ const handleCallbackQuery = async (callbackQuery) => {
       } else {
         update.dateOfNextDonation = null;
       }
-
+      await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
       await Donor.updateOne({ userId: chatId }, { $set: update });
       await bot.sendMessage(chatId, 'Дякуємо за відповідь!');
 
@@ -227,11 +293,12 @@ const handleCallbackQuery = async (callbackQuery) => {
             willDonate: null,
           }
         );
-
+        await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
         await bot.sendMessage(chatId, 'Дякуємо за підтвердження!');
         await handlePartnersCommand(userId);
 
       } else if (data === 'not_confirm') {
+        await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
         await bot.sendMessage(chatId, 'Дякуємо за відповідь.');
       }
     }
@@ -250,5 +317,6 @@ module.exports = {
   handleSendMessage,
   handleCallbackQuery,
   handleInviteDonor,
-  handlePartnersCommand
+  handlePartnersCommand,
+  handleConfirmDonation
 };

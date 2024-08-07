@@ -15,6 +15,7 @@ const protectedRoute = require('./routes/protectedRoute');
 const { getLogs } = require('./api/getLogs.js');
 const { inviteDonor } = require('./api/inviteDonor.js');
 const { deleteDonor } = require('./api/deleteDonor.js');
+const { confirmDonation } = require('./api/confirmDonation.js');
 
 mongoose.connect(token.mongoURI, {
     useNewUrlParser: true,
@@ -32,6 +33,7 @@ server.use('/protected', protectedRoute);
 server.get('/api/donors', getDonors);
 server.get('/api/donors/:userId', getDonorById);
 server.post('/api/sendMessages', sendMessages);
+server.post('/api/confirmDonation', confirmDonation);
 server.put('/api/donors/:id', updateDonor);
 server.get('/api/logs', getLogs);
 server.post('/api/inviteDonor', inviteDonor);

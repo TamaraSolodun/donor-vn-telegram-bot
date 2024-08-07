@@ -41,6 +41,7 @@ export default function DonorsBoard() {
     closeAlert,
     isDisabledCheckbox,
     handleDelete,
+    t
   } = useDonorsBoard();
   
   return (
@@ -73,7 +74,7 @@ export default function DonorsBoard() {
                     <Tooltip
                       title={
                         disabled
-                          ? 'Donation can be only after 60 days and count of them not more than 6'
+                          ? t('donationNotRecommendedTooltip')
                           : ''
                       }
                       placement="top"

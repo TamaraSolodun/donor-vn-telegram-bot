@@ -52,5 +52,9 @@
   "messageTextLabel": "Message",
   "successDeleteDonor": "Donor deleted successfully!",
   "failedDeleteDonor": "Error deleting donor.",
-  "confirmDeleteAlert": "Are you sure, you want to delete donor?"
+  "confirmDeleteAlert": "Are you sure, you want to delete donor?",
+  "donationNotRecommendedTooltip": "Donation not recommended after 60 days and count of them not more than 6",
+  "resendMessageConfirm": "Are you sure you want to repeat sending this message?",
+  "successSent": "Successfully sent message",
+  "failedSent": "Failed sending message"
 }

@@ -6,7 +6,7 @@ import AlertMessage from '../components/AlertMessage';
 import useDashboard from '../hooks/useDashboard';
 import Box from '@mui/material/Box';
 import { StyledContainer } from '../styles/App.styled';
-import LogMessage from '../components/LogMessage';
+import LogMessageRow from '../components/LogMessage';
 
 
 export default function LogsHistory() {
@@ -23,7 +23,7 @@ export default function LogsHistory() {
         {loading ? (
             <h2>{t('loading')}</h2>
           ) : (
-            <LogMessage logs={logs} showDetails={true}/>
+            <LogMessageRow logs={logs} showDetails={true}/>
           )}
         <AlertMessage
           message={message}

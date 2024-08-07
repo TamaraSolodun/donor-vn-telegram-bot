@@ -12,6 +12,7 @@ export const logMessageSchema = z.object({
     bloodGroup: z.string(),
     dateOfNextDonation: z.string(),
     notes: z.string(),
+    phoneNumber: z.string(),
   })
 });
 

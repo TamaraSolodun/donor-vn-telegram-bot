@@ -16,7 +16,7 @@ import { StyledButtonCard, StyledContainer, StyledContainerHeader } from '../sty
 
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
-import LogMessage from '../components/LogMessage';
+import LogMessageRow from '../components/LogMessage';
 
 export default function Dashboard() {
   const { donors, loading, message, severity, closeAlert, logs } = useDashboard();
@@ -65,7 +65,7 @@ export default function Dashboard() {
                     <Typography gutterBottom variant="h6" component="div">
                       {t('lastMessages')}
                     </Typography>
-                    <LogMessage logs={logs.slice(0, 2)} showDetails={false} />
+                    <LogMessageRow logs={logs.slice(0, 2)} showDetails={false} />
                   </CardContent>
                   <StyledButtonCard>
                     <ArrowForwardIcon />

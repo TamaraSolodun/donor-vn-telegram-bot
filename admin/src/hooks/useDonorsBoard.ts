@@ -169,7 +169,8 @@ const useDonorsBoard = () => {
     severity,
     closeAlert,
     isDisabledCheckbox,
-    handleDelete
+    handleDelete,
+    t
   };
 };
 
