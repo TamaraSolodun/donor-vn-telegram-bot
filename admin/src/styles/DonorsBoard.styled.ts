@@ -17,6 +17,6 @@ export const StyledSnackbar = styled(Snackbar)({
 });
 
 export const StyledAlert = styled(Alert)({
-  width: 'auto%',
+  width: 'auto',
   margin: '10px'
 });

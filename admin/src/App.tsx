@@ -31,9 +31,9 @@ export const App = () => (
     </Provider>
   </BrowserRouter>
 );
-/* TO DO: tests on bot */
-/* TO DO: login */
-/* TO DO: fix inputs types  */
-/* TO DO: update donor */
-/* TO DO: delete donor idDeleted in db */
-/* TO DO: styles */
+
+
+/* TO DO: 15 minutes ago on main*/
+/* TO DO: 15 minutes ago on LogMessage on hover - full*/
+/* TO DO: Auth*/
+/* TO DO: Update donor form - group inputs*/

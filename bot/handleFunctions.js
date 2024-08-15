@@ -279,7 +279,7 @@ const handleCallbackQuery = async (callbackQuery) => {
       }
       await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
       await Donor.updateOne({ userId: chatId }, { $set: update });
-      await bot.sendMessage(chatId, 'Дякуємо за відповідь!');
+      await bot.sendMessage(chatId, `Дякуємо за відповідь! \n Очікуємо Вас ${dateOfNextDonation}.`);
 
     } else if (data.startsWith('confirm:') || data === 'not_confirm') {
       if (data.startsWith('confirm:')) {
