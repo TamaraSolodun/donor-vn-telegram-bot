@@ -56,5 +56,10 @@
   "donationNotRecommendedTooltip": "Donation not recommended after 60 days and count of them not more than 6",
   "resendMessageConfirm": "Are you sure you want to repeat sending this message?",
   "successSent": "Successfully sent message",
-  "failedSent": "Failed sending message"
+  "failedSent": "Failed sending message",
+  "personalInformation": "Personal information",
+  "medicalInformation": "Medical information",
+  "contactInformation": "Contact information",
+  "physicalMeasurements": "Physical measurements",
+  "timeAgo": "{{count}} ago"
 }

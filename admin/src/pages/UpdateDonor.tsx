@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,7 +17,6 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Stack from '@mui/material/Stack';
-
 
 export default function UpdateDonor() {
     const { userId } = useParams();
@@ -77,162 +76,195 @@ export default function UpdateDonor() {
                 {t('donor')} {donor?.userId}
             </StyledContainerHeader>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        name="userId"
-                        label={t('userId')}
-                        value={donor?.userId || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        InputProps={{
-                            readOnly: true,
-                        }}
-                        type='text'
-                    />
-                    <TextField
-                        name="firstName"
-                        label={t('firstName')}
-                        value={donor?.firstName || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='text'
-                    />
-                    <TextField
-                        name="surname"
-                        label={t('surname')}
-                        value={donor?.surname || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='text'
-                    />
-                    <TextField
-                        name="phoneNumber"
-                        label={t('phoneNumber')}
-                        value={donor?.phoneNumber || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='text'
-                    />
-                    <TextField
-                        name="sex"
-                        label={t('sex')}
-                        value={donor?.sex || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='text'
-                    />
-                    <TextField
-                        name="dateOfBirth"
-                        label={t('dateOfBirth')}
-                        value={donor?.dateOfBirth || ' '}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='date'
-                    />
+                <Grid item xs={12}>
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="h6">{t('personalInformation')}</Typography>
+                    </Box>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <FormControl fullWidth variant="outlined" margin="normal">
-                        <InputLabel>{t('bloodType')}</InputLabel>
-                        <Select
-                            name="bloodType"
-                            value={donor?.bloodType || ''}
-                            onChange={handleSelectChange}
-                            label={t('bloodType')}
-                        >
-                            {bloodTypes.map((type) => (
-                                <MenuItem key={type} value={type}>
-                                    {type}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth variant="outlined" margin="normal">
-                        <InputLabel>{t('rhesusFactor')}</InputLabel>
-                        <Select
-                            name="rhesusFactor"
-                            value={donor?.rhesusFactor || ''}
-                            onChange={handleSelectChange}
-                            label={t('rhesusFactor')}
-                        >
-                            {rhesusFactors.map((factor) => (
-                                <MenuItem key={factor} value={factor}>
-                                    {factor}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        name="dateOfLastDonation"
-                        label={t('dateOfLastDonation')}
-                        value={donor?.dateOfLastDonation || ' '}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='date'
-                    />
-                    <TextField
-                        name="countOfDonations"
-                        label={t('countOfDonations')}
-                        value={donor?.countOfDonations || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='number'
-                    />
-                    <TextField
-                        name="dateOfNextDonation"
-                        label={t('dateOfNextDonation')}
-                        value={donor?.dateOfNextDonation || ' '}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='date'
-                    />
-                    <TextField
-                        name="height"
-                        label={t('height')}
-                        value={donor?.height || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='number'
-                    />
-                    <TextField
-                        name="weight"
-                        label={t('weight')}
-                        value={donor?.weight || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='number'
-                    />
-                    <TextField
-                        name="city"
-                        label={t('city')}
-                        value={donor?.city || ''}
-                        onChange={handleChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        type='text'
-                    />
+                <Grid container item spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="firstName"
+                            label={t('firstName')}
+                            value={donor?.firstName || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='text'
+                        />
+                        <TextField
+                            name="surname"
+                            label={t('surname')}
+                            value={donor?.surname || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='text'
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="sex"
+                            label={t('sex')}
+                            value={donor?.sex || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='text'
+                        />
+                        <TextField
+                            name="dateOfBirth"
+                            label={t('dateOfBirth')}
+                            value={donor?.dateOfBirth || ' '}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='date'
+                        />
+                    </Grid>
+                </Grid>
+
+
+                <Grid item xs={12}>
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="h6">{t('medicalInformation')}</Typography>
+                    </Box>
+                </Grid>
+                <Grid container item spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth variant="outlined" margin="normal">
+                            <InputLabel>{t('bloodType')}</InputLabel>
+                            <Select
+                                name="bloodType"
+                                value={donor?.bloodType || ''}
+                                onChange={handleSelectChange}
+                                label={t('bloodType')}
+                            >
+                                {bloodTypes.map((type) => (
+                                    <MenuItem key={type} value={type}>
+                                        {type}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            name="dateOfLastDonation"
+                            label={t('dateOfLastDonation')}
+                            value={donor?.dateOfLastDonation || ' '}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='date'
+                        />
+                        <TextField
+                            name="countOfDonations"
+                            label={t('countOfDonations')}
+                            value={donor?.countOfDonations || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='number'
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+
+                        <FormControl fullWidth variant="outlined" margin="normal">
+                            <InputLabel>{t('rhesusFactor')}</InputLabel>
+                            <Select
+                                name="rhesusFactor"
+                                value={donor?.rhesusFactor || ''}
+                                onChange={handleSelectChange}
+                                label={t('rhesusFactor')}
+                            >
+                                {rhesusFactors.map((factor) => (
+                                    <MenuItem key={factor} value={factor}>
+                                        {factor}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            name="dateOfNextDonation"
+                            label={t('dateOfNextDonation')}
+                            value={donor?.dateOfNextDonation || ' '}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='date'
+                        />
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="h6">{t('contactInformation')}</Typography>
+                    </Box>
+                </Grid>
+                <Grid container item spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="phoneNumber"
+                            label={t('phoneNumber')}
+                            value={donor?.phoneNumber || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='text'
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="city"
+                            label={t('city')}
+                            value={donor?.city || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='text'
+                        />
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="h6">{t('physicalMeasurements')}</Typography>
+                    </Box>
+                </Grid>
+                <Grid container item spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="height"
+                            label={t('height')}
+                            value={donor?.height || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='number'
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            name="weight"
+                            label={t('weight')}
+                            value={donor?.weight || ''}
+                            onChange={handleChange}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                            type='number'
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
             <Stack spacing={5} direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
