@@ -228,22 +228,45 @@ const handleConfirmDonation = async (userId, dateOfNextDonation) => {
 
 const handleRegisterCommand = async (message, chatId) => {
   const existingDonor = await Donor.findOne({ userId: chatId });
+  
+  const receiveTextFromBot = (bot) => {
+    return new Promise((resolve) => {
+      bot.once('text', (msg) => resolve(msg));
+    });
+  };
+  
   if (existingDonor) {
     console.log(existingDonor);
     await bot.sendMessage(chatId, 'Ваc уже зареєстровано!');
     return;
   }
 
-  await bot.sendMessage(chatId, 'Вкажіть Ваш номер телефону:');
-  const phoneNumberResponse = await receiveTextFromBot();
-  const phoneNumber = phoneNumberResponse.text;
+  await bot.sendMessage(chatId, 'Вкажіть Ваш номер телефону:', {
+    reply_markup: {
+      keyboard: [
+        [
+          {
+            text: 'Надіслати номер телефону',
+            request_contact: true,
+          },
+        ],
+      ],
+      one_time_keyboard: true,
+    },
+  });
+
+  const contactResponse = await new Promise((resolve) => {
+    bot.once('contact', (msg) => resolve(msg));
+  });
+
+  const phoneNumber = contactResponse.contact.phone_number;
 
   await bot.sendMessage(chatId, "Вкажіть Ваше ім'я:");
-  const firstNameResponse = await receiveTextFromBot();
+  const firstNameResponse = await receiveTextFromBot(bot);
   const firstName = firstNameResponse.text;
 
   await bot.sendMessage(chatId, 'Вкажіть Ваше прізвище:');
-  const surnameResponse = await receiveTextFromBot();
+  const surnameResponse = await receiveTextFromBot(bot);
   //mock for bot
   const surname = surnameResponse.text;
   console.log(message.from);

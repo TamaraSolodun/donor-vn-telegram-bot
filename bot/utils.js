@@ -1,8 +1,6 @@
 const bot = require('./bot');
 
-const receiveTextFromBot = new Promise((resolve) => {
-  bot.once('text', (text) => resolve(text));
-});
+
 
 const donorCommands = [
   { command: '/start', description: 'Початкове привітання' },
@@ -15,4 +13,4 @@ const donorCommands = [
   { command: '/partners', description: 'Партнери та подарунки' },
 
 ];
-module.exports = { donorCommands, receiveTextFromBot };
+module.exports = { donorCommands };

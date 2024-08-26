@@ -43,7 +43,7 @@ const start = async () => {
           break;
         }
         default: {
-          handleInfoCommand(chatId);
+          console.log('default')
         }
       }
       //add object key : command

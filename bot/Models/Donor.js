@@ -7,35 +7,14 @@ const donorSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     required: true,
-    validate: {
-      validator: function (v) {
-        return /^\+380\d{9}$/.test(v);
-      },
-      message: (properties) =>
-        `${properties.value} is not a valid phone number! It should start with +380 and have a total of 12 digits.`,
-    },
   },
   firstName: {
     type: String,
     required: true,
-    validate: {
-      validator: function (firstName) {
-        return /^[A-Za-z]{2,}$/i.test(firstName);
-      },
-      message: (properties) =>
-        `${properties.value} is not a valid first name! It should contain only letters and be at least 2 characters long.`,
-    },
   },
   surname: {
     type: String,
     required: true,
-    validate: {
-      validator: function (surname) {
-        return /^[A-Za-z]{2,}$/i.test(surname);
-      },
-      message: (properties) =>
-        `${properties.value} is not a valid surname! It should contain only letters and be at least 2 characters long.`,
-    },
   },
   dateOfBirth: { type: String, default: null },
   sex: { type: String, default: null },
