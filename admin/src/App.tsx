@@ -31,9 +31,3 @@ export const App = () => (
     </Provider>
   </BrowserRouter>
 );
-
-
-/* TO DO: 15 minutes ago on main*/
-/* TO DO: 15 minutes ago on LogMessage on hover - full*/
-/* TO DO: Auth*/
-/* TO DO: Update donor form - group inputs*/
