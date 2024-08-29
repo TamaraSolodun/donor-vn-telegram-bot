@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, TextField } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
 import '../i18n/i18n';
 
 import AlertMessage from '../components/AlertMessage';
@@ -21,7 +20,7 @@ import LogMessageRow from '../components/LogMessage';
 export default function Dashboard() {
   const { donors, loading, message, severity, closeAlert, logs } = useDashboard();
   const { t } = useTranslation();
-
+  
   return (
     <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>

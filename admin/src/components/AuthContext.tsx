@@ -4,12 +4,14 @@ interface AuthContextType {
   token: string | null;
   setToken: (token: string | null) => void;
   loading: boolean;
+  logout: () => void;
 }
 
 const initialContextValue: AuthContextType = {
   token: null,
   setToken: () => {},
   loading: true,
+  logout: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(initialContextValue);
@@ -28,8 +30,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(false); 
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ token, setToken, loading }}>
+    <AuthContext.Provider value={{ token, setToken, loading, logout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

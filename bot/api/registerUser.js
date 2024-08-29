@@ -13,7 +13,7 @@ const registerUser = async (request, response) => {
         if (!passwordMatch) {
             return response.status(401).json({ error: 'Authentication failed' });
         }
-        const token = jwt.sign({ userId: user._id }, 'donor-vn-sk', {
+        const token = jwt.sign({ userId: user._id }, 'donor-vn-sk', { // min 32 symbols generate & move to .env
             expiresIn: '1h',
         });
         response.status(200).json({ token });

@@ -1,4 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,13 +9,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import donorImage from '../../../admin/assets/10-removebg-preview.png';
 import i18n from '../i18n/i18n';
 import { StyledAppBarContainer } from '../styles/Header.styled';
+import { AuthContext } from './AuthContext';
+
 const pages = [
   {
     pageName: 'Dashboard',
@@ -25,20 +28,18 @@ const pages = [
     pageRoute: 'donors-board',
   },
 ];
+
 const languages = ['UA', 'EN'];
 
 export default function Header() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { token, logout } = useContext(AuthContext);
   const savedLanguage = localStorage.getItem('language') || 'UA';
   const [language, setLanguage] = useState(savedLanguage);
 
-  const [anchorElementNav, setAnchorElementNav] = useState<null | HTMLElement>(
-    null,
-  );
-
-  const [anchorElementLanguage, setAnchorElementLanguage] =
-    useState<null | HTMLElement>(null);
+  const [anchorElementNav, setAnchorElementNav] = useState<null | HTMLElement>(null);
+  const [anchorElementLanguage, setAnchorElementLanguage] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElementNav(event.currentTarget);
@@ -65,17 +66,24 @@ export default function Header() {
     try {
       await i18n.changeLanguage(newLanguage);
       localStorage.setItem('language', newLanguage);
-      console.log(newLanguage);
       setLanguage(newLanguage);
     } catch (error) {
       console.error('Error changing language:', error);
     }
     handleCloseLanguageMenu();
   };
-  
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   useEffect(() => {
     setLanguage(savedLanguage);
   }, [savedLanguage]);
+
+  // If not authenticated, do not render Header
+  if (!token) return null;
 
   return (
     <AppBar position="static">
@@ -150,10 +158,9 @@ export default function Header() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
             <Tooltip title="Change language">
               <Button
-                key={language}
                 onClick={handleOpenLanguageMenu}
                 sx={{ my: 2, color: 'white', display: 'block', p: 0 }}
               >
@@ -185,6 +192,15 @@ export default function Header() {
                 </MenuItem>
               ))}
             </Menu>
+
+            <Tooltip title="Logout">
+              <IconButton
+                onClick={handleLogout}
+                sx={{ ml: 2, color: 'white' }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </StyledAppBarContainer>
