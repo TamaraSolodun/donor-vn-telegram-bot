@@ -61,5 +61,7 @@
     "medicalInformation": "Медичні дані",
     "contactInformation": "Контактна інформація",
     "physicalMeasurements": "Фізичні показники",
-    "timeAgo": "приблизно {{count}} тому"
+    "timeAgo": "приблизно {{count}} тому",
+    "Search": "Пошук",
+    "noResults": "Результатів не знайдено"
 }

@@ -10,6 +10,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
+
 
 import AlertMessage from '../components/AlertMessage';
 import {
@@ -20,6 +22,7 @@ import SendDialogs from '../components/SendDialogs';
 import useDonorsBoard from '../hooks/useDonorsBoard';
 
 import { EditButton, StyledContainer } from '../styles/App.styled';
+import { useState } from 'react';
 
 export default function DonorsBoard() {
   const {
@@ -43,11 +46,32 @@ export default function DonorsBoard() {
     handleDelete,
     t
   } = useDonorsBoard();
-  
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredDonors = donors.filter(donor =>
+    Object.values(donor).some(
+      value => typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
   return (
     <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>
-        <EnhancedTableToolbar numSelected={selected.length}/>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            label={t('Search')}
+            variant="outlined"
+            fullWidth
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </Box>
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -60,23 +84,19 @@ export default function DonorsBoard() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={donors.length}
-              hasDisabledRows={donors.some(donor => isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))}
+              rowCount={filteredDonors.length}
+              hasDisabledRows={filteredDonors.some(donor => isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))}
             />
             <TableBody>
-              {visibleRows &&
-                visibleRows.map((donor, index) => {
+              {filteredDonors.length > 0 ? (
+                filteredDonors.map((donor, index) => {
                   const isItemSelected = isSelected(donor.userId);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   const disabled = isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations);
 
                   return (
                     <Tooltip
-                      title={
-                        disabled
-                          ? t('donationNotRecommendedTooltip')
-                          : ''
-                      }
+                      title={disabled ? t('donationNotRecommendedTooltip') : ''}
                       placement="top"
                       arrow
                       key={donor.userId}
@@ -101,12 +121,7 @@ export default function DonorsBoard() {
                             }}
                           />
                         </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="donor"
-                          padding="none"
-                        >
+                        <TableCell component="th" id={labelId} scope="donor" padding="none">
                           {donor.userId}
                         </TableCell>
                         <TableCell align="left">{donor.firstName}</TableCell>
@@ -142,14 +157,21 @@ export default function DonorsBoard() {
                       </TableRow>
                     </Tooltip>
                   );
-                })}
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={13} align="center">
+                    {t('noResults')}
+                  </TableCell>
+                </TableRow>
+              )}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
                     height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={13} />
                 </TableRow>
               )}
             </TableBody>

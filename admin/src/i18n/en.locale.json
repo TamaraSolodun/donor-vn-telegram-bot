@@ -61,5 +61,7 @@
   "medicalInformation": "Medical information",
   "contactInformation": "Contact information",
   "physicalMeasurements": "Physical measurements",
-  "timeAgo": "{{count}} ago"
+  "timeAgo": "{{count}} ago",
+  "Search": "Search",
+  "noResults": "No results found"
 }
