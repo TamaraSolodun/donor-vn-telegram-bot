@@ -63,5 +63,6 @@
     "physicalMeasurements": "Фізичні показники",
     "timeAgo": "приблизно {{count}} тому",
     "Search": "Пошук",
-    "noResults": "Результатів не знайдено"
+    "noResults": "Результатів не знайдено",
+    "allTypes": "Усі групи"
 }

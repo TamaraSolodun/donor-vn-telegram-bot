@@ -63,5 +63,6 @@
   "physicalMeasurements": "Physical measurements",
   "timeAgo": "{{count}} ago",
   "Search": "Search",
-  "noResults": "No results found"
+  "noResults": "No results found",
+  "allTypes": "All groups"
 }

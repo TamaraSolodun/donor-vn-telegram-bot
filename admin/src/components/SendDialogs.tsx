@@ -111,6 +111,7 @@ export default function SendDialogs({ handleSendMessage }: SendDialogsProps) {
                   <MenuItem value="AB-">{t('ABMinus')}</MenuItem>
                   <MenuItem value="O+">{t('OPlus')}</MenuItem>
                   <MenuItem value="O-">{t('OMinus')}</MenuItem>
+                  <MenuItem value="A+, A-, B+, B-, AB+, AB-, O+, O-">{t('allTypes')}</MenuItem>
                 </Select>
               </StyledFormControl>
               <TextField

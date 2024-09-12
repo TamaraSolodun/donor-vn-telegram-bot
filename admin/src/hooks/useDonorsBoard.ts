@@ -55,12 +55,10 @@ const useDonorsBoard = () => {
     return differenceInDays < 60 || (countOfDonations ?? 0) > 6;;
   };
 
-  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSelectAllClick = (event: any, filteredDonors : DonorList) => {
     if (event.target.checked) {
-      const newSelected = donors
-        .filter(donor => !isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))
-        .map(donor => donor.userId);
-      setSelected(newSelected);
+      const newSelecteds = filteredDonors.map((donor : Donor) => donor.userId);
+      setSelected(newSelecteds);
       return;
     }
     setSelected([]);

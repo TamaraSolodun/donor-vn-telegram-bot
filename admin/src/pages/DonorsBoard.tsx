@@ -52,26 +52,37 @@ export default function DonorsBoard() {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
-
+  
   const filteredDonors = donors.filter(donor =>
-    Object.values(donor).some(
-      value => typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+    Object.values(donor).some(value =>
+      value !== null && value !== undefined && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
   return (
     <StyledContainer maxWidth="lg">
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ mb: 2 }}>
+
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <Box
+          sx={{
+            mb: 2,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            maxWidth: '100%'
+          }}
+        >
           <TextField
             label={t('Search')}
             variant="outlined"
-            fullWidth
             value={searchQuery}
             onChange={handleSearchChange}
+            sx={{
+              maxWidth: { lg: '30%' },
+              width: '100%' 
+            }}
           />
         </Box>
-        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -82,7 +93,7 @@ export default function DonorsBoard() {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              onSelectAllClick={(event) => handleSelectAllClick(event, filteredDonors)}
               onRequestSort={handleRequestSort}
               rowCount={filteredDonors.length}
               hasDisabledRows={filteredDonors.some(donor => isDisabledCheckbox(donor.dateOfLastDonation, donor.countOfDonations))}
