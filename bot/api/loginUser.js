@@ -1,6 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
+const token = require('../config.js');
+const accessTokenExpiresIn = token.accessTokenExpiresIn;
+const refreshTokenExpiresIn = token.refreshTokenExpiresIn; 
+const jwtSecret = token.jwtSecret;
+const refreshTokenSecret = token.jwtRefreshSecret;
 
 const loginUser = async (request, response) => {
     try {
@@ -13,13 +18,17 @@ const loginUser = async (request, response) => {
         if (!passwordMatch) {
             return response.status(401).json({ error: 'Authentication failed' });
         }
-        const token = jwt.sign({ userId: user._id }, 'donor-vn-sk', { // min 32 symbols generate & move to .env
-            expiresIn: '1h',
-        });
-        response.status(200).json({ token });
+
+        const accessToken = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: accessTokenExpiresIn });
+        const refreshToken = jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiresIn });
+
+        user.refreshToken = refreshToken;
+        await user.save();
+
+        response.status(200).json({ accessToken, refreshToken });
     } catch (error) {
         response.status(500).json({ error: 'Login failed' });
     }
-  }
+}
 
 module.exports = { loginUser };

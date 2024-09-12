@@ -15,14 +15,25 @@ import LogsHistory from './pages/LogsHistory';
 import InviteDonor from './pages/InviteDonor';
 import Registration from './components/Registration';
 
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import PrivateRoute from './components/PrivateRoute';
+import { useEffect, useContext } from 'react';
 
 const queryClient = new QueryClient();
 
 export const App = () => {
+  const { refreshAccessToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshAccessToken();
+    }, 5 * 60 * 1000); 
+
+    return () => clearInterval(interval); 
+  }, [refreshAccessToken]);
+
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <BrowserRouter>
@@ -30,9 +41,9 @@ export const App = () => {
           <I18nextProvider i18n={i18n}>
             <AuthProvider>
               <AuthContext.Consumer>
-                {({ token }) => ( //refresh token
+                {({ accessToken }) => (
                   <>
-                    {token && <Header />}
+                    {accessToken && <Header />}
                     <StyledWrapper>
                       <Routes>
                         <Route path="/login" element={<Login />} />

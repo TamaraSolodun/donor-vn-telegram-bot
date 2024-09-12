@@ -8,7 +8,7 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { setToken } = useContext(AuthContext);
+  const { setAccessToken, setRefreshToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const apiUrl = 'http://localhost:8000';
 
@@ -29,19 +29,25 @@ const Login: React.FC = () => {
       if (!response.ok) {
         const errorData: any = await response.json();
         setErrorMessage(errorData.message || "Authentication failed.");
-        setToken(null);
-        localStorage.removeItem("token");
+        setAccessToken(null);
+        setRefreshToken(null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         return;
       }
 
       const data: any = await response.json();
-      setToken(data.token);
-      localStorage.setItem("token", data.token);
+      setAccessToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
       navigate("/dashboard");
     } catch (error) {
       console.error("An unexpected error occurred:", error);
-      setToken(null);
-      localStorage.removeItem("token");
+      setAccessToken(null);
+      setRefreshToken(null);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       setErrorMessage("An unexpected error occurred. Please try again.");
     }
   };

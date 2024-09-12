@@ -34,7 +34,7 @@ const languages = ['UA', 'EN'];
 export default function Header() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { token, logout } = useContext(AuthContext);
+  const { accessToken, logout } = useContext(AuthContext);
   const savedLanguage = localStorage.getItem('language') || 'UA';
   const [language, setLanguage] = useState(savedLanguage);
 
@@ -82,8 +82,7 @@ export default function Header() {
     setLanguage(savedLanguage);
   }, [savedLanguage]);
 
-  // If not authenticated, do not render Header
-  if (!token) return null;
+  if (!accessToken) return null;
 
   return (
     <AppBar position="static">

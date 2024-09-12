@@ -3,14 +3,16 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Logout: React.FC = () => {
-  const { setToken } = useContext(AuthContext);
+  const { setAccessToken, setRefreshToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setToken(null);
-    localStorage.removeItem('token');
+    setAccessToken(null);
+    setRefreshToken(null);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     navigate('/login');
-  }, [setToken, navigate]);
+  }, [setAccessToken, setRefreshToken, navigate]);
 
   return <div>Logging out...</div>;
 };
