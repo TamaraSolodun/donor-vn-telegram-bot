@@ -10,26 +10,27 @@ const { loginUser } = require('../api/loginUser');
 
 router.post('/refresh-token', async (req, res) => {
     const { refreshToken } = req.body;
-
+  
     if (!refreshToken) {
-        return res.status(401).json({ error: 'Refresh token required' });
+      return res.status(401).json({ error: 'Refresh token required' });
     }
-
+  
     try {
-        const decoded = jwt.verify(refreshToken, refreshTokenSecret);
-        const user = await User.findById(decoded.userId);
-
-        if (!user || user.refreshToken !== refreshToken) {
-            return res.status(401).json({ error: 'Invalid refresh token' });
-        }
-
-        const newAccessToken = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: accessTokenExpiresIn });
-
-        res.status(200).json({ accessToken: newAccessToken });
+      const decoded = jwt.verify(refreshToken, refreshTokenSecret);
+      const user = await User.findById(decoded.userId);
+  
+      if (!user || user.refreshToken !== refreshToken) {
+        return res.status(401).json({ error: 'Invalid refresh token' });
+      }
+  
+      const newAccessToken = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '15m' });
+  
+      res.status(200).json({ accessToken: newAccessToken });
     } catch (error) {
-        res.status(401).json({ error: 'Invalid refresh token' });
+      res.status(401).json({ error: 'Invalid refresh token' });
     }
-});
+  });
+  
 
 router.post('/login', loginUser);
 

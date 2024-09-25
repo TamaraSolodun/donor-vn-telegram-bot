@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refreshToken }),
+        body: JSON.stringify({ refreshToken: refreshToken }),
       });
 
       if (response.ok) {
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { exp } = jwtDecode<{ exp: number }>(accessToken);
       const expiresIn = exp * 1000 - Date.now() - 5000;
       const timeoutId = setTimeout(refreshAccessToken, expiresIn);
-
+      
       return () => clearTimeout(timeoutId);
     }
   }, [accessToken, refreshAccessToken]);

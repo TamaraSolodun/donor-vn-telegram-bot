@@ -15,42 +15,42 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+        const response = await fetch(`${apiUrl}/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+        });
 
-      if (!response.ok) {
-        const errorData: any = await response.json();
-        setErrorMessage(errorData.message || "Authentication failed.");
+        if (!response.ok) {
+            const errorData: any = await response.json();
+            setErrorMessage(errorData.message || "Authentication failed.");
+            setAccessToken(null);
+            setRefreshToken(null);
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            return;
+        }
+
+        const data: any = await response.json();
+        setAccessToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        navigate("/dashboard");
+    } catch (error) {
+        console.error("An unexpected error occurred:", error);
         setAccessToken(null);
         setRefreshToken(null);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        return;
-      }
-
-      const data: any = await response.json();
-      setAccessToken(data.accessToken);
-      setRefreshToken(data.refreshToken);
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("An unexpected error occurred:", error);
-      setAccessToken(null);
-      setRefreshToken(null);
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      setErrorMessage("An unexpected error occurred. Please try again.");
+        setErrorMessage("An unexpected error occurred. Please try again.");
     }
-  };
+};
 
   return (
     <StyledContainer sx={{ width: '50%', mb: 2 }}>

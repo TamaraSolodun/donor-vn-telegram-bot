@@ -189,8 +189,8 @@ export default function DonorsBoard() {
           </Table>
         </TableContainer>
 
-        <Stack spacing={5} direction="row" justifyContent="flex-end" marginTop={5} marginBottom={2}>
-          <SendDialogs handleSendMessage={handleSendMessage} />
+        <Stack spacing={5} direction="row" justifyContent="flex-end" marginTop={5} marginBottom={2} >
+          <SendDialogs handleSendMessage={handleSendMessage}/>
         </Stack>
 
         <AlertMessage

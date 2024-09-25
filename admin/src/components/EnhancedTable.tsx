@@ -240,13 +240,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {t('donors')}
         </Typography>
       )}
-      {numSelected > 0 ? <></>: (
+      {/* {numSelected > 0 ? <></>: (
         <Tooltip title="Filter list">
           <IconButton>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 }
